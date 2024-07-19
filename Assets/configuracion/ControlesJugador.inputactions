@@ -1,0 +1,329 @@
+{
+    "name": "ControlesJugador",
+    "maps": [
+        {
+            "name": "Mundo",
+            "id": "d55ad1cd-0d46-4bea-a6cd-21b5f988f934",
+            "actions": [
+                {
+                    "name": "Panoramica",
+                    "type": "Value",
+                    "id": "45c48703-de48-45af-acef-0c4f3f2471d1",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Zoom",
+                    "type": "Value",
+                    "id": "ac4f0aec-491b-45e1-a4a6-8f68dab307e9",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Enfocar",
+                    "type": "Button",
+                    "id": "a6f5b5fe-1c36-45db-bea2-41e65ad1a6e5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Seleccionar",
+                    "type": "Button",
+                    "id": "f6c5e315-3dcc-468a-9507-98170f5b8e97",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector",
+                    "id": "e6a9dee2-b4e4-4087-bbb2-d42b32a835c5",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Panoramica",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "down",
+                    "id": "41c9e10f-ba58-4acb-89b3-cdf10f1717c2",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Panoramica",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "7f9f6eea-18d0-4f58-b43f-ea490f36ba2d",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Panoramica",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "bee59fdd-116c-4c97-b06c-c5e9da2159c9",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Panoramica",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "up",
+                    "id": "1bae021f-07fe-4a82-82d3-19f55ddc4e5b",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Panoramica",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "ddf91f3f-9a0f-43a7-8ad3-3df38d3ad3a7",
+                    "path": "1DAxis(minValue=-120,maxValue=120)",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Zoom",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "2708e378-10fb-4ce2-914d-317928cab790",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "79ee4137-fb41-497d-b16e-f5be08f6f09e",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "d7ffb0cc-b4d9-45f9-95e7-5147ed77462c",
+                    "path": "<Mouse>/scroll/y",
+                    "interactions": "",
+                    "processors": "Invert",
+                    "groups": "teclado y mouse",
+                    "action": "Zoom",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3f5a60be-4527-48d5-9ab1-acf56f3ac0ff",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "MultiTap(tapDelay=0.4)",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Enfocar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c7d95388-d72a-49a2-aeba-4bce8081fd92",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Seleccionar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "3d9ad750-904d-458b-99db-023ec0efdde1",
+            "actions": [
+                {
+                    "name": "Vertical",
+                    "type": "Button",
+                    "id": "e40d5b05-5194-49ca-a307-fd248cd261a8",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Seleccionar",
+                    "type": "Button",
+                    "id": "528ca80b-a602-4123-a2b6-1831753dbba7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Volver",
+                    "type": "Button",
+                    "id": "9ed22094-5422-4801-b729-c61a0c0f791a",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Salir",
+                    "type": "Button",
+                    "id": "d75de891-4dae-4ee0-a19d-120a61fc00c0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Confirmar",
+                    "type": "Button",
+                    "id": "1e9f7290-3540-42e3-b8f6-574298745f49",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "1f4f94aa-5df5-4357-bffa-b8fc66584534",
+                    "path": "",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "1D Axis",
+                    "id": "8ce1fb9f-0753-44e8-9bba-cc46f333af7d",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Vertical",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "20f8a407-0ffe-4096-b53b-02f0196dcca9",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "ecb92e1a-686a-4d1e-8c6d-7ee2b274754a",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Vertical",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "cbb87d81-bf3c-46e3-9f7f-527641aa8a02",
+                    "path": "<Keyboard>/d",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Seleccionar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "23018abb-ad90-4645-8b89-b44c2069b3fb",
+                    "path": "<Keyboard>/a",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Volver",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "14be67c6-c8ed-4c76-8bfb-c87621c9ce62",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Salir",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e1fbb9bd-468b-420a-b1cb-6e4baf314ba6",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "teclado y mouse",
+                    "action": "Confirmar",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "teclado y mouse",
+            "bindingGroup": "teclado y mouse",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
