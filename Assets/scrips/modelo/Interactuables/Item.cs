@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Item : IInteractuable
 {
-    public void Interactuar(Entidad entidad)
+    public void Interactuar(Personaje entidad)
     {
         throw new System.NotImplementedException();
     }

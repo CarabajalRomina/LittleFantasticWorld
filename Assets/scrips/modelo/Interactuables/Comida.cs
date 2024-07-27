@@ -8,7 +8,7 @@ public class Comida: IInteractuable
     private int calorias;
 
     public int CALORIAS {  get; private set; }
-    public void Interactuar(Entidad entidad)
+    public void Interactuar(Personaje entidad)
     {
         throw new System.NotImplementedException();
     }

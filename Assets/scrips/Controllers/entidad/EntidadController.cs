@@ -8,7 +8,7 @@ namespace Assets.scrips.Controllers.entidad
 {
     public class EntidadController : Singleton<EntidadController>
     {
-        List<Entidad> EntidadList;
+        List<Personaje> EntidadList;
         List<IDieta> Dietas;
         List<IHabitat> Habitats;
         List<IReino> Reinos;

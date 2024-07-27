@@ -8,6 +8,6 @@ namespace Assets.scrips.interfaces.interactuable
 {
     public interface IInteractuable
     {
-        public void Interactuar(Entidad entidad);
+        public void Interactuar(Personaje entidad);
     }
 }
