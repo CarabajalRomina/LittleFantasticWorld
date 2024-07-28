@@ -4,44 +4,88 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Personaje: Entidad, IEntidad
+public class Personaje: Entidad, ICombate
 {
-    int Id { get;}
-    private static int GlobalCount;
-    string Nombre { get; set; }
-    IReino Reino { get; set; }
+    int Id;
+    static int GlobalCount = 0;
     IDieta Dieta;
-    IHabitat Habitats { get; set; }
     int EnergiaActual;
     int EnergiaMax;
-    int VidaActual { get; set; }
-    int VidaMax { get; set; }
-    int PuntosAtaque { get; set; }
-    int PuntosDefensa { get; set; }
+    int VidaActual;
+    int VidaMax;
+    int PuntosAtaque;
+    int PuntosDefensa;
     int RangoAtaque;
 
+
     #region CONSTRUCTORES
-
-
-    public Personaje(string nombre, IReino reino, IHabitat habitats, int vidaMax, int puntosAtaque, int puntosDefensa, IDieta dieta, int energiaMax, int rangoAtaque) : base(nombre, reino, habitats, vidaMax, puntosAtaque, puntosDefensa)
+    public Personaje(string nombre, IReino reino, IHabitat habitats, int vidaMax, IDieta dieta, int puntosAtaque, int puntosDefensa,int energiaMax, int rangoAtaque, Transform personajePrefab) : base(nombre, reino, habitats, personajePrefab)
     {
         Id = ++GlobalCount;
-        NOMBRE = nombre;
-        REINO = reino;
-        DIETA = dieta;
-        HABITATS = habitats;
-        ENERGIAMAX = energiaMax;
-        ENERGIACTUAL = energiaMax;
-        VIDAMAX = vidaMax;
         VIDAACTUAL = vidaMax;
+        VIDAMAX = vidaMax;
         PUNTOSATAQUE = puntosAtaque;
         PUNTOSDEFENSA = puntosDefensa;
+        DIETA = dieta;
+        ENERGIAMAX = energiaMax;
+        ENERGIACTUAL = energiaMax;
         RANGOATAQUE = rangoAtaque;
     }
     #endregion
 
     #region PROPIEDADES
-    
+    public int ID
+    {
+        get { return Id; }
+    }
+
+    public int VIDAACTUAL
+    {
+        get { return VidaActual; }
+        set
+        {
+            if (value >= 0 && value <= VidaMax)
+            {
+                VidaActual = value;
+            }
+        }
+    }
+
+    public int VIDAMAX
+    {
+        get { return VidaMax; }
+        set
+        {
+            if (value > 0)
+            {
+                VidaMax = value;
+            }
+        }
+    }
+
+    public int PUNTOSATAQUE
+    {
+        get { return PuntosAtaque; }
+        set
+        {
+            if (value > 0)
+            {
+                PuntosAtaque = value;
+            }
+        }
+    }
+
+    public int PUNTOSDEFENSA
+    {
+        get { return PuntosDefensa; }
+        set
+        {
+            if (value > 0)
+            {
+                PuntosDefensa = value;
+            }
+        }
+    }
     public IDieta DIETA
     {
         get { return Dieta; }
@@ -53,8 +97,6 @@ public class Personaje: Entidad, IEntidad
             }
         }
     }
-
-    
 
     public int ENERGIACTUAL
     {
@@ -95,20 +137,22 @@ public class Personaje: Entidad, IEntidad
     #endregion
 
 
-    #region METODOS ATAQUE Y DEFENSA
+    #region METODOS COMBATE
     public int Atacar()
     {
         var dado = Dado.TirarDado(1, 6);
         return PUNTOSATAQUE + dado;
     }
 
-    public int DefenderDeAtaque()
+    public int Defender()
     {
         var dado = Dado.TirarDado(1, 6);
         return PUNTOSDEFENSA + dado;
     }
 
     #endregion
+
+
 
     public void Comer(Comida alimento)
     {

@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Assets.scrips.interfaces
 {
-    internal interface IEntidad
+    internal interface ICombate
     {
         int Atacar();
-        int DefenderDeAtaque();
-
-
+        int Defender();
     }
 }
