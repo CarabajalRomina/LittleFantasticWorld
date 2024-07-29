@@ -9,13 +9,13 @@ namespace Assets.scrips.modelo.Entidad
 {
     public abstract class Entidad
     {
-        private string Nombre { get; set; }
-        private IReino Reino { get; set; }
-        private IHabitat Habitats { get; set; }
-        Transform PersonajePrefab { get; set; }
+        protected string Nombre { get; set; }
+        protected IReino Reino { get; set; }
+        protected IHabitat Habitats { get; set; }
+        protected Transform PersonajePrefab { get; set; }
 
 
-        public Entidad(string nombre, IReino reino, IHabitat habitats, Transform personajePrefab)
+        protected Entidad(string nombre, IReino reino, IHabitat habitats, Transform personajePrefab)
         {
             NOMBRE = nombre;
             REINO = reino;
