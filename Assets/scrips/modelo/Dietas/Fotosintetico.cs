@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 
 namespace Assets.scrips.modelo.Dietas
 {
-    public class Omnivoro : IDieta
+    public class Fotosintetico : IDieta
     {
         public bool PuedoComer(Comida alimento)
         {
-            if (alimento != null && alimento.TIPODIETA is Carnivoro || alimento.TIPODIETA is Herbivoro) { return true; } else { return false; }
+            if (alimento != null && alimento.TIPODIETA is Fotosintetico) { return true; } else { return false; }
         }
+
         public override string ToString()
         {
-            return "Omnivoro";
+            return "Fotosintetico";
         }
     }
 }

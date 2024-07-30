@@ -49,7 +49,6 @@ namespace Assets.scrips.modelo.Entidad
             }
         }
 
-
         public IHabitat HABITATS
         {
             get { return Habitats; }

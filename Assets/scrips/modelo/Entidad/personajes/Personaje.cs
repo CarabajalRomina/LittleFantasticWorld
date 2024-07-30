@@ -227,5 +227,6 @@ public class Personaje: Entidad, ICombate
     {
         ActualizarEnergia(ENERGIAMAX);
     }
+   
 }
 

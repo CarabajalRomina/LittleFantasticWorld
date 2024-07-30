@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.scrips.modelo.Dietas
+namespace Assets.scrips.fabricas.dietas
 {
-    public class Fotosinteticos
+    public abstract class FabricaDieta
     {
+        public abstract IDieta CrearDieta();
     }
 }

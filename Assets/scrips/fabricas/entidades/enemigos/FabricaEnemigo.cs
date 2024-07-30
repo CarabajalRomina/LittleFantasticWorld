@@ -11,13 +11,13 @@ namespace Assets.scrips.fabricas.entidades.enemigos
 {
     internal class FabricaEnemigo : IFabricaEntidad
     {
-        string Nombre { get; set; }
-        IReino Reino { get; set; }
-        IHabitat Habitats { get; set; }
-        Transform PersonajePrefab { get; set; }
-        int VidaMax { get; set; }
-        int PuntosAtaque { get; set; }
-        int PuntosDefensa { get; set; }
+        string Nombre;
+        IReino Reino;
+        IHabitat Habitats;
+        Transform PersonajePrefab;
+        int VidaMax;
+        int PuntosAtaque;
+        int PuntosDefensa;
 
         public FabricaEnemigo(string nombre, IReino reino, IHabitat habitats, Transform personajePrefab, int vidaMax, int puntosAtaque, int puntosDefensa)
         {
