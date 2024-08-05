@@ -22,7 +22,7 @@ namespace Assets.scrips.fabricas.entidades.personajes
         int PuntosDefensa;
         int RangoAtaque;
 
-        public FabricaPersonaje(string nombre, IReino reino, IHabitat habitats, Transform personajePrefab, int vidaMax,IDieta dieta, int energiaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
+        public FabricaPersonaje(string nombre, IReino reino, IDieta dieta, IHabitat habitats, Transform personajePrefab, int vidaMax, int energiaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
         {
             Nombre = nombre;
             Reino = reino;

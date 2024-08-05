@@ -13,7 +13,7 @@ public class Terreno
     [SerializeField] private Vector2 CoordenadasAxial;
     private List<Terreno> TerrenosLimitrofes;
     [SerializeField] private Transform TransfTerreno;
-    [SerializeField] private IEstadoHex Estado;
+    [SerializeField] private IEstadoHexEstrategia Estado;
 
 
 
@@ -61,7 +61,7 @@ public class Terreno
         set { TransfTerreno = value; }
     }
 
-    public IEstadoHex ESTADO
+    public IEstadoHexEstrategia ESTADO
     {
         get { return Estado; }
         set { Estado = value; }
@@ -111,7 +111,7 @@ public class Terreno
         GRILLAHEX = null;
     }
 
-    public void InicializarEstado(IEstadoHex estadoInicial = null)
+    public void InicializarEstado(IEstadoHexEstrategia estadoInicial = null)
     {
         if(estadoInicial == null)
         {
@@ -123,7 +123,7 @@ public class Terreno
         }
     }
 
-    public void CambiarEstado(IEstadoHex nuevoEstado)
+    public void CambiarEstado(IEstadoHexEstrategia nuevoEstado)
     {
         if(nuevoEstado != null && nuevoEstado != Estado ) 
         {

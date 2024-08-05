@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Oculto : IEstadoHex
+public class Oculto : IEstadoHexEstrategia
 {
     private EstadosDeInteraccion Estado = EstadosDeInteraccion.Oculto;
 
@@ -31,21 +31,21 @@ public class Oculto : IEstadoHex
         }
     }
 
-    public IEstadoHex OnMouseEnter()
+    public IEstadoHexEstrategia OnMouseEnter()
     {
         return this;
     }
 
-    public IEstadoHex OnMouseExit()
+    public IEstadoHexEstrategia OnMouseExit()
     {
         return this;
     }
 
-    public IEstadoHex Seleccionar()
+    public IEstadoHexEstrategia Seleccionar()
     {
         throw new System.NotImplementedException();
     }
-    public IEstadoHex Deseleccionar()
+    public IEstadoHexEstrategia Deseleccionar()
     {
         throw new System.NotImplementedException();
     }

@@ -1,4 +1,5 @@
 using Assets.scrips.interfaces.interactuable;
+using Assets.scrips.modelo.Entidad;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,10 +44,7 @@ public class Comida: IInteractuable
         CALORIAS = calorias;
         TIPODIETA = tipoDieta;
     }
-    public void Interactuar(Personaje entidad)
-    {
-        entidad.Comer(this);
-    }
+  
     public override string ToString()
     {
         return $"" +
@@ -55,5 +53,10 @@ public class Comida: IInteractuable
             $" Nombre: {NOMBRE}," +
             $" Calorias: {CALORIAS}," +
             $" Dieta: {TIPODIETA},";
+    }
+
+    public void Interactuar(Personaje entidad)
+    {
+        entidad.Comer(this);
     }
 }

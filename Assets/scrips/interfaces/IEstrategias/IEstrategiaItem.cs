@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.scrips.interfaces.interactuable
+namespace Assets.scrips.interfaces.IEstrategias
 {
-    public interface IInteractuable
+    public interface IEstrategiaItem
     {
-        public void Interactuar(Personaje entidad);
-
+        public void AplicarEfecto(Entidad entidad);
     }
 }

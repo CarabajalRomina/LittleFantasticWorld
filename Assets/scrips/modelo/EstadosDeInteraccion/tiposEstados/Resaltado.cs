@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Resaltado : IEstadoHex
+public class Resaltado : IEstadoHexEstrategia
 {
     private EstadosDeInteraccion Estado = EstadosDeInteraccion.Resaltado;
 
@@ -34,21 +34,21 @@ public class Resaltado : IEstadoHex
 
     }
 
-    public IEstadoHex OnMouseEnter()
+    public IEstadoHexEstrategia OnMouseEnter()
     {
         return this;
     }
 
-    public IEstadoHex OnMouseExit()
+    public IEstadoHexEstrategia OnMouseExit()
     {
         return new Visible();
     }
 
-    public IEstadoHex Seleccionar()
+    public IEstadoHexEstrategia Seleccionar()
     {
         return new Seleccionado();
     }
-    public IEstadoHex Deseleccionar()
+    public IEstadoHexEstrategia Deseleccionar()
     {
         return new Visible();
     }
