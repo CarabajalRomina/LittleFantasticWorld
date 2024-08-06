@@ -14,8 +14,8 @@ namespace Assets.scrips.Controllers.entidad
 {
     public class PersonajeController : Singleton<PersonajeController>
     {
-        HabitatController cntHabitat = new HabitatController();
-        List<Entidad> Personajes;
+        HabitatController cntHabitat = HabitatController.GetInstancia;
+        List<Entidad> Personajes = new List<Entidad>();
         List<IReino> Reinos = new List<IReino> { 
             new FabricaAnimal().CrearReino(),
             new FabricaVegetal().CrearReino(),
@@ -54,15 +54,14 @@ namespace Assets.scrips.Controllers.entidad
         #endregion
 
         #region CRUD
-        public void CrearEntidad(string nombre, IReino reino, IDieta dieta, IHabitat habitat, Transform personajePrefab, int energiaMax, int vidaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
+        public void CrearEntidad(string nombre, IReino reino, IDieta dieta, IHabitat habitat, int energiaMax, int vidaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
         {
-            Personajes.Add(
+            PERSONAJES.Add(
                 new FabricaPersonaje(
                     nombre,
                     reino,
                     dieta,
                     habitat,
-                    personajePrefab,
                     vidaMax,
                     energiaMax,
                     puntosAtaque,
@@ -70,6 +69,7 @@ namespace Assets.scrips.Controllers.entidad
                     rangoAtaque
                     ).CrearEntidad()
                 );
+            Debug.Log(Personajes[0]);
         }
         #endregion
 

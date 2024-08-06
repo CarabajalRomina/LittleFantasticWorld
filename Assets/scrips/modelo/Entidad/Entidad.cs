@@ -12,15 +12,13 @@ namespace Assets.scrips.modelo.Entidad
         protected string Nombre { get; set; }
         protected IReino Reino { get; set; }
         protected IHabitat Habitats { get; set; }
-        protected Transform PersonajePrefab { get; set; }
 
 
-        protected Entidad(string nombre, IReino reino, IHabitat habitats, Transform personajePrefab)
+        protected Entidad(string nombre, IReino reino, IHabitat habitats)
         {
             NOMBRE = nombre;
             REINO = reino;
             HABITATS = habitats;
-            PERSONAJEPREFAB = personajePrefab;
         }
 
         #region PROPIEDADES
@@ -61,17 +59,6 @@ namespace Assets.scrips.modelo.Entidad
             }
         }
 
-        public Transform PERSONAJEPREFAB
-        {
-            get { return PersonajePrefab; }
-            set
-            {
-                if (value != null)
-                {
-                    PersonajePrefab = value;
-                }
-            }
-        }
 
         #endregion
 

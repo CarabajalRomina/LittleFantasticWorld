@@ -19,7 +19,7 @@ public class Personaje: Entidad, ICombate
 
 
     #region CONSTRUCTORES
-    public Personaje(string nombre, IReino reino, IHabitat habitats, int vidaMax, IDieta dieta, int puntosAtaque, int puntosDefensa,int energiaMax, int rangoAtaque, Transform personajePrefab) : base(nombre, reino, habitats, personajePrefab)
+    public Personaje(string nombre, IReino reino, IHabitat habitats, int vidaMax, IDieta dieta, int puntosAtaque, int puntosDefensa,int energiaMax, int rangoAtaque) : base(nombre, reino, habitats)
     {
         Id = ++GlobalCount;
         VIDAACTUAL = vidaMax;
@@ -31,6 +31,7 @@ public class Personaje: Entidad, ICombate
         ENERGIACTUAL = energiaMax;
         RANGOATAQUE = rangoAtaque;
     }
+
     #endregion
 
     #region PROPIEDADES

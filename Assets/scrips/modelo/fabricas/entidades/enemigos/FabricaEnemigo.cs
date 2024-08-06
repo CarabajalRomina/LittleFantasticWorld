@@ -32,7 +32,7 @@ namespace Assets.scrips.fabricas.entidades.enemigos
 
         public Entidad CrearEntidad()
         {
-            return new Enemigo(Nombre, Reino, Habitats, VidaMax, PuntosAtaque, PuntosDefensa, PersonajePrefab);
+            return new Enemigo(Nombre, Reino, Habitats, VidaMax, PuntosAtaque, PuntosDefensa);
         }
     }
 }

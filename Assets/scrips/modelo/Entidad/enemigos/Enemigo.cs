@@ -18,7 +18,7 @@ namespace Assets.scrips.modelo.Entidad
         private int PuntosDefensa { get; set; }
 
 
-        public Enemigo(string nombre, IReino reino, IHabitat habitats, int vidaMax, int puntosAtaque, int puntosDefensa, Transform personajePrefab) :base( nombre, reino, habitats, personajePrefab) 
+        public Enemigo(string nombre, IReino reino, IHabitat habitats, int vidaMax, int puntosAtaque, int puntosDefensa) :base( nombre, reino, habitats) 
         {
             Id = ++GlobalCount;
             VIDAACTUAL = vidaMax;

@@ -1,5 +1,6 @@
 ﻿using Assets.scrips.fabricas.habitats;
 using Assets.scrips.fabricas.habitats.fabricaHabitat;
+using Assets.scrips.modelo.Entidad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,10 @@ namespace Assets.scrips.Controllers.habitat
     public class HabitatController: Singleton<HabitatController>
     {
         FabricaHabitat FbTerrestre = new FabricaTerrestre();
-        List<IHabitat> Habitats{ get; set; }
-
+        List<IHabitat> Habitats;
         public HabitatController()
         {
-            Habitats = new List<IHabitat> { 
+            HABITATS = new List<IHabitat> {
                 FbTerrestre.CrearHabitat(),
                 new FabricaAcuatico().CrearHabitat(),
                 new FabricaAereo().CrearHabitat(),
@@ -25,6 +25,12 @@ namespace Assets.scrips.Controllers.habitat
                 GetHabitatAereoAcuaticoTerrestre()
             };
         }
+        public List<IHabitat> HABITATS
+        {
+            get { return Habitats; }
+            set { Habitats = value; }
+        }
+     
 
         public IHabitat GetHabitatAcuaticaTerrestre()
         {

@@ -22,12 +22,12 @@ namespace Assets.scrips.fabricas.entidades.personajes
         int PuntosDefensa;
         int RangoAtaque;
 
-        public FabricaPersonaje(string nombre, IReino reino, IDieta dieta, IHabitat habitats, Transform personajePrefab, int vidaMax, int energiaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
+        public FabricaPersonaje(string nombre, IReino reino, IDieta dieta, IHabitat habitats, int vidaMax, int energiaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
         {
             Nombre = nombre;
             Reino = reino;
             Habitats = habitats;
-            PersonajePrefab = personajePrefab;
+            //PersonajePrefab = personajePrefab;
             VidaMax = vidaMax;
             Dieta = dieta;
             EnergiaMax = energiaMax;
@@ -39,7 +39,7 @@ namespace Assets.scrips.fabricas.entidades.personajes
 
         public Entidad CrearEntidad()
         {
-            return new Personaje(Nombre, Reino, Habitats, VidaMax, Dieta, PuntosAtaque, PuntosDefensa, EnergiaMax,RangoAtaque, PersonajePrefab);
+            return new Personaje(Nombre, Reino, Habitats, VidaMax, Dieta, PuntosAtaque, PuntosDefensa, EnergiaMax,RangoAtaque);
         }
     }
 }
