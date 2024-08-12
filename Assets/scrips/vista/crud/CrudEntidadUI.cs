@@ -1,11 +1,12 @@
 using Assets.scrips.Controllers.entidad;
 using Assets.scrips.Controllers.habitat;
-using System;
+using Assets.scrips.modelo.Entidad;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
+
+
 
 public class CrudEntidadUI : MonoBehaviour
 {
@@ -32,6 +33,7 @@ public class CrudEntidadUI : MonoBehaviour
     public Button btnEliminar;
     public Button btnCancelar;
     #endregion
+    public Tabla tblEntidad;
 
     void Start()
     {
@@ -53,35 +55,47 @@ public class CrudEntidadUI : MonoBehaviour
     }
 
 
-    private void Cancelar() { }
-    private void BorrarForm() { }
+    private void Cancelar() 
+    {
+        BorrarForm();
+    }
+    private void BorrarForm() 
+    {
+        txtId.text = "";
+        txtNombre.text = "";
+        ddReino.value = -1;
+        ddHabitats.value = -1;
+        ddDieta.value = -1;
+        txtVidaMax.text = "";
+        txtEnergiaMax.text = "";
+        txtPuntosAtaque.text = "";
+        txtPuntosDefensa.text = "";
+        txtRangoDeAtaque.text = "";
+    }
     private void Crear()
     {
-        var g = int.Parse(txtEnergiaMax.text);
-        var gu = int.Parse(txtVidaMax.text);
-        var go = int.Parse(txtPuntosAtaque.text);
-        var gp = int.Parse(txtPuntosDefensa.text);
-        var pe = int.Parse(txtRangoDeAtaque.text);
-
         CntPersonaje.CrearEntidad(
             txtNombre.text,
-            CntPersonaje.REINOS[ddReino.value],
-            CntPersonaje.DIETAS[ddDieta.value],
-            CntHabitat.HABITATS[ddHabitats.value],
+            CntPersonaje.REINOS[ddReino.value - 1] ,
+            CntPersonaje.DIETAS[ddDieta.value -1],
+            CntHabitat.HABITATS[ddHabitats.value - 1],
             int.Parse(txtEnergiaMax.text),
             int.Parse(txtVidaMax.text),
             int.Parse(txtPuntosAtaque.text),
             int.Parse(txtPuntosDefensa.text),
             int.Parse(txtRangoDeAtaque.text)
             );
-        foreach(var personaje in CntPersonaje.PERSONAJES)
+        BorrarForm();
+        foreach (var personaje in CntPersonaje.PERSONAJES)
         {
             Debug.Log(personaje.ToString());
-        }    
+        }
+        tblEntidad.CargarTabla<Entidad>(CntPersonaje.PERSONAJES);
     }
+
     private void Eliminar() { }
     private void Editar() { }
-    private void btnNuevoClickeado()
+    public void btnNuevoClickeado()
     {
 
     }
@@ -94,6 +108,7 @@ public class CrudEntidadUI : MonoBehaviour
         CargarOpciones(CntHabitat.HABITATS, ddHabitats);
         CargarOpciones(CntPersonaje.REINOS, ddReino);
     }
+
     public void CargarOpciones<T>(List<T> opciones, TMP_Dropdown dropdown )
     {
         dropdown.ClearOptions();
@@ -106,6 +121,8 @@ public class CrudEntidadUI : MonoBehaviour
             dropdown.options.Add(new TMP_Dropdown.OptionData(opcion.ToString()));
         }
     }
+
+  
 }
 
 

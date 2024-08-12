@@ -2,9 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Reflection;
+using TMPro;
+using System;
+using Assets.scrips.interfaces;
 
 
-public abstract class Tabla<T> : MonoBehaviour
+public class Tabla : MonoBehaviour
 {
     public GameObject FilaPrefab;
     public Transform Contenedor;
@@ -12,8 +15,8 @@ public abstract class Tabla<T> : MonoBehaviour
     private List<KeyValuePair<GameObject, object>> FilasSeleccionadas = new List<KeyValuePair<GameObject, object>>();
     private int siguienteIndex = 0;
 
-
-    public void CargarTabla(List<T> objetos)
+ 
+    public void CargarTabla<T>(List<T> objetos) where T : IDescribible
     {
         ClearTable();
         foreach (var objeto in objetos)
@@ -22,28 +25,24 @@ public abstract class Tabla<T> : MonoBehaviour
         }
     }
 
-    public void AgregarFila(T objeto)
+    public void AgregarFila<T>(T objeto) where T : IDescribible
     {
         int nuevoIndex = siguienteIndex++;
 
         GameObject nuevaFila = Instantiate(FilaPrefab, Contenedor);
-        Text[] celdas = nuevaFila.GetComponentsInChildren<Text>();
+        TMP_Text[] celdas = nuevaFila.GetComponentsInChildren<TMP_Text>();
 
-        PropertyInfo[] propiedades = typeof(T).GetProperties();
+        string[] propiedades = objeto.ObtenerValoresInstancias();
 
         for (int i = 0; i < celdas.Length && i < propiedades.Length; i++)
         {
-            celdas[i].text = propiedades[i].GetValue(objeto)?.ToString();
+            celdas[i].text = propiedades[i];
         }
 
-
-        // Agregar la fila visual y los datos del animal al diccionario con su índice como clave
         Filas[nuevoIndex] = new KeyValuePair<GameObject, object>(nuevaFila, objeto);
 
-        // Agregar un listener al botón de la fila para manejar la selección
         Button botonFila = nuevaFila.GetComponentInChildren<Button>();
         botonFila.onClick.AddListener(() => FilaSeleccionada(nuevoIndex));
-
     }
 
     public void FilaSeleccionada(int index)
@@ -64,10 +63,12 @@ public abstract class Tabla<T> : MonoBehaviour
     {
         Filas.Clear();
         FilasSeleccionadas.Clear();
-        foreach (Transform child in Contenedor)
+
+        for(var i = 1; i < Contenedor.childCount; i++)
         {
-            Destroy(child.gameObject);
+           Destroy(Contenedor.GetChild(i).transform.gameObject);
         }
+
     }
 
     public void QuitarFila(int index)

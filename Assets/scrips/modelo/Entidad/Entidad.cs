@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.scrips.interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.scrips.modelo.Entidad
 {
-    public abstract class Entidad
+    public abstract class Entidad: IDescribible
     {
         protected string Nombre { get; set; }
         protected IReino Reino { get; set; }
@@ -69,5 +70,7 @@ namespace Assets.scrips.modelo.Entidad
                 $"Reino: {REINO}" +
                 $"Habitats: {HABITATS}";
         }
+
+        public abstract string[] ObtenerValoresInstancias();
     }
 }

@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Personaje: Entidad, ICombate
+public class Personaje : Entidad, ICombate
 {
     int Id;
     static int GlobalCount = 0;
@@ -19,7 +19,7 @@ public class Personaje: Entidad, ICombate
 
 
     #region CONSTRUCTORES
-    public Personaje(string nombre, IReino reino, IHabitat habitats, int vidaMax, IDieta dieta, int puntosAtaque, int puntosDefensa,int energiaMax, int rangoAtaque) : base(nombre, reino, habitats)
+    public Personaje(string nombre, IReino reino, IHabitat habitats, int vidaMax, IDieta dieta, int puntosAtaque, int puntosDefensa, int energiaMax, int rangoAtaque) : base(nombre, reino, habitats)
     {
         Id = ++GlobalCount;
         VIDAACTUAL = vidaMax;
@@ -39,13 +39,24 @@ public class Personaje: Entidad, ICombate
     {
         get { return Id; }
     }
+    public IDieta DIETA
+    {
+        get { return Dieta; }
+        set
+        {
+            if (value != null)
+            {
+                Dieta = value;
+            }
+        }
+    }
 
     public int VIDAACTUAL
     {
         get { return VidaActual; }
         set
         {
-            if (value >= 0 && value <= VidaMax)
+            if (value >= 0 || value <= VidaMax)
             {
                 VidaActual = value;
             }
@@ -87,24 +98,13 @@ public class Personaje: Entidad, ICombate
             }
         }
     }
-    public IDieta DIETA
-    {
-        get { return Dieta; }
-        set
-        {
-            if (value != null)
-            {
-                Dieta = value;
-            }
-        }
-    }
 
     public int ENERGIACTUAL
     {
         get { return EnergiaActual; }
         set
         {
-            if (value >= 0 && value <= EnergiaMax)
+            if (value >= 0 || value <= EnergiaMax)
             {
                 EnergiaActual = value;
             }
@@ -131,6 +131,10 @@ public class Personaje: Entidad, ICombate
             if (value >= 0 && value <= 1)
             {
                 RangoAtaque = value;
+            }
+            else
+            {
+                RangoAtaque = 1;
             }
         }
     }
@@ -228,6 +232,21 @@ public class Personaje: Entidad, ICombate
     {
         ActualizarEnergia(ENERGIAMAX);
     }
-   
+
+    public override string[] ObtenerValoresInstancias()
+    {
+        return new string[] {
+            ID.ToString(),
+            NOMBRE,
+            REINO.ToString(),
+            HABITATS.ToString(),
+            DIETA.ToString(),
+            ENERGIAMAX.ToString(),
+            VIDAMAX.ToString(),
+            PUNTOSATAQUE.ToString(),
+            PUNTOSDEFENSA.ToString(),
+            RangoAtaque.ToString()
+            };
+    }
 }
 

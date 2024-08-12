@@ -98,6 +98,19 @@ namespace Assets.scrips.modelo.Entidad
             return PUNTOSDEFENSA + dado;
         }
 
+        public override string[] ObtenerValoresInstancias()
+        {
+            return new string[] {
+            ID.ToString(),
+            NOMBRE,
+            REINO.ToString(),
+            HABITATS.ToString(),
+            VIDAMAX.ToString(),
+            PUNTOSATAQUE.ToString(),
+            PUNTOSDEFENSA.ToString(),
+            };
+        }
+
         #endregion
 
     }

@@ -69,7 +69,6 @@ namespace Assets.scrips.Controllers.entidad
                     rangoAtaque
                     ).CrearEntidad()
                 );
-            Debug.Log(Personajes[0]);
         }
         #endregion
 
