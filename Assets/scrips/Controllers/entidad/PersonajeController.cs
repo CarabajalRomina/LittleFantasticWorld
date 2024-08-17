@@ -14,6 +14,7 @@ namespace Assets.scrips.Controllers.entidad
 {
     public class PersonajeController : Singleton<PersonajeController>
     {
+        HashSet<string> NombresUtilizados = new HashSet<string>();
         HabitatController cntHabitat = HabitatController.GetInstancia;
         List<Entidad> Personajes = new List<Entidad>();
         List<IReino> Reinos = new List<IReino> { 
@@ -51,6 +52,11 @@ namespace Assets.scrips.Controllers.entidad
             set { Personajes = value; }
         }
 
+        public HashSet<string> NOMBRESUTILIZADOS
+        {
+            get { return NombresUtilizados; }
+            set { NombresUtilizados = value; }
+        }
         #endregion
 
         #region CRUD
@@ -69,6 +75,7 @@ namespace Assets.scrips.Controllers.entidad
                     rangoAtaque
                     ).CrearEntidad()
                 );
+            NombresUtilizados.Add(nombre);
         }
         #endregion
 

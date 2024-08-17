@@ -23,7 +23,6 @@ namespace Assets.scrips.modelo.Entidad
         }
 
         #region PROPIEDADES
-       
         public string NOMBRE
         {
             get { return Nombre; }
@@ -59,10 +58,7 @@ namespace Assets.scrips.modelo.Entidad
                 }
             }
         }
-
-
         #endregion
-
 
         public override string ToString()
         {
@@ -70,7 +66,7 @@ namespace Assets.scrips.modelo.Entidad
                 $"Reino: {REINO}" +
                 $"Habitats: {HABITATS}";
         }
-
         public abstract string[] ObtenerValoresInstancias();
+
     }
 }

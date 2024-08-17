@@ -39,6 +39,7 @@ public class Personaje : Entidad, ICombate
     {
         get { return Id; }
     }
+
     public IDieta DIETA
     {
         get { return Dieta; }

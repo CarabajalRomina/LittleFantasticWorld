@@ -2,9 +2,12 @@ using Assets.scrips.Controllers.entidad;
 using Assets.scrips.Controllers.habitat;
 using Assets.scrips.modelo.Entidad;
 using System.Collections.Generic;
+using System.Reflection.Emit;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Assets.scrips;
+using System;
 
 
 
@@ -24,42 +27,77 @@ public class CrudEntidadUI : MonoBehaviour
     public TMP_InputField txtPuntosAtaque;
     public TMP_InputField txtPuntosDefensa;
     public TMP_InputField txtRangoDeAtaque;
+    public TextMeshProUGUI lblAvisoNombre;
+    public TextMeshProUGUI lblAviso;
+
     #endregion
-    #region Botones
-    public Button btnNuevo;
-    public Button btnBorrar;
-    public Button btnCrear;
-    public Button btnEditar;
-    public Button btnEliminar;
-    public Button btnCancelar;
-    #endregion
+
     public Tabla tblEntidad;
+    public GameObject pnlForm;
+    public GameObject pnlBtnCrud;
 
     void Start()
     {
         CargarDropDowns();
-        AsignarListenerBtn();
+        DeshabilitarOHabilitarElementosPanel(pnlForm);
     }
-
-    void AsignarListenerBtn()
+   
+    public void Crear()
     {
-        if (btnNuevo != null && btnEditar != null && btnEliminar != null && btnCrear != null && btnBorrar != null && btnCancelar != null)
+        if (NoHayCamposVacios())
         {
-            btnNuevo.onClick.AddListener(btnNuevoClickeado);
-            btnEditar.onClick.AddListener(Editar);
-            btnEliminar.onClick.AddListener(Eliminar);
-            btnCrear.onClick.AddListener(Crear);
-            btnBorrar.onClick.AddListener(BorrarForm);
-            btnCancelar.onClick.AddListener(Cancelar);
+            lblAviso.text = "";
+            if (!CntPersonaje.NOMBRESUTILIZADOS.Contains(ValidacionForm.NormalizarCadena(txtNombre.text)))
+            {
+                lblAvisoNombre.text = "";
+                CntPersonaje.CrearEntidad(
+                    ValidacionForm.NormalizarCadena(txtNombre.text),
+                    CntPersonaje.REINOS[ddReino.value - 1],
+                    CntPersonaje.DIETAS[ddDieta.value - 1],
+                    CntHabitat.HABITATS[ddHabitats.value - 1],
+                    int.Parse(txtEnergiaMax.text),
+                    int.Parse(txtVidaMax.text),
+                    int.Parse(txtPuntosAtaque.text),
+                    int.Parse(txtPuntosDefensa.text),
+                    int.Parse(txtRangoDeAtaque.text)
+                    );
+                foreach (var personaje in CntPersonaje.PERSONAJES)
+                {
+                    Debug.Log(personaje.ToString());
+                }
+
+                tblEntidad.CargarTabla<Entidad>(CntPersonaje.PERSONAJES);
+                BorrarForm();
+                DeshabilitarOHabilitarElementosPanel(pnlForm);
+                DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
+            }
+            else { lblAvisoNombre.text = "Ya existe ese personaje, elija otro"; }
+        
+        }
+        else
+        {
+            lblAviso.text = "Seleccione o complete todos los campos";
+
         }
     }
-
-
-    private void Cancelar() 
+       
+    public void Eliminar() 
+    {
+ 
+    }
+    public void Editar() { }
+    public void btnNuevoClickeado()
+    {
+        DeshabilitarOHabilitarElementosPanel(pnlForm);
+        DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
+    }
+    public void Cancelar()
     {
         BorrarForm();
+        DeshabilitarOHabilitarElementosPanel(pnlForm);
+        DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
     }
-    private void BorrarForm() 
+    public void BorrarForm()
     {
         txtId.text = "";
         txtNombre.text = "";
@@ -72,43 +110,12 @@ public class CrudEntidadUI : MonoBehaviour
         txtPuntosDefensa.text = "";
         txtRangoDeAtaque.text = "";
     }
-    private void Crear()
-    {
-        CntPersonaje.CrearEntidad(
-            txtNombre.text,
-            CntPersonaje.REINOS[ddReino.value - 1] ,
-            CntPersonaje.DIETAS[ddDieta.value -1],
-            CntHabitat.HABITATS[ddHabitats.value - 1],
-            int.Parse(txtEnergiaMax.text),
-            int.Parse(txtVidaMax.text),
-            int.Parse(txtPuntosAtaque.text),
-            int.Parse(txtPuntosDefensa.text),
-            int.Parse(txtRangoDeAtaque.text)
-            );
-        BorrarForm();
-        foreach (var personaje in CntPersonaje.PERSONAJES)
-        {
-            Debug.Log(personaje.ToString());
-        }
-        tblEntidad.CargarTabla<Entidad>(CntPersonaje.PERSONAJES);
-    }
-
-    private void Eliminar() { }
-    private void Editar() { }
-    public void btnNuevoClickeado()
-    {
-
-    }
-
-
-
     private void CargarDropDowns()
     {
         CargarOpciones(CntPersonaje.DIETAS, ddDieta);
         CargarOpciones(CntHabitat.HABITATS, ddHabitats);
         CargarOpciones(CntPersonaje.REINOS, ddReino);
     }
-
     public void CargarOpciones<T>(List<T> opciones, TMP_Dropdown dropdown )
     {
         dropdown.ClearOptions();
@@ -121,8 +128,26 @@ public class CrudEntidadUI : MonoBehaviour
             dropdown.options.Add(new TMP_Dropdown.OptionData(opcion.ToString()));
         }
     }
+    void DeshabilitarOHabilitarElementosPanel(GameObject panel)
+    {
+        foreach (var selectable in panel.GetComponentsInChildren<Selectable>())
+        {
+            selectable.interactable = !selectable.interactable;
+        }
+    }
+    private bool NoHayCamposVacios()
+    {
+        TMP_InputField[] inputFields = pnlForm.GetComponentsInChildren<TMP_InputField>();
 
-  
+        for(var i = 1;i< inputFields.Length; i ++)
+        {
+            if (ValidacionForm.EstaVacioElInput(inputFields[i].text))
+            {
+                return false;
+            }             
+        }
+        return true;
+    }
 }
 
 
