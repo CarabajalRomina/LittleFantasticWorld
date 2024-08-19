@@ -2,12 +2,10 @@ using Assets.scrips.Controllers.entidad;
 using Assets.scrips.Controllers.habitat;
 using Assets.scrips.modelo.Entidad;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Assets.scrips;
-using System;
 
 
 
@@ -65,20 +63,15 @@ public class CrudEntidadUI : MonoBehaviour
                 {
                     Debug.Log(personaje.ToString());
                 }
-
                 tblEntidad.CargarTabla<Entidad>(CntPersonaje.PERSONAJES);
                 BorrarForm();
                 DeshabilitarOHabilitarElementosPanel(pnlForm);
                 DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
             }
-            else { lblAvisoNombre.text = "Ya existe ese personaje, elija otro"; }
+            else { lblAvisoNombre.text = "Ya existe ese personaje, elija otro";}
         
         }
-        else
-        {
-            lblAviso.text = "Seleccione o complete todos los campos";
-
-        }
+        else{ lblAviso.text = "Seleccione o complete todos los campos";}
     }
        
     public void Eliminar() 
@@ -116,7 +109,7 @@ public class CrudEntidadUI : MonoBehaviour
         CargarOpciones(CntHabitat.HABITATS, ddHabitats);
         CargarOpciones(CntPersonaje.REINOS, ddReino);
     }
-    public void CargarOpciones<T>(List<T> opciones, TMP_Dropdown dropdown )
+    private void CargarOpciones<T>(List<T> opciones, TMP_Dropdown dropdown )
     {
         dropdown.ClearOptions();
 
@@ -128,7 +121,7 @@ public class CrudEntidadUI : MonoBehaviour
             dropdown.options.Add(new TMP_Dropdown.OptionData(opcion.ToString()));
         }
     }
-    void DeshabilitarOHabilitarElementosPanel(GameObject panel)
+    private void DeshabilitarOHabilitarElementosPanel(GameObject panel)
     {
         foreach (var selectable in panel.GetComponentsInChildren<Selectable>())
         {

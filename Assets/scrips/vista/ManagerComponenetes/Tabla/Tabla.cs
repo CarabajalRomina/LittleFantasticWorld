@@ -5,14 +5,16 @@ using System.Reflection;
 using TMPro;
 using System;
 using Assets.scrips.interfaces;
+using UnityEditor.EditorTools;
 
 
 public class Tabla : MonoBehaviour
 {
     public GameObject FilaPrefab;
     public Transform Contenedor;
-    private Dictionary<int, KeyValuePair<GameObject, object>> Filas = new Dictionary<int, KeyValuePair<GameObject, object>>();
-    private List<KeyValuePair<GameObject, object>> FilasSeleccionadas = new List<KeyValuePair<GameObject, object>>();
+
+    public List<Fila> Filas = new List<Fila>();
+    public HashSet<Fila> FilasSeleccionadas = new HashSet<Fila>();
     private int siguienteIndex = 0;
 
  
@@ -38,24 +40,24 @@ public class Tabla : MonoBehaviour
         {
             celdas[i].text = propiedades[i];
         }
-
-        Filas[nuevoIndex] = new KeyValuePair<GameObject, object>(nuevaFila, objeto);
+        
+        Filas.Add( new Fila(nuevoIndex,nuevaFila,objeto));
 
         Button botonFila = nuevaFila.GetComponentInChildren<Button>();
-        botonFila.onClick.AddListener(() => FilaSeleccionada(nuevoIndex));
+        botonFila.onClick.AddListener(() => FilaSeleccionada(Filas[nuevoIndex]));
     }
 
-    public void FilaSeleccionada(int index)
+    public void FilaSeleccionada(Fila fila)
     {
-        if (Filas.ContainsKey(index))
+        if (FilasSeleccionadas.Contains(fila))
         {
-            FilasSeleccionadas.Add(Filas[index]);   
+            FilasSeleccionadas.Add(fila);   
         }
         else
         {
-            if (FilasSeleccionadas.Contains(Filas[index]))
+            if (FilasSeleccionadas.Contains(fila))
             {
-                FilasSeleccionadas.Remove(Filas[index]);
+                FilasSeleccionadas.Remove(fila);
             }
         }
     }
@@ -71,24 +73,22 @@ public class Tabla : MonoBehaviour
 
     }
 
-    public void QuitarFila(int index)
+    public void QuitarFila(Fila fila)
     {
-        if (Filas.ContainsKey(index))
+        if (Filas.Contains(fila))
         {
-            KeyValuePair<GameObject, object> filaSeleccionada = Filas[index];
+            Destroy(fila.FILAPREFAB);
 
-            Destroy(filaSeleccionada.Key);
+            Filas.Remove(fila);
 
-            Filas.Remove(index);
-
-            if (FilasSeleccionadas.Contains(Filas[index]))
+            if (FilasSeleccionadas.Contains(fila))
             {
-                FilasSeleccionadas.Remove(Filas[index]);
+                FilasSeleccionadas.Remove(fila);
             }
         }
         else
         {
-            Debug.LogWarning("No se encontró la fila con el índice: " + index);
+            Debug.LogWarning("No se encontró la fila con el índice: " + fila.INDEX);
         }
     }
 
