@@ -22,6 +22,7 @@ namespace Assets.scrips.fabricas.entidades.personajes
         int PuntosDefensa;
         int RangoAtaque;
 
+
         public FabricaPersonaje(string nombre, IReino reino, IDieta dieta, IHabitat habitats, int vidaMax, int energiaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
         {
             Nombre = nombre;
@@ -37,9 +38,20 @@ namespace Assets.scrips.fabricas.entidades.personajes
         }
 
 
-        public Entidad CrearEntidad()
+        public bool CrearEntidad(out Entidad personaje)
         {
-            return new Personaje(Nombre, Reino, Habitats, VidaMax, Dieta, PuntosAtaque, PuntosDefensa, EnergiaMax,RangoAtaque);
+            personaje = null;
+            try
+            {
+                personaje = new Personaje(Nombre, Reino, Habitats, VidaMax, Dieta, PuntosAtaque, PuntosDefensa, EnergiaMax, RangoAtaque);
+                return true;
+
+            }catch (Exception ex)
+            {
+                Debug.LogError("Error al crear el personaje: " + ex.Message);
+                return false;
+            }
         }
     }
 }
+

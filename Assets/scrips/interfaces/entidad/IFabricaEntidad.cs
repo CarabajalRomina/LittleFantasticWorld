@@ -9,6 +9,6 @@ namespace Assets.scrips.interfaces.fabricas.entidad
 {
     public interface IFabricaEntidad
     {
-        Entidad CrearEntidad();
+        bool CrearEntidad(out Entidad personaje);
     }
 }

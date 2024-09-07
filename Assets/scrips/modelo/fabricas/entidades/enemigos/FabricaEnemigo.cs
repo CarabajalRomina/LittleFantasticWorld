@@ -2,9 +2,6 @@
 using Assets.scrips.modelo.Entidad;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.scrips.fabricas.entidades.enemigos
@@ -18,21 +15,33 @@ namespace Assets.scrips.fabricas.entidades.enemigos
         int VidaMax;
         int PuntosAtaque;
         int PuntosDefensa;
+        HashSet<string> NombresUtilizados = new HashSet<string>();
 
-        public FabricaEnemigo(string nombre, IReino reino, IHabitat habitats, Transform personajePrefab, int vidaMax, int puntosAtaque, int puntosDefensa)
+
+        public FabricaEnemigo(string nombre, IReino reino, IHabitat habitats, int vidaMax, int energiaMax, int puntosAtaque, int puntosDefensa)
         {
             Nombre = nombre;
             Reino = reino;
             Habitats = habitats;
-            PersonajePrefab = personajePrefab;
+            //PersonajePrefab = personajePrefab;
             VidaMax = vidaMax;
             PuntosAtaque = puntosAtaque;
             PuntosDefensa = puntosDefensa;
         }
 
-        public Entidad CrearEntidad()
+        public bool CrearEntidad(out Entidad entidad )
         {
-            return new Enemigo(Nombre, Reino, Habitats, VidaMax, PuntosAtaque, PuntosDefensa);
+            entidad = null;
+            try
+            {
+                entidad = new Enemigo(Nombre, Reino, Habitats, VidaMax, PuntosAtaque, PuntosDefensa);
+                return true;
+            }catch (Exception ex)
+            {
+                Debug.LogError("Error al crear el personaje: " + ex.Message);
+                return false;
+            }
         }
     }
 }
+

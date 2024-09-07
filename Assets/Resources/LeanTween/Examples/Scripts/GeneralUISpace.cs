@@ -41,16 +41,16 @@ public class GeneralUISpace : MonoBehaviour {
 		// Flash text to purple and back
 		LeanTween.textColor( mainTitleText, new Color(133f/255f,145f/255f,223f/255f), 0.6f).setEase(LeanTweenType.easeOutQuad).setDelay(0.6f).setLoopPingPong().setRepeat(-1);
 
-		// Fade button in
+		// Fade Btn in
 		LeanTween.textAlpha(mainButton2, 1f, 2f ).setFrom(0f).setDelay(0f).setEase(LeanTweenType.easeOutQuad);
 		LeanTween.alpha(mainButton2, 1f, 2f ).setFrom(0f).setDelay(0f).setEase(LeanTweenType.easeOutQuad);
 
-		// Pop size of button
+		// Pop size of Btn
 		LeanTween.size(mainButton1, mainButton1.sizeDelta * 1.1f, 0.5f).setDelay(3f).setEaseInOutCirc().setRepeat(6).setLoopPingPong();
 
 
 		// *********** Pause Button **********
-		// Drop pause button in
+		// Drop pause Btn in
 		pauseWindow.anchoredPosition3D += new Vector3(0f,200f,0f);
 		LeanTween.moveY( pauseWindow, pauseWindow.anchoredPosition3D.y + -200f, 0.6f).setEase(LeanTweenType.easeOutSine).setDelay(0.6f);
 
