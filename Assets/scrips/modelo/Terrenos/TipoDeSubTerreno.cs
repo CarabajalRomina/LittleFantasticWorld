@@ -1,3 +1,4 @@
+using Assets.scrips.interfaces;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
@@ -9,7 +10,7 @@ public class TipoDeSubTerreno : ScriptableObject
 {
     [SerializeField] private int Id;
     [field:SerializeField] private string Nombre { get; set; }
-    [field:SerializeField] private MonoBehaviour TipoTerreno { get; set; }
+    [field:SerializeField] private ITipoTerreno TipoTerreno { get; set; }
     [field: SerializeField] private Transform Prefab { get; set; }
 
     [field: SerializeField] private Color color { get; set; }
@@ -27,7 +28,7 @@ public class TipoDeSubTerreno : ScriptableObject
         get { return Nombre; }
     }
 
-    public MonoBehaviour TIPOTERRENO
+    public ITipoTerreno TIPOTERRENO
     {
         get { return TipoTerreno; }
     }

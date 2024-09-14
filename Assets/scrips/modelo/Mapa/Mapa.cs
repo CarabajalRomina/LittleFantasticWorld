@@ -1,3 +1,6 @@
+using Assets.scrips.Controllers.entidad;
+using Assets.scrips.modelo.Habitats;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -28,9 +31,7 @@ public class Mapa : MonoBehaviour
 
     public event System.Action CeldasInstanciasGeneradas;
 
-
-
-  
+    public PersonajeController cntPersonajes;
 
     #region PROPIEDADES
 
@@ -128,11 +129,12 @@ public class Mapa : MonoBehaviour
     }
     #endregion
 
-
     private void Awake()
     {
+        cntPersonajes = PersonajeController.Instancia;
         OrigenGrid = transform.position;
         generadorMapa = FindObjectOfType<GeneradorMapa>();
+
     }
 
     private void OnEnable()
@@ -142,7 +144,9 @@ public class Mapa : MonoBehaviour
         if (generadorMapa != null)
         {   
             generadorMapa.AlGenerarseMapaDeTerreno += EstablecerTipoDeTerreno;
-        }   
+        }
+        var perso = cntPersonajes.PERSONAJES[0];
+        cntPersonajes.InstanciarPersonaje((Personaje)perso, perso.COORDAXIAL + this.transform.position);
     }
 
     private void ProcesoDeCargaMapa( float progreso)
@@ -312,8 +316,15 @@ public class Mapa : MonoBehaviour
         }
     }
 
- 
+   public Terreno BuscarTerrenoPorCoordenadasOffset(Vector2 coordenadas)
+    {
+        return Terrenos.Find(c => c.COORDENADASOFFSET == coordenadas);
+    }
 
+    public Terreno BuscarTerrenoPorCoordenadasAxial(Vector2 coordenadas)
+    {
+        return Terrenos.Find(c => c.COORDENADASAXIAL == coordenadas);
+    }
 }
 
 public enum OrientacionHex

@@ -7,7 +7,6 @@ using static UnityEngine.Tilemaps.Tilemap;
 
 public static class MetricasHex
 {
-
     public static float RadioExterior(float medidaLado)
     {
         return medidaLado;
@@ -28,7 +27,6 @@ public static class MetricasHex
         return HexEsquinas;
     }
 
-
     public static Vector3 EsquinaHex(float medidaLado, OrientacionHex orientacionHex, int index)
     {
         float angulo = 60f * index;
@@ -43,7 +41,6 @@ public static class MetricasHex
             );
         return esquinaHex;
     }
-
 
     public static Vector3 PuntoCentralHex(float medidaLado, int x, int z, OrientacionHex orientacion)
     {
@@ -63,7 +60,6 @@ public static class MetricasHex
         }
         return puntoCentral;
     }
-
 
     // Método para calcular coordenadas cúbicas a partir de coordenadas offset
     public static Vector3 CalcularCoordenadasCubicasAPartirDeCoordOffSet(int x, int z, OrientacionHex orientation)
@@ -153,6 +149,50 @@ public static class MetricasHex
         return new Vector2(q, r);
     }
 
+    /// <summary>
+    /// Convierte las coordenadas axiales a coordenadas offset
+    /// </summary>
+    /// <param name="q"></param>
+    /// <param name="r"></param>
+    /// <param name="orientacion"></param>
+    /// <returns></returns>
+    public static Vector2 CoordAxialACoordOffset(int q, int r, OrientacionHex orientacion)
+    {
+        if (orientacion == OrientacionHex.PointyTop)
+        {
+            return CoordAxialACoordOffsetPointy(q, r);
+        }
+        else
+        {
+            return CoordAxialACoordOffsetFlat(q, r);
+        }
+    }
+
+    /// <summary>
+    /// Convierte las coordenadas axiales a coordenadas offset para hexágonos con orientación en punta (Pointy-Top)
+    /// </summary>
+    /// <param name="q"></param>
+    /// <param name="r"></param>
+    /// <returns></returns>
+    public static Vector2 CoordAxialACoordOffsetPointy(int q, int r)
+    {
+        int col = q;
+        int fila = r + (q - (q & 1)) / 2;
+        return new Vector2(col, fila);
+    }
+
+    /// <summary>
+    /// Convierte las coordenadas axiales a coordenadas offset para hexágonos con orientación plana (Flat-Top)
+    /// </summary>
+    /// <param name="q"></param>
+    /// <param name="r"></param>
+    /// <returns></returns>
+    public static Vector2 CoordAxialACoordOffsetFlat(int q, int r)
+    {
+        int col = q + (r - (r & 1)) / 2;
+        int fila = r;
+        return new Vector2(col, fila);
+    }
     public static Vector3 CoordOffsetACoordCubo(int fila, int col, OrientacionHex orientacion)
     {
         if (orientacion == OrientacionHex.PointyTop)
@@ -201,7 +241,6 @@ public static class MetricasHex
             return CoordCuboACoordOffsetFlat(x, y, z);
         }
     }
-
 
     public static Vector2 CoordDeCuboACoorOffset(Vector3 coordOffset, OrientacionHex orientacion)
     {
@@ -305,7 +344,6 @@ public static class MetricasHex
         return RedondearCoordAxial(flatCoordenadas);
     }
 
-
     public static Vector2 CoordenadaAOffset(float x, float z, float medidaHex, OrientacionHex orientacion)
     {
         return CoordDeCuboACoorOffset(CoordAxialACoordCubo(DeCoordenadasACoordAxial(x, z, medidaHex, orientacion)), orientacion);
@@ -330,18 +368,23 @@ public static class MetricasHex
 
         if (columna > 0 )
         {
-            desplazamientoX =(columna * medidaHex * (0.87f / (medidaHex * columna))) * columna;
+            //desplazamientoX =(columna * medidaHex * (0.87f / (medidaHex * columna))) * columna;
+            desplazamientoX = (columna * medidaHex * (2.61f / (medidaHex * columna))) * columna;
+
         }
 
-        if(fila > 0)
+        if (fila > 0)
         {
-            desplazamientoZ = (fila * medidaHex * (1.0041f / (medidaHex * fila))) * fila;
+            //desplazamientoZ = (fila * medidaHex * (1.0041f / (medidaHex * fila))) * fila;
+            desplazamientoZ = (fila * medidaHex * (3.0123f / (medidaHex * fila))) * fila;
 
         }
 
         if (columna % 2 == 1)
         {
-            desplazamientoZ += medidaHex * 0.5f * Mathf.Sqrt(3.0f);
+            //desplazamientoZ += medidaHex * 0.5f * Mathf.Sqrt(3.0f);
+
+            desplazamientoZ += medidaHex * 1.5f * Mathf.Sqrt(3.0f);
         }
 
         return new Vector3(desplazamientoX, 0f, desplazamientoZ);
@@ -354,12 +397,15 @@ public static class MetricasHex
         float desplazamientoZ = 0;
         if(columna > 0)
         {
-            desplazamientoX = (columna * medidaHex * (1.0041f / (medidaHex * columna))) * columna;
+            //desplazamientoX = (columna * medidaHex * (1.0041f / (medidaHex * columna))) * columna;
+            desplazamientoX = (columna * medidaHex * (3.0123f / (medidaHex * columna))) * columna;
+
         }
 
         if (fila > 0)
         {
-            desplazamientoZ = (fila * medidaHex * (0.87f / (medidaHex * fila))) * fila;
+            //desplazamientoZ = (fila * medidaHex * (0.87f / (medidaHex * fila))) * fila;
+            desplazamientoZ = (fila * medidaHex * (2.61f / (medidaHex * fila))) * fila;
         }
 
         if (fila % 2 == 1)
@@ -373,8 +419,7 @@ public static class MetricasHex
     public static List<Vector2> ObtenerHexAdyacentes(Vector2 coordenadasAxial)
     {
         List<Vector2> HexAdyacentes = new List<Vector2>();
-
-       
+  
         HexAdyacentes.Add(new Vector2(coordenadasAxial.x + 1, coordenadasAxial.y)); //der 1,0
         HexAdyacentes.Add(new Vector2(coordenadasAxial.x + 1, coordenadasAxial.y - 1)); // arriba a la der
         HexAdyacentes.Add(new Vector2(coordenadasAxial.x, coordenadasAxial.y - 1)); // arriba a la izq
@@ -384,8 +429,6 @@ public static class MetricasHex
           
         return HexAdyacentes;
     }
-
-
 
     private static List<Vector2> ObtenerHexAdyacentesPointyTop(Vector2 coordenadasAxial, List<Vector2> HexAdyacentes)
     {
@@ -408,7 +451,4 @@ public static class MetricasHex
         HexAdyacentes.Add(new Vector2(coordenadasAxial.x, coordenadasAxial.y - 1)); //arriba
         return HexAdyacentes;
     }
-    //===============================================================================
-
-
 }

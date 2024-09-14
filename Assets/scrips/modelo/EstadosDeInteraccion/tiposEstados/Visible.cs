@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 public class Visible : IEstadoHexEstrategia
@@ -37,7 +39,7 @@ public class Visible : IEstadoHexEstrategia
 
     public IEstadoHexEstrategia OnMouseExit()
     {
-        throw new System.NotImplementedException();
+        return new Visible();
     }
 
     public IEstadoHexEstrategia Seleccionar()
@@ -47,6 +49,6 @@ public class Visible : IEstadoHexEstrategia
 
     public IEstadoHexEstrategia Deseleccionar()
     {
-        throw new System.NotImplementedException();
+        return new Visible();
     }
 }

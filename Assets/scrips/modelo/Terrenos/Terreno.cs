@@ -15,8 +15,6 @@ public class Terreno
     [SerializeField] private Transform TransfTerreno;
     [SerializeField] private IEstadoHexEstrategia Estado;
 
-
-
     #region PROPIEDADES
 
     public Mapa GRILLAHEX
@@ -68,7 +66,6 @@ public class Terreno
     }
     #endregion
 
-  
     public void SetCoordenadas(Vector2 vector, OrientacionHex orientacion)
     {
         COORDENADASOFFSET = vector;
@@ -158,9 +155,6 @@ public class Terreno
     {
         Estado.ActivarEstado(this.TRANSFTERRENO);
     }
-
- 
-
 
 }
 

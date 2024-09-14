@@ -17,16 +17,18 @@ public class Resaltado : IEstadoHexEstrategia
 
     public void ActivarEstado(Transform prefaHex)
     {
-        LeanTween.scale(prefaHex.gameObject, Vector3.one * 1.2f, 0.2f).
-            setEase(LeanTweenType.easeOutBack);
-        LeanTween.moveLocalY(prefaHex.gameObject, .2f, 0.2f).setEase(
+        //LeanTween.scale(prefaHex.gameObject, Vector3.one * 1.2f, 0.2f).
+        //setEase(LeanTweenType.easeOutBack);
+        LeanTween.scale(prefaHex.gameObject, Vector3.one * 3.6f, 0.2f).
+       setEase(LeanTweenType.easeOutBack);
+        LeanTween.moveLocalY(prefaHex.gameObject, .5f, 0.2f).setEase(
             LeanTweenType.linear);
        // ControllerCamara.Instantiate.SeleccionarAccion += terreno.OnSeleccionar;
     }
 
     public void DesactivarEstado(Transform prefaHex)
     {
-        LeanTween.scale(prefaHex.gameObject, Vector3.one, 0.2f).setEase(
+        LeanTween.scale(prefaHex.gameObject, new Vector3(3,3,3), 0.2f).setEase(
             LeanTweenType.easeOutBack);
         LeanTween.moveLocalY(prefaHex.gameObject, 0f, 0.2f).setEase(
             LeanTweenType.easeOutBack);

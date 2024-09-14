@@ -1,4 +1,5 @@
 ﻿using Assets.scrips.interfaces;
+using Assets.scrips.interfaces.Posicionable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,11 +9,16 @@ using UnityEngine;
 
 namespace Assets.scrips.modelo.Entidad
 {
-    public abstract class Entidad: IDescribible
+    public abstract class Entidad: IDescribible, IPosicionable
     {
-        protected string Nombre { get; set; }
-        protected IReino Reino { get; set; }
-        protected IHabitat Habitats { get; set; }
+        protected string Nombre;
+        protected IReino Reino;
+        protected IHabitat Habitats; 
+
+        protected Vector3 CoordenadaAxial = new Vector3(0, 0.5f, 0);
+
+        protected GameObject PersonajePrefab;
+        protected GameObject InstanciaPersonaje;
 
 
         protected Entidad(string nombre, IReino reino, IHabitat habitats)
@@ -58,6 +64,58 @@ namespace Assets.scrips.modelo.Entidad
                 }
             }
         }
+
+        public Vector3 COORDAXIAL
+        {
+            get { return CoordenadaAxial; }
+            set
+            {
+                if (value != null)
+                {
+                    CoordenadaAxial = value;
+                }
+                else
+                {
+                    Debug.Log("el valor es null");
+                    CoordenadaAxial = new Vector3(0, 0, 0);
+                }
+            }
+        }
+
+        public GameObject PERSONAJEPREFAB
+        {
+            get { return PersonajePrefab; }
+            set
+            {
+                if (value != null)
+                {
+                    PersonajePrefab = value;
+                }
+                else
+                {
+                    Debug.Log("el valor es null");
+                    PersonajePrefab = null;
+                }
+            }
+        }
+
+        public GameObject INSTANCIAPERSONAJE
+        {
+            get { return PersonajePrefab; }
+            set
+            {
+                if (value != null)
+                {
+                    InstanciaPersonaje = value;
+                }
+                else
+                {
+                    Debug.Log("el valor es null");
+                    InstanciaPersonaje = null;
+                }
+            }
+        }
+
         #endregion
 
         public override string ToString()
@@ -67,6 +125,9 @@ namespace Assets.scrips.modelo.Entidad
                 $"Habitats: {HABITATS}";
         }
         public abstract string[] ObtenerValoresInstancias();
-
+        public void EstablecerPosicion(Vector2 coordenadaInicial)
+        {
+            CoordenadaAxial = coordenadaInicial;
+        }
     }
 }

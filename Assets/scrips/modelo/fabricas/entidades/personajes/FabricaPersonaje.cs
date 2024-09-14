@@ -14,7 +14,7 @@ namespace Assets.scrips.fabricas.entidades.personajes
         string Nombre;
         IReino Reino;
         IHabitat Habitats;
-        Transform PersonajePrefab;
+        GameObject PersonajePrefab;
         int VidaMax;
         IDieta Dieta;
         int EnergiaMax;
@@ -28,7 +28,6 @@ namespace Assets.scrips.fabricas.entidades.personajes
             Nombre = nombre;
             Reino = reino;
             Habitats = habitats;
-            //PersonajePrefab = personajePrefab;
             VidaMax = vidaMax;
             Dieta = dieta;
             EnergiaMax = energiaMax;

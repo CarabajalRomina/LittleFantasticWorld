@@ -13,7 +13,7 @@ using System;
 
 public class CrudEntidadUI : MonoBehaviour
 {
-    PersonajeController CntPersonaje = PersonajeController.GetInstancia;
+    PersonajeController CntPersonaje; 
     HabitatController CntHabitat = HabitatController.GetInstancia;
 
     #region ComponentesForm
@@ -42,6 +42,7 @@ public class CrudEntidadUI : MonoBehaviour
 
     void Start()
     {
+        CntPersonaje = PersonajeController.Instancia;
         CargarDropDowns();
         DeshabilitarOHabilitarElementosPanel(pnlForm);
     }
@@ -72,7 +73,7 @@ public class CrudEntidadUI : MonoBehaviour
                     DeshabilitarOHabilitarElementosPanel(pnlForm);
                     DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
                     lblAviso.text = "Se creo el personaje correctamente";
-
+                    Debug.Log(CntPersonaje.PERSONAJES[0].ToString());
                 }else { lblAviso.text = "No se pudo crear el personaje"; }
 
             }else { lblAvisoNombre.text = "Ya existe ese nombre"; } 

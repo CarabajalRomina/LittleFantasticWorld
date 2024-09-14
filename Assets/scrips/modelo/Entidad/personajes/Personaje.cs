@@ -1,10 +1,11 @@
 using Assets.scrips.interfaces;
+using Assets.scrips.interfaces.movible;
 using Assets.scrips.modelo.Entidad;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Personaje : Entidad, ICombate
+public class Personaje : Entidad, ICombate, IMovible
 {
     int Id;
     static int GlobalCount = 0;
@@ -16,6 +17,7 @@ public class Personaje : Entidad, ICombate
     int PuntosAtaque;
     int PuntosDefensa;
     int RangoAtaque;
+   
 
 
     #region CONSTRUCTORES
@@ -30,6 +32,8 @@ public class Personaje : Entidad, ICombate
         ENERGIAMAX = energiaMax;
         ENERGIACTUAL = energiaMax;
         RANGOATAQUE = rangoAtaque;
+        PersonajePrefab = Resources.Load<GameObject>("personajesPref/Golem");
+
     }
 
     #endregion
@@ -140,6 +144,9 @@ public class Personaje : Entidad, ICombate
         }
     }
 
+   
+
+
     #endregion
 
 
@@ -197,7 +204,9 @@ public class Personaje : Entidad, ICombate
             $" Vida actual: {VIDAACTUAL}," +
             $" Puntos de ataque: {PUNTOSATAQUE}," +
             $" Puntos de defensa: {PUNTOSDEFENSA}," +
-            $" Rango de ataque: {RANGOATAQUE}";
+            $" Rango de ataque: {RANGOATAQUE}," +
+            $" prefab: {PERSONAJEPREFAB}";
+
     }
 
     public void AumentarEnergiaActual(int valor)
@@ -225,10 +234,6 @@ public class Personaje : Entidad, ICombate
         item.Interactuar(this);
     }
 
-    public void Mover()
-    {
-
-    }
     public void Dormir()
     {
         ActualizarEnergia(ENERGIAMAX);
@@ -249,5 +254,25 @@ public class Personaje : Entidad, ICombate
             RangoAtaque.ToString()
             };
     }
+
+    public void Mover(Vector2 nuevaCoordenadaAxial, ITipoTerreno tipoTerreno)
+    {
+        if (HABITATS.PuedoMoverme(tipoTerreno))
+        {
+            CoordenadaAxial = nuevaCoordenadaAxial;
+
+            if (InstanciaPersonaje != null)
+            {
+                InstanciaPersonaje.transform.position = CoordenadaAxial;
+            }
+        }
+        else
+        {
+            Debug.Log("no puede ir a un habitat a la que no esta adaptado...");
+        }
+        
+    }
+
+  
 }
 

@@ -1,3 +1,4 @@
+using Assets.scrips.Controllers.entidad;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -76,6 +77,7 @@ public class GeneradorMapa : MonoBehaviour
         if (GenerarMapaAlIniciar)
         {
             GenerarMapa();
+           
         }
     }
 

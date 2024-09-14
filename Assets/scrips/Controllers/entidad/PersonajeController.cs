@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Assets.scrips.Controllers.entidad
 {
-    public class PersonajeController : Singleton<PersonajeController>
+    public class PersonajeController : SingletonMonoBehaviour<PersonajeController>
     {
         HabitatController cntHabitat = HabitatController.GetInstancia;
         List<Entidad> Personajes = new List<Entidad>();
@@ -130,6 +130,15 @@ namespace Assets.scrips.Controllers.entidad
         }
 
 
+
+
         #endregion
+
+
+        public void InstanciarPersonaje(Personaje personaje, Vector3 posicion)
+        {
+            Instantiate(personaje.PERSONAJEPREFAB, posicion, Quaternion.identity);
+           
+        }
     }
 }
