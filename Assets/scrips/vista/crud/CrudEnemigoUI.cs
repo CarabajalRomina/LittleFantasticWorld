@@ -1,38 +1,35 @@
+using Assets.scrips;
 using Assets.scrips.Controllers.entidad;
 using Assets.scrips.Controllers.habitat;
+using Assets.scrips.Controllers.reinos;
+using Assets.scrips.modelo.Entidad;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Assets.scrips;
-using System.Linq;
-using Assets.scrips.Controllers.reinos;
-using Assets.scrips.modelo.Entidad;
 
-
-
-public class CrudPersonajeUI : MonoBehaviour
+public class CrudEnemigoUI : MonoBehaviour
 {
-    EntidadController CntEntidad; 
+    EntidadController CntEntidad;
     HabitatController CntHabitat = HabitatController.GetInstancia;
     ControllerReino CntReino = ControllerReino.GetInstancia;
+
 
     #region ComponentesForm
     public TMP_InputField txtId;
     public TMP_InputField txtNombre;
     public TMP_Dropdown ddReino;
     public TMP_Dropdown ddHabitats;
-    public TMP_Dropdown ddDieta;
     public TMP_InputField txtVidaMax;
-    public TMP_InputField txtEnergiaMax;
     public TMP_InputField txtPuntosAtaque;
     public TMP_InputField txtPuntosDefensa;
-    public TMP_InputField txtRangoDeAtaque;
     public TextMeshProUGUI lblAvisoNombre;
     public TextMeshProUGUI lblAviso;
     #endregion
 
-    public Tabla tblEntidad;
+    public Tabla tblEnemigos;
     public GameObject pnlForm;
     public GameObject pnlBtnCrud;
 
@@ -41,13 +38,14 @@ public class CrudPersonajeUI : MonoBehaviour
     public Button btnActualizar;
     #endregion
 
+
     void Start()
     {
         CntEntidad = EntidadController.Instancia;
         CargarDropDowns();
         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
     }
-   
+
     public void Crear()
     {
         if (Utilidades.NoHayCamposVacios(pnlForm))
@@ -56,69 +54,71 @@ public class CrudPersonajeUI : MonoBehaviour
             if (!CntEntidad.NOMBRESSELECCIONADOS.Contains(ValidacionForm.NormalizarCadena(txtNombre.text)))
             {
                 lblAvisoNombre.text = "";
-                if (CntEntidad.CrearPersonaje(
+                if (CntEntidad.CrearEnemigo(
                     ValidacionForm.NormalizarCadena(txtNombre.text),
                     CntReino.REINOS[ddReino.value - 1],
-                    CntEntidad.DIETAS[ddDieta.value - 1],
                     CntHabitat.HABITATS[ddHabitats.value - 1],
-                    int.Parse(txtEnergiaMax.text),
                     int.Parse(txtVidaMax.text),
                     int.Parse(txtPuntosAtaque.text),
-                    int.Parse(txtPuntosDefensa.text),
-                    int.Parse(txtRangoDeAtaque.text)
+                    int.Parse(txtPuntosDefensa.text)
                     ))
                 {
                     lblAviso.text = "";
-                    if(CntEntidad.GetPersonajes() != null)
+                    if (CntEntidad.GetPersonajes() != null)
                     {
-                        tblEntidad.CargarTabla<Personaje>(CntEntidad.GetPersonajes());
-                    }                 
+                        tblEnemigos.CargarTabla<Enemigo>(CntEntidad.GetEnemigos());
+                    }
                     BorrarForm();
                     Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
                     Utilidades.DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
-                    lblAviso.text = "Se creo el personaje correctamente";
+                    lblAviso.text = "Se creo el enemigo correctamente";
                     Debug.Log(CntEntidad.ENTIDADES[0].ToString());
-                }else { lblAviso.text = "No se pudo crear el personaje"; }
+                }
+                else { lblAviso.text = "No se pudo crear el enemigo"; }
 
-            }else { lblAvisoNombre.text = "Ya existe ese nombre"; } 
-            
-        }else{ lblAviso.text = "Seleccione o complete todos los campos";}
+            }
+            else { lblAvisoNombre.text = "Ya existe ese nombre"; }
+
+        }
+        else { lblAviso.text = "Seleccione o complete todos los campos"; }
     }
-       
-    public void Eliminar() 
+
+    public void Eliminar()
     {
         lblAviso.text = "";
         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
-        if(tblEntidad.Filas.Count > 0 )
+        if (tblEnemigos.Filas.Count > 0)
         {
-            if(tblEntidad.FilasSeleccionadas.Count > 0 )
+            if (tblEnemigos.FilasSeleccionadas.Count > 0)
             {
                 lblAviso.text = "";
-                foreach (var fila in tblEntidad.FilasSeleccionadas)
+                foreach (var fila in tblEnemigos.FilasSeleccionadas)
                 {
                     if (CntEntidad.EliminarEntidad((Entidad)fila.OBJETO))
                     {
-                        lblAviso.text = "Se elimino al personaje correctamente";
-                        tblEntidad.QuitarFila(fila);
+                        lblAviso.text = "Se elimino al enemigo correctamente";
+                        tblEnemigos.QuitarFila(fila);
                     }
                     else
                     {
-                        Debug.Log("no se pudo eliminar al personaje");
+                        Debug.Log("no se pudo eliminar al enemigo");
                     }
                 }
-                tblEntidad.FilasSeleccionadas.Clear();
+                tblEnemigos.FilasSeleccionadas.Clear();
                 Utilidades.DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
 
-            }else{ lblAviso.text = "ELIJA UN PERSONAJE PARA ELIMINAR";}
+            }
+            else { lblAviso.text = "ELIJA UN ENEMIGO PARA ELIMINAR"; }
 
-        }else{ lblAviso.text = "No hay personajes cargados para eliminar"; }       
+        }
+        else { lblAviso.text = "No hay enemigos cargados para editar"; }
     }
 
     public void Editar()
     {
-        if (tblEntidad.Filas.Count > 0)
+        if (tblEnemigos.Filas.Count > 0)
         {
-            if (tblEntidad.FilasSeleccionadas.Count > 0)
+            if (tblEnemigos.FilasSeleccionadas.Count > 0)
             {
                 Utilidades.DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
                 Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
@@ -126,38 +126,37 @@ public class CrudPersonajeUI : MonoBehaviour
                 Utilidades.ActivarODesactivarUnBtn(btnActualizar);
                 lblAviso.text = "";
                 BorrarForm();
-                CargarFormDatosObj((Personaje)tblEntidad.FilasSeleccionadas.First().OBJETO);
-                tblEntidad.HabilitarODeshabilitarInteractividadTabla();
+                CargarFormDatosObj((Enemigo)tblEnemigos.FilasSeleccionadas.First().OBJETO);
+                tblEnemigos.HabilitarODeshabilitarInteractividadTabla();
 
-            }else { lblAviso.text = "ELIJA UN PERSONAJE PARA EDITAR"; }
+            }
+            else { lblAviso.text = "ELIJA UN ENEMIGO PARA EDITAR"; }
 
-        }else{ lblAviso.text = "No hay personajes cargados para editar"; }
-    }  
-            
+        }
+        else { lblAviso.text = "No hay enemigo cargados para editar"; }
+    }
+
     public void Actualizar()
     {
         if (Utilidades.NoHayCamposVacios(pnlForm))
         {
             lblAviso.text = "";
-            Personaje personaje = (Personaje)tblEntidad.FilasSeleccionadas.First().OBJETO;
+            Enemigo enemigo = (Enemigo)tblEnemigos.FilasSeleccionadas.First().OBJETO;
 
-            if (txtNombre.text == personaje.NOMBRE)
+            if (txtNombre.text == enemigo.NOMBRE)
             {
                 lblAvisoNombre.text = "";
-                if (CntEntidad.EditarPersonaje(
-                    personaje,
+                if (CntEntidad.EditarEnemigo(
+                    enemigo,
                     ValidacionForm.NormalizarCadena(txtNombre.text),
                     CntReino.REINOS[ddReino.value - 1],
-                    CntEntidad.DIETAS[ddDieta.value - 1],
                     CntHabitat.HABITATS[ddHabitats.value - 1],
-                    int.Parse(txtEnergiaMax.text),
                     int.Parse(txtVidaMax.text),
                     int.Parse(txtPuntosAtaque.text),
-                    int.Parse(txtPuntosDefensa.text),
-                    int.Parse(txtRangoDeAtaque.text)
+                    int.Parse(txtPuntosDefensa.text)
                     ))
                 {
-                    tblEntidad.ActualizarFila<Personaje>(tblEntidad.FilasSeleccionadas.First(), personaje);
+                    tblEnemigos.ActualizarFila<Enemigo>(tblEnemigos.FilasSeleccionadas.First(), enemigo);
                     lblAviso.text = "";
                     BorrarForm();
                     Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
@@ -165,60 +164,65 @@ public class CrudPersonajeUI : MonoBehaviour
                     Utilidades.ActivarODesactivarUnBtn(btnCrear);
                     Utilidades.ActivarODesactivarUnBtn(btnActualizar);
                     btnActualizar.interactable = true;
-                    tblEntidad.HabilitarODeshabilitarInteractividadTabla();
+                    tblEnemigos.HabilitarODeshabilitarInteractividadTabla();
                     lblAviso.text = "Se creo el personaje correctamente";
 
-                }else { lblAviso.text = "No se pudo crear el personaje"; }
+                }
+                else { lblAviso.text = "No se pudo crear el personaje"; }
 
-            }else
+            }
+            else
             {
                 if (!CntEntidad.NOMBRESSELECCIONADOS.Contains(ValidacionForm.NormalizarCadena(txtNombre.text)))
                 {
 
                     lblAvisoNombre.text = "";
-                    if (CntEntidad.EditarPersonaje(
-                        (Personaje)tblEntidad.FilasSeleccionadas.First().OBJETO,
+                    if (CntEntidad.EditarEnemigo(
+                        (Enemigo)tblEnemigos.FilasSeleccionadas.First().OBJETO,
                         ValidacionForm.NormalizarCadena(txtNombre.text),
                         CntReino.REINOS[ddReino.value - 1],
-                        CntEntidad.DIETAS[ddDieta.value - 1],
                         CntHabitat.HABITATS[ddHabitats.value - 1],
-                        int.Parse(txtEnergiaMax.text),
                         int.Parse(txtVidaMax.text),
                         int.Parse(txtPuntosAtaque.text),
-                        int.Parse(txtPuntosDefensa.text),
-                        int.Parse(txtRangoDeAtaque.text)
+                        int.Parse(txtPuntosDefensa.text)
                         ))
                     {
                         lblAviso.text = "";
-                        tblEntidad.ActualizarFila<Personaje>(tblEntidad.FilasSeleccionadas.First(), personaje);
+                        tblEnemigos.ActualizarFila<Enemigo>(tblEnemigos.FilasSeleccionadas.First(), enemigo);
                         BorrarForm();
                         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
                         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
                         Utilidades.ActivarODesactivarUnBtn(btnCrear);
                         Utilidades.ActivarODesactivarUnBtn(btnActualizar);
-                        tblEntidad.HabilitarODeshabilitarInteractividadTabla();
-                        lblAviso.text = "Se creo el personaje correctamente";
+                        tblEnemigos.HabilitarODeshabilitarInteractividadTabla();
+                        lblAviso.text = "Se creo el enemigo correctamente";
 
-                    }else { lblAviso.text = "No se pudo crear el personaje"; }
+                    }
+                    else { lblAviso.text = "No se pudo crear el enemigo"; }
 
-                }else { lblAvisoNombre.text = "Ya existe ese nombre"; }
-            }      
-        }else { lblAviso.text = "Seleccione o complete todos los campos"; }
+                }
+                else { lblAvisoNombre.text = "Ya existe ese nombre"; }
+            }
+        }
+        else { lblAviso.text = "Seleccione o complete todos los campos"; }
     }
 
-    private void CargarFormDatosObj(Personaje personaje)
+    private void CargarDropDowns()
     {
-        txtId.text = personaje.ID.ToString();
-        txtNombre.text = personaje.NOMBRE;
-        ddReino.value = CntReino.REINOS.IndexOf(personaje.REINO) + 1;
-        ddDieta.value = CntEntidad.DIETAS.IndexOf(personaje.DIETA) + 1;
-        ddHabitats.value = CntHabitat.HABITATS.IndexOf(personaje.HABITATS) + 1;
-        txtEnergiaMax.text = personaje.ENERGIAMAX.ToString();
-        txtVidaMax.text = personaje.VIDAMAX.ToString();
-        txtPuntosAtaque.text = personaje.PUNTOSATAQUE.ToString();
-        txtPuntosDefensa.text = personaje.PUNTOSDEFENSA.ToString();
-        txtRangoDeAtaque.text = personaje.RANGOATAQUE.ToString();
+        Utilidades.CargarOpcionesEnDropDowns(CntHabitat.HABITATS, ddHabitats);
+        Utilidades.CargarOpcionesEnDropDowns(CntReino.REINOS, ddReino);
     }
+    private void CargarFormDatosObj(Enemigo enemigo)
+    {
+        txtId.text = enemigo.ID.ToString();
+        txtNombre.text = enemigo.NOMBRE;
+        ddReino.value = CntReino.REINOS.IndexOf(enemigo.REINO) + 1;
+        ddHabitats.value = CntHabitat.HABITATS.IndexOf(enemigo.HABITATS) + 1;
+        txtVidaMax.text = enemigo.VIDAMAX.ToString();
+        txtPuntosAtaque.text = enemigo.PUNTOSATAQUE.ToString();
+        txtPuntosDefensa.text = enemigo.PUNTOSDEFENSA.ToString();
+    }
+
     public void btnNuevoClickeado()
     {
         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
@@ -238,28 +242,10 @@ public class CrudPersonajeUI : MonoBehaviour
         txtNombre.text = "";
         ddReino.value = -1;
         ddHabitats.value = -1;
-        ddDieta.value = -1;
         txtVidaMax.text = "";
-        txtEnergiaMax.text = "";
         txtPuntosAtaque.text = "";
         txtPuntosDefensa.text = "";
-        txtRangoDeAtaque.text = "";
         lblAviso.text = "";
         lblAvisoNombre.text = "";
     }
-    private void CargarDropDowns()
-    {
-        Utilidades.CargarOpcionesEnDropDowns(CntEntidad.DIETAS, ddDieta);
-        Utilidades.CargarOpcionesEnDropDowns(CntHabitat.HABITATS, ddHabitats);
-        Utilidades.CargarOpcionesEnDropDowns(CntReino.REINOS, ddReino);
-    }
-   
-   
- 
-
-    
-
 }
-
-
-

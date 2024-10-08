@@ -1,10 +1,11 @@
+using Assets.scrips.interfaces;
 using Assets.scrips.interfaces.interactuable;
 using Assets.scrips.modelo.Entidad;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Comida: IInteractuable
+public class Comida: IInteractuable, IDescribible
 {
     int Id;
     static int GlobalCount = 0;
@@ -55,8 +56,18 @@ public class Comida: IInteractuable
             $" Dieta: {TIPODIETA},";
     }
 
-    public void Interactuar(Personaje entidad)
+    public void Interactuar(Personaje personaje)
     {
-        entidad.Comer(this);
+        personaje.Comer(this);
+    }
+
+    public string[] ObtenerValoresInstancias()
+    {
+        return new string[] {
+            ID.ToString(),
+            NOMBRE,
+            TIPODIETA.ToString(),
+            CALORIAS.ToString(),
+            };
     }
 }

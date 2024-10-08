@@ -1,4 +1,5 @@
 ﻿using Assets.scrips.fabricas.dietas;
+using Assets.scrips.fabricas.entidades.enemigos;
 using Assets.scrips.fabricas.entidades.personajes;
 using Assets.scrips.modelo.Entidad;
 using System;
@@ -40,6 +41,30 @@ namespace Assets.scrips.Controllers.entidad
         }
         #endregion
 
+
+        public bool EliminarEntidad(Entidad entidad)
+        {
+            try
+            {
+                if (ENTIDADES.Contains(entidad))
+                {
+                    ENTIDADES.Remove(entidad);
+                    NOMBRESSELECCIONADOS.Remove(entidad.NOMBRE);
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("No se encuentra la persona");
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        #region PERSONAJE
         #region CRUD PERSONAJE
         public bool CrearPersonaje(string nombre, IReino reino, IDieta dieta, IHabitat habitat, int energiaMax, int vidaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
         {
@@ -63,27 +88,7 @@ namespace Assets.scrips.Controllers.entidad
             return false;       
         }
 
-        public bool Eliminar(Personaje personaje)
-        {
-            try
-            {
-                if (ENTIDADES.Contains(personaje))
-                {
-                    ENTIDADES.Remove(personaje);
-                    NOMBRESSELECCIONADOS.Remove(personaje.NOMBRE);
-                    return true;
-                }
-                else{
-                    Debug.Log("no se encuentra la persona");
-                    return false;
-                }
-            }catch(Exception e)
-            {
-                return false;
-            }
-        }
-
-        public bool EditarEntidad(Personaje personaje, string nombre, IReino reino, IDieta dieta, IHabitat habitat, int energiaMax, int vidaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
+        public bool EditarPersonaje(Personaje personaje, string nombre, IReino reino, IDieta dieta, IHabitat habitat, int energiaMax, int vidaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
         {
             try
             {
@@ -100,24 +105,71 @@ namespace Assets.scrips.Controllers.entidad
             }catch(Exception e) { return false; }    
         }
 
-        public Personaje BuscarPorId(int id)
-        {
-           Personaje personaje = ENTIDADES
-            .OfType<Personaje>()
-            .FirstOrDefault(p => p.ID == id);
-            if(personaje != null) { return personaje; }
-            else { return null; }
-        }
-
         public List<Personaje> GetPersonajes()
         {
             return Entidades.OfType<Personaje>().ToList();
         }
         #endregion
 
+        public Personaje BuscarPersonajePorId(int id)
+        {
+            Personaje personaje = ENTIDADES
+             .OfType<Personaje>()
+             .FirstOrDefault(p => p.ID == id);
+            if (personaje != null) { return personaje; }
+            else { return null; }
+        }
+
         public GameObject InstanciarPersonaje(Personaje personaje, Vector3 posicion)
         {
           return Instantiate(personaje.PERSONAJEPREFAB, posicion, Quaternion.identity);      
         }
+        #endregion
+
+
+        #region ENEMIGOS
+        #region CRUD ENEMIGOS
+        public bool CrearEnemigo(string nombre, IReino reino, IHabitat habitat, int vidaMax, int puntosAtaque, int puntosDefensa)
+        {
+            Entidad personaje;
+
+            if (new FabricaEnemigo(
+                nombre,
+                reino,
+                habitat,
+                vidaMax,
+                puntosAtaque,
+                puntosDefensa).CrearEntidad(out personaje))
+            {
+                Entidades.Add(personaje);
+                NombresSeleccionados.Add(nombre);
+                return true;
+            }
+            return false;
+        }
+        
+        public bool EditarEnemigo(Enemigo enemigo, string nombre, IReino reino, IHabitat habitat, int vidaMax, int puntosAtaque, int puntosDefensa)
+        {
+            try
+            {
+                enemigo.NOMBRE = nombre;
+                enemigo.REINO = reino;
+                enemigo.HABITATS = habitat;
+                enemigo.VIDAMAX = vidaMax;
+                enemigo.PUNTOSATAQUE = puntosAtaque;
+                enemigo.PUNTOSDEFENSA = puntosDefensa;
+                return true;
+            }
+            catch (Exception e) { return false; }
+        }
+
+        public List<Enemigo> GetEnemigos()
+        {
+            return Entidades.OfType<Enemigo>().ToList();
+        }
+
+
+        #endregion
+        #endregion
     }
 }

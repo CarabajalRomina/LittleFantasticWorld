@@ -15,10 +15,9 @@ namespace Assets.scrips.fabricas.entidades.enemigos
         int VidaMax;
         int PuntosAtaque;
         int PuntosDefensa;
-        HashSet<string> NombresUtilizados = new HashSet<string>();
 
 
-        public FabricaEnemigo(string nombre, IReino reino, IHabitat habitats, int vidaMax, int energiaMax, int puntosAtaque, int puntosDefensa)
+        public FabricaEnemigo(string nombre, IReino reino, IHabitat habitats, int vidaMax, int puntosAtaque, int puntosDefensa)
         {
             Nombre = nombre;
             Reino = reino;
@@ -29,7 +28,7 @@ namespace Assets.scrips.fabricas.entidades.enemigos
             PuntosDefensa = puntosDefensa;
         }
 
-        public bool CrearEntidad(out modelo.Entidad.Entidad entidad )
+        public bool CrearEntidad(out Entidad entidad )
         {
             entidad = null;
             try
