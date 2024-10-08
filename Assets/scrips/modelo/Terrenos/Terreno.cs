@@ -1,19 +1,24 @@
-using System;
-using System.Collections;
+using Assets.scrips.Controllers;
+using Assets.scrips.interfaces.interactuable;
+using Assets.scrips.modelo.Configuraciones;
+using Assets.scrips.modelo.Entidad;
+using Assets.scrips.modelo.EstadosDeInteraccion.tiposEstados;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Linq;
 using UnityEngine;
 
 public class Terreno 
 {
     [SerializeField] private Mapa GrillaHex;
-    [SerializeField] private TipoDeSubTerreno TipoTerreno;
+    [SerializeField] private TipoDeSubTerreno TipoSubTerreno;
     [SerializeField] private Vector2 CoordenadasOffset;
-    [SerializeField] private Vector3 CoordenadasDeCubo;
+    [SerializeField] private Vector3 PosicionTridimensinal;
     [SerializeField] private Vector2 CoordenadasAxial;
     private List<Terreno> TerrenosLimitrofes;
     [SerializeField] private Transform TransfTerreno;
     [SerializeField] private IEstadoHexEstrategia Estado;
+    List<Assets.scrips.modelo.Entidad.Entidad> Entidades;
+    List<IInteractuable> Interactuables;
 
     #region PROPIEDADES
 
@@ -23,10 +28,10 @@ public class Terreno
         set { GrillaHex = value; }
     }
 
-    public TipoDeSubTerreno TIPOTERRENO
+    public TipoDeSubTerreno TIPOSUBTERRENO
     {
-        get { return TipoTerreno; }
-        set { TipoTerreno = value; }
+        get { return TipoSubTerreno; }
+        set { TipoSubTerreno = value; }
     }
 
     public Vector2 COORDENADASOFFSET
@@ -35,10 +40,10 @@ public class Terreno
         set { CoordenadasOffset = value; }
     }
 
-    public Vector3 COORDENADASDECUBO
+    public Vector3 POSICIONTRIDIMENSIONAL
     {
-        get { return CoordenadasDeCubo; }
-        set { CoordenadasDeCubo = value; }
+        get { return PosicionTridimensinal; }
+        set { PosicionTridimensinal = value; }
     }
 
     public Vector2 COORDENADASAXIAL
@@ -64,36 +69,51 @@ public class Terreno
         get { return Estado; }
         set { Estado = value; }
     }
+
+    public List<Assets.scrips.modelo.Entidad.Entidad> ENTIDADES
+    {
+        get { return Entidades; }
+        set { Entidades = value; }
+    }
+
+    public List<IInteractuable> INTERACTUABLES
+    {
+        get { return Interactuables;}
+        set { Interactuables = value; }
+    }
+
     #endregion
 
     public void SetCoordenadas(Vector2 vector, OrientacionHex orientacion)
     {
         COORDENADASOFFSET = vector;
-        COORDENADASAXIAL = MetricasHex.CoordOffsetACoordAxial((int)vector.y,(int)vector.x, orientacion);
-        COORDENADASDECUBO = MetricasHex.CoordOffsetACoordCubo((int)vector.x, (int)vector.y,orientacion);
+        COORDENADASAXIAL = MetricasHex.CoordOffsetACoordAxial((int)vector.y, (int)vector.x, orientacion);
+        POSICIONTRIDIMENSIONAL = MetricasHex.CoordenadaTridimensional(vector.x, vector.y, GRILLAHEX.MEDIDAHEX, GRILLAHEX.ORIENTACION);
     }
-
-    public void CrearTerreno(Vector2 coordenadas) 
+    public void CrearTerreno(Vector2 coordenadas)
     {
-        if (TIPOTERRENO.PREFAB != null)
+        if (TIPOSUBTERRENO.PREFAB != null)
         {
-            var posicionTerreno = MetricasHex.CoordenadaTridimensional(coordenadas.y, coordenadas.x, GRILLAHEX.MEDIDAHEX, GRILLAHEX.ORIENTACION) +  GRILLAHEX.transform.position;
+            var posicionTerreno = MetricasHex.CoordenadaTridimensional(coordenadas.y, coordenadas.x, GRILLAHEX.MEDIDAHEX, GRILLAHEX.ORIENTACION) + GRILLAHEX.transform.position;
 
             Quaternion rotacionPrefab = Quaternion.identity;
 
             if (GRILLAHEX.ORIENTACION == OrientacionHex.FlatTop)
             {
-                rotacionPrefab = Quaternion.Euler(0, 30, 0);     
+                rotacionPrefab = Quaternion.Euler(0, 30, 0);
             }
 
-            GameObject nuevoTerreno = GameObject.Instantiate(TIPOTERRENO.PREFAB.gameObject, posicionTerreno, rotacionPrefab);
+            GameObject nuevoTerreno = GameObject.Instantiate(TIPOSUBTERRENO.PREFAB.gameObject, posicionTerreno, rotacionPrefab);
             TRANSFTERRENO = nuevoTerreno.transform;
+            InicializarEstado(new Oculto());
+
 
             HexTerreno hexTerreno = TRANSFTERRENO.gameObject.GetComponentInChildren<HexTerreno>();
             hexTerreno.OnMouseEnterAction += OnMouseEnter;
             hexTerreno.OnMouseExitAction += OnMouseExit;
+            hexTerreno.OnMouseClickAction += OnMouseDown;
             //nuevoTerreno.SetActive(false);
-            nuevoTerreno.name = $"Terreno_{TIPOTERRENO.NOMBRE}";
+            nuevoTerreno.name = $"Terreno_{TIPOSUBTERRENO.NOMBRE}";
         }
     }
 
@@ -103,10 +123,12 @@ public class Terreno
         {
             GameObject.Destroy(TRANSFTERRENO.gameObject);
         }
-        TIPOTERRENO = null;
+        TIPOSUBTERRENO = null;
         TerrenosLimitrofes = null;
         GRILLAHEX = null;
     }
+
+    #region MANEJO ESTADOS DE TERRENO
 
     public void InicializarEstado(IEstadoHexEstrategia estadoInicial = null)
     {
@@ -122,38 +144,110 @@ public class Terreno
 
     public void CambiarEstado(IEstadoHexEstrategia nuevoEstado)
     {
-        if(nuevoEstado != null && nuevoEstado != Estado ) 
+        if(nuevoEstado != Estado) 
         {
-            if(Estado != null)
-                Estado.DesactivarEstado(this.TRANSFTERRENO);
+            if (Estado != null)
+                ESTADO.DesactivarEstado(this);
             Estado = nuevoEstado;
-            aplicarEstado();
+            AplicarEstado();
         }
     }
 
     public void OnMouseEnter()
     {
-        CambiarEstado(Estado.OnMouseEnter());
+        if(ESTADO is Visible && !(TIPOSUBTERRENO.TIPOTERRENO is Especial) && !(Estado is Ocupado))
+        {
+            CambiarEstado(new Resaltado());
+        }
     }
 
     public void OnMouseExit()
     {
-        CambiarEstado(Estado.OnMouseExit());
+        if (ESTADO is Resaltado)
+        {
+            CambiarEstado(new Visible());
+        }
     }
 
-    public void Seleccionar()
+    public void OnMouseDown()
     {
-       CambiarEstado(Estado.Seleccionar());
+       ControllerMovimiento  cntMovimientoController = ControllerMovimiento .Instancia;
+       if (!(TIPOSUBTERRENO.TIPOTERRENO is Especial) && !(Estado is Ocupado) && cntMovimientoController != null)
+       {
+            this.CambiarEstado(new Seleccionado(cntMovimientoController));
+       }
     }
 
-    public void Deseleccionar()
+    void AplicarEstado()
     {
-        CambiarEstado(Estado.Deseleccionar());
+        Estado.ActivarEstado(this);
     }
 
-    void aplicarEstado()
+    public void CambiarEstadoTerrenosLimitrofes(IEstadoHexEstrategia estado)
     {
-        Estado.ActivarEstado(this.TRANSFTERRENO);
+        foreach (var terreno in TERRENOSLIMITROFES)
+        {
+            if (terreno.Estado != estado)
+                terreno.CambiarEstado(estado);
+        }
+    }
+
+    #endregion
+
+    public void AgregarEntidad(Assets.scrips.modelo.Entidad.Entidad entidad)
+    {
+        if ((entidad is Personaje && CantPersonajes() >= ConfiguracionGeneral.CantMaxPersonajesXTerreno) && Entidades.Contains(entidad))
+        {
+            Debug.Log("Ya existe un personaje-entidad en el terreno");
+        }
+        else
+        {
+            Entidades.Add(entidad);      
+        }
+    }
+
+    public void EliminarEntidad(Assets.scrips.modelo.Entidad.Entidad entidad)
+    {
+        if (Entidades.Contains(entidad))
+        {
+            Entidades.Remove(entidad);
+        }
+    }
+
+    public void AgregarInteractuable(IInteractuable interactuable)
+    {
+        if (Interactuables.Count < ConfiguracionGeneral.CantidadMaxInteractuablesXTerreno && Interactuables.Contains(interactuable))
+        {
+            Debug.Log("Ya existen interactuables en el terreno");
+        }
+        else
+        {
+            Interactuables.Add(interactuable);
+        }
+    }
+
+    public void EliminarInteractuable(IInteractuable interactuable)
+    {
+        if (Interactuables.Contains(interactuable))
+        {
+            Interactuables.Remove(interactuable);
+        }
+        else { Debug.Log("No existe este interactuable en el terreno"); }
+    }
+
+    public Personaje GetPersonaje()
+    {
+        return Entidades.OfType<Personaje>().First();
+    }
+
+    int CantPersonajes()
+    {
+        return Entidades.OfType<Personaje>().Count();
+    }
+
+    int CantEnemigos()
+    {
+        return Entidades.OfType<Enemigo>().Count();
     }
 
 }

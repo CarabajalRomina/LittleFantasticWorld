@@ -8,7 +8,7 @@ public class AereoDecorador : HabitatDecorador
 {
     public AereoDecorador(IHabitat habitat) : base(habitat){}
 
-    public override bool PuedoMoverme(ITipoTerreno tipoTerreno)
+    public override bool PuedoMoverme(MonoBehaviour tipoTerreno)
     {
         return base.PuedoMoverme(tipoTerreno) || tipoTerreno is Aire;
     }

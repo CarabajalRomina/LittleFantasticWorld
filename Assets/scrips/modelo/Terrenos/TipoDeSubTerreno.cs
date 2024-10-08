@@ -5,12 +5,12 @@ using Unity.Collections;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "TipoTerreno", menuName = "Tipos de SubTerreno/Tipos")]
+[CreateAssetMenu(fileName = "TipoSubTerreno", menuName = "Tipos de SubTerreno/Tipos")]
 public class TipoDeSubTerreno : ScriptableObject
 {
     [SerializeField] private int Id;
     [field:SerializeField] private string Nombre { get; set; }
-    [field:SerializeField] private ITipoTerreno TipoTerreno { get; set; }
+    [field:SerializeField] private MonoBehaviour TipoTerreno { get; set; }
     [field: SerializeField] private Transform Prefab { get; set; }
 
     [field: SerializeField] private Color color { get; set; }
@@ -28,7 +28,7 @@ public class TipoDeSubTerreno : ScriptableObject
         get { return Nombre; }
     }
 
-    public ITipoTerreno TIPOTERRENO
+    public MonoBehaviour TIPOTERRENO
     {
         get { return TipoTerreno; }
     }

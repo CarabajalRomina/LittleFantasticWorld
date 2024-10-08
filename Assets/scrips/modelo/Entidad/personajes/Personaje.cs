@@ -1,8 +1,7 @@
 using Assets.scrips.interfaces;
 using Assets.scrips.interfaces.movible;
+using Assets.scrips.modelo.Configuraciones;
 using Assets.scrips.modelo.Entidad;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Personaje : Entidad, ICombate, IMovible
@@ -17,7 +16,8 @@ public class Personaje : Entidad, ICombate, IMovible
     int PuntosAtaque;
     int PuntosDefensa;
     int RangoAtaque;
-   
+    private bool enMovimiento = false; // Estado del movimiento
+
 
 
     #region CONSTRUCTORES
@@ -149,7 +149,6 @@ public class Personaje : Entidad, ICombate, IMovible
 
     #endregion
 
-
     #region METODOS COMBATE
     public int Atacar()
     {
@@ -164,8 +163,6 @@ public class Personaje : Entidad, ICombate, IMovible
     }
 
     #endregion
-
-
 
     public void Comer(Comida alimento)
     {
@@ -192,7 +189,7 @@ public class Personaje : Entidad, ICombate, IMovible
     public override string ToString()
     {
         return $"" +
-            $" Personaje: " +
+            $" Entidad: " +
             $" Id: {ID}," +
             $" Nombre: {NOMBRE}," +
             $" Reino: {REINO}," +
@@ -255,24 +252,46 @@ public class Personaje : Entidad, ICombate, IMovible
             };
     }
 
-    public void Mover(Vector2 nuevaCoordenadaAxial, ITipoTerreno tipoTerreno)
+    public void IniciarMovimiento()
     {
-        if (HABITATS.PuedoMoverme(tipoTerreno))
+        if (!enMovimiento) // Solo inicia el movimiento si no está ya moviéndose
         {
-            CoordenadaAxial = nuevaCoordenadaAxial;
-
-            if (InstanciaPersonaje != null)
+            enMovimiento = true; // Cambia el estado a moviéndose
+        }
+    }
+    public void MoverHacia(Terreno terrenoDestino)
+    {
+        if (HABITATS.PuedoMoverme(terrenoDestino.TIPOSUBTERRENO.TIPOTERRENO))
+        {
+            if(enMovimiento)
             {
-                InstanciaPersonaje.transform.position = CoordenadaAxial;
-            }
+                //Mueve el personaje suavemente hacia la posición objetivo
+                TerrenoActual.POSICIONTRIDIMENSIONAL = Vector3.Lerp(
+                    TerrenoActual.POSICIONTRIDIMENSIONAL,
+                    terrenoDestino.POSICIONTRIDIMENSIONAL,
+                    ConfiguracionGeneral.VelocidadMovimientoPersonaje * Time.deltaTime
+                    );
+                // Comprueba si ha llegado a la posición objetivo
+                if(Vector3.Distance(TerrenoActual.POSICIONTRIDIMENSIONAL, terrenoDestino.POSICIONTRIDIMENSIONAL) < 0.1f)
+                {
+                    // Asegura que la posición actual sea exactamente la posición objetivo
+                    TerrenoActual.POSICIONTRIDIMENSIONAL = terrenoDestino.POSICIONTRIDIMENSIONAL;
+                    enMovimiento = false; // Resetea el estado de movimiento
+                }else
+                {
+                    Debug.Log("no se llego a destino");
+                }
+            }else
+            {
+                Debug.Log("no se inicio el movimiento");
+            }     
         }
         else
         {
             Debug.Log("no puede ir a un habitat a la que no esta adaptado...");
-        }
-        
+        }  
     }
-
-  
 }
+  
+
 

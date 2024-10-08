@@ -9,7 +9,7 @@ public class AcuaticoDecorador : HabitatDecorador
 {
     public AcuaticoDecorador(IHabitat habitat) : base(habitat){}
 
-    public override bool PuedoMoverme(ITipoTerreno tipoTerreno)
+    public override bool PuedoMoverme(MonoBehaviour tipoTerreno)
     {
         return Habitat.PuedoMoverme(tipoTerreno) || tipoTerreno is Agua;
     }

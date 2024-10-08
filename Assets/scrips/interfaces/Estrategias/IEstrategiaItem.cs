@@ -9,6 +9,6 @@ namespace Assets.scrips.interfaces.IEstrategias
 {
     public interface IEstrategiaItem
     {
-        public void AplicarEfecto(Entidad entidad);
+        public void AplicarEfecto(modelo.Entidad.Entidad entidad);
     }
 }

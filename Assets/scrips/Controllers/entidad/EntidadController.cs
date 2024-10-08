@@ -1,30 +1,16 @@
-﻿using Assets.scrips.Controllers.habitat;
-using Assets.scrips.fabricas.dietas;
+﻿using Assets.scrips.fabricas.dietas;
 using Assets.scrips.fabricas.entidades.personajes;
-using Assets.scrips.fabricas.reinos;
 using Assets.scrips.modelo.Entidad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.scrips.Controllers.entidad
 {
-    public class PersonajeController : SingletonMonoBehaviour<PersonajeController>
+    public class EntidadController : SingletonMonoBehaviour<EntidadController>
     {
-        HabitatController cntHabitat = HabitatController.GetInstancia;
-        List<Entidad> Personajes = new List<Entidad>();
-        List<IReino> Reinos = new List<IReino> { 
-            new FabricaAnimal().CrearReino(),
-            new FabricaVegetal().CrearReino(),
-            new FabricaDemoniaco().CrearReino(),
-            new FabricaHumano().CrearReino(),
-            new FabricaRobotico().CrearReino(),
-            new FabricaMitologico().CrearReino()
-        };
+        List<Entidad> Entidades = new List<Entidad>();
         List<IDieta> Dietas = new List<IDieta> {
             new FabricaCarnivoro().CrearDieta(),
             new FabricaHerbivoro().CrearDieta(),
@@ -41,16 +27,10 @@ namespace Assets.scrips.Controllers.entidad
             set { Dietas = value; }
         }
 
-        public List<IReino> REINOS
+        public List<Entidad> ENTIDADES
         {
-            get { return Reinos; }
-            set { Reinos = value; }
-        }
-
-        public List<Entidad> PERSONAJES
-        {
-            get { return Personajes; }
-            set { Personajes = value; }
+            get { return Entidades; }
+            set { Entidades = value; }
         }
 
         public HashSet<string> NOMBRESSELECCIONADOS
@@ -60,8 +40,8 @@ namespace Assets.scrips.Controllers.entidad
         }
         #endregion
 
-        #region CRUD
-        public bool CrearEntidad(string nombre, IReino reino, IDieta dieta, IHabitat habitat, int energiaMax, int vidaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
+        #region CRUD PERSONAJE
+        public bool CrearPersonaje(string nombre, IReino reino, IDieta dieta, IHabitat habitat, int energiaMax, int vidaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
         {
             Entidad personaje;
 
@@ -76,26 +56,26 @@ namespace Assets.scrips.Controllers.entidad
                 puntosDefensa,
                 rangoAtaque).CrearEntidad(out personaje))
             {
-                Personajes.Add(personaje);
+                Entidades.Add(personaje);
                 NombresSeleccionados.Add(nombre);
                 return true;
             }
             return false;       
         }
 
-        public bool Eliminar(Entidad personaje)
+        public bool Eliminar(Personaje personaje)
         {
             try
             {
-                if (PERSONAJES.Contains(personaje))
+                if (ENTIDADES.Contains(personaje))
                 {
-                    PERSONAJES.Remove(personaje);
+                    ENTIDADES.Remove(personaje);
                     NOMBRESSELECCIONADOS.Remove(personaje.NOMBRE);
                     return true;
                 }
                 else{
+                    Debug.Log("no se encuentra la persona");
                     return false;
-                    Debug.Log("no se encuentra la persona"); 
                 }
             }catch(Exception e)
             {
@@ -120,25 +100,24 @@ namespace Assets.scrips.Controllers.entidad
             }catch(Exception e) { return false; }    
         }
 
-        public Entidad BuscarPorId(int id)
+        public Personaje BuscarPorId(int id)
         {
-           Personaje personaje = PERSONAJES
+           Personaje personaje = ENTIDADES
             .OfType<Personaje>()
             .FirstOrDefault(p => p.ID == id);
             if(personaje != null) { return personaje; }
             else { return null; }
         }
 
-
-
-
+        public List<Personaje> GetPersonajes()
+        {
+            return Entidades.OfType<Personaje>().ToList();
+        }
         #endregion
 
-
-        public void InstanciarPersonaje(Personaje personaje, Vector3 posicion)
+        public GameObject InstanciarPersonaje(Personaje personaje, Vector3 posicion)
         {
-            Instantiate(personaje.PERSONAJEPREFAB, posicion, Quaternion.identity);
-           
+          return Instantiate(personaje.PERSONAJEPREFAB, posicion, Quaternion.identity);      
         }
     }
 }

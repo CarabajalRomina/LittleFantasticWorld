@@ -29,7 +29,7 @@ namespace Assets.scrips.fabricas.entidades.enemigos
             PuntosDefensa = puntosDefensa;
         }
 
-        public bool CrearEntidad(out Entidad entidad )
+        public bool CrearEntidad(out modelo.Entidad.Entidad entidad )
         {
             entidad = null;
             try

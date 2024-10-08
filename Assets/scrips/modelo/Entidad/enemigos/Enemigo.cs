@@ -1,16 +1,11 @@
 ﻿using Assets.scrips.interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Assets.scrips.modelo.Entidad
 {
     public class Enemigo : Entidad, ICombate
     {
         private int Id;
+
         static int GlobalCount = 0;
         private int VidaActual { get; set; }
         private int VidaMax { get; set; }
@@ -26,8 +21,6 @@ namespace Assets.scrips.modelo.Entidad
             PUNTOSATAQUE = puntosAtaque;
             PUNTOSDEFENSA = puntosDefensa;
         }
-
-
 
         #region PROPIEDADES 
         public int ID
@@ -83,7 +76,6 @@ namespace Assets.scrips.modelo.Entidad
         }
         #endregion
 
-
         #region METODOS COMBATE
 
         public int Atacar()
@@ -98,6 +90,9 @@ namespace Assets.scrips.modelo.Entidad
             return PUNTOSDEFENSA + dado;
         }
 
+
+        #endregion
+
         public override string[] ObtenerValoresInstancias()
         {
             return new string[] {
@@ -110,10 +105,6 @@ namespace Assets.scrips.modelo.Entidad
             PUNTOSDEFENSA.ToString(),
             };
         }
-
-       
-
-        #endregion
 
     }
 }

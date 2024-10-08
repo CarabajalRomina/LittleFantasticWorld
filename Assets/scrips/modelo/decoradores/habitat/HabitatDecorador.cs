@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.scrips.modelo.decoradores.habitat
 {
@@ -16,7 +17,7 @@ namespace Assets.scrips.modelo.decoradores.habitat
             Habitat = habitat;
         }
 
-        public virtual bool PuedoMoverme(ITipoTerreno tipoTerreno)
+        public virtual bool PuedoMoverme(MonoBehaviour tipoTerreno)
         {
             return Habitat.PuedoMoverme(tipoTerreno);
         }

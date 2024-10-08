@@ -9,6 +9,6 @@ namespace Assets.scrips.interfaces.movible
 {
     public interface IMovible
     {
-        void Mover(Vector2 nuevaCoordenadaAxial, ITipoTerreno tipoTerreno);
+        void MoverHacia(Terreno terrenoDestino);
     }
 }

@@ -1,14 +1,12 @@
 using Assets.scrips.Controllers.entidad;
-using Assets.scrips.modelo.Habitats;
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
 public class Mapa : MonoBehaviour
 {
-
     [SerializeField] private OrientacionHex Orientacion;
     [SerializeField] private int Alto;
     [SerializeField] private int Ancho;
@@ -31,7 +29,7 @@ public class Mapa : MonoBehaviour
 
     public event System.Action CeldasInstanciasGeneradas;
 
-    public PersonajeController cntPersonajes;
+    private EntidadController cntPersonajes;
 
     #region PROPIEDADES
 
@@ -131,7 +129,7 @@ public class Mapa : MonoBehaviour
 
     private void Awake()
     {
-        cntPersonajes = PersonajeController.Instancia;
+        cntPersonajes = EntidadController.Instancia;
         OrigenGrid = transform.position;
         generadorMapa = FindObjectOfType<GeneradorMapa>();
 
@@ -145,22 +143,16 @@ public class Mapa : MonoBehaviour
         {   
             generadorMapa.AlGenerarseMapaDeTerreno += EstablecerTipoDeTerreno;
         }
-        var perso = cntPersonajes.PERSONAJES[0];
-        cntPersonajes.InstanciarPersonaje((Personaje)perso, perso.COORDAXIAL + this.transform.position);
+        var perso = cntPersonajes.ENTIDADES[0];
     }
 
-    private void ProcesoDeCargaMapa( float progreso)
-    {
-        Debug.Log("Progreso de carga: " + progreso * 100 +'%');
-    }
-  
     private void OnDisable()
     {
-        if(generadorMapa != null)
+        if (generadorMapa != null)
         {
             generadorMapa.AlGenerarseMapaDeTerreno -= EstablecerTipoDeTerreno;
         }
-        if(GenerarTerrenosTask != null && GenerarTerrenosTask.Status == TaskStatus.Running)
+        if (GenerarTerrenosTask != null && GenerarTerrenosTask.Status == TaskStatus.Running)
         {
             GenerarTerrenosTask.Dispose();
         }
@@ -168,6 +160,11 @@ public class Mapa : MonoBehaviour
         CeldaLoteGenerado -= ProcesoDeCargaMapa;
     }
 
+    private void ProcesoDeCargaMapa( float progreso)
+    {
+        Debug.Log("Progreso de carga: " + progreso * 100 +'%');
+    }
+  
     private void EstablecerTipoDeTerreno(TipoDeSubTerreno[,] mapaDeTerrenos)
     {
         BorrarTerrenos();
@@ -191,7 +188,6 @@ public class Mapa : MonoBehaviour
 
     private List<Terreno> GenerarDatosTerrenos(TipoDeSubTerreno[,] mapaDeTerrenos)
    {
-;
         List<Terreno> terrenosList = new List<Terreno>();
 
         for (int fila = 0; fila < Alto; fila++)
@@ -204,8 +200,8 @@ public class Mapa : MonoBehaviour
                 Terreno terreno = new Terreno();
                 terreno.GRILLAHEX = this;
                 terreno.SetCoordenadas(new Vector2(col,fila), ORIENTACION);
-                terreno.TIPOTERRENO = mapaDeTerrenos[flippedX, flippedY];
-                terreno.InicializarEstado(new Oculto());
+                terreno.TIPOSUBTERRENO = mapaDeTerrenos[flippedX, flippedY];
+                //terreno.InicializarEstado(new Oculto());
 
                 terrenosList.Add(terreno);
             }
@@ -243,7 +239,7 @@ public class Mapa : MonoBehaviour
         {
             for(int i = 0;i < terrenoQueue.Count; i++)
             {
-                HacerVisiblesTerrenosLimitrofes(terrenoQueue.Dequeue(), terrenoQueue);
+                (terrenoQueue.Dequeue()).CambiarEstadoTerrenosLimitrofes(new Visible());
             }
             rangoActual++;
         }
@@ -258,19 +254,6 @@ public class Mapa : MonoBehaviour
             {
                 terreno.CambiarEstado(new Visible());
                 terrenoQueue.Enqueue(terreno);
-            }
-        }
-    }
-
-    private void HacerVisiblesTerrenosLimitrofes(Terreno terrenoActual , Queue<Terreno> terrenoQueue)
-    {
-        var estado = new Visible();
-
-        foreach (Terreno terrenoLimitrofe in terrenoActual.TERRENOSLIMITROFES)
-        {
-            if (terrenoLimitrofe.ESTADO != estado)
-            {
-                terrenoLimitrofe.CambiarEstado(estado);
             }
         }
     }
@@ -325,6 +308,12 @@ public class Mapa : MonoBehaviour
     {
         return Terrenos.Find(c => c.COORDENADASAXIAL == coordenadas);
     }
+
+    public List<Terreno> TerrenosHabitables()
+    {
+        return Terrenos.Where(t => !(t.TIPOSUBTERRENO.TIPOTERRENO is Especial)).ToList();
+    }
+
 }
 
 public enum OrientacionHex

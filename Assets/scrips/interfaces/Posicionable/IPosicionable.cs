@@ -9,6 +9,6 @@ namespace Assets.scrips.interfaces.Posicionable
 {
     public interface IPosicionable
     {
-        void EstablecerPosicion(Vector2 coordenadaAxial);
+        void EstablecerPosicion(Vector3 posicion);
     }
 }

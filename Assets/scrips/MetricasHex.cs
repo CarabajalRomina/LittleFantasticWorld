@@ -80,6 +80,33 @@ public static class MetricasHex
 
     //_---------------------------------------------------------------------------
 
+    public static Vector3 AxialA3D(Vector2 axialCoords, float medidaHex,OrientacionHex orientacion)
+    {
+
+        if(orientacion == OrientacionHex.FlatTop)
+        {
+           return CoordenadaAxialA3D_FlatTop(axialCoords.x, axialCoords.y, medidaHex);
+        }
+        else
+        {
+           return CoordenadaAxialA3D_PointyTop(axialCoords.x, axialCoords.y, medidaHex);
+        }
+    }
+
+    static Vector3 CoordenadaAxialA3D_FlatTop(float q, float r, float tamañoHex)
+    {
+        float x = tamañoHex * (3f / 2f * q);
+        float z = tamañoHex * (Mathf.Sqrt(3) * r);
+
+        return new Vector3(x, 0, z);
+    }
+    static Vector3 CoordenadaAxialA3D_PointyTop(float q, float r, float tamañoHex)
+    {
+        float x = tamañoHex * (Mathf.Sqrt(3) * q);
+        float z = tamañoHex * (2f / 3f * r);
+
+        return new Vector3(x, 0, z);
+    }
     /// <summary>
     /// Convierte las cooordenadas de cubo a coordenadas de desplazamiento axial
     /// calculando el valor de s a partir de q y r
@@ -363,57 +390,17 @@ public static class MetricasHex
 
     private static Vector3 CoordTridimensionalFlat(float columna, float fila, float medidaHex)
     {
-        float desplazamientoX = 0;
-        float desplazamientoZ = 0;
-
-        if (columna > 0 )
-        {
-            //desplazamientoX =(columna * medidaHex * (0.87f / (medidaHex * columna))) * columna;
-            desplazamientoX = (columna * medidaHex * (2.61f / (medidaHex * columna))) * columna;
-
-        }
-
-        if (fila > 0)
-        {
-            //desplazamientoZ = (fila * medidaHex * (1.0041f / (medidaHex * fila))) * fila;
-            desplazamientoZ = (fila * medidaHex * (3.0123f / (medidaHex * fila))) * fila;
-
-        }
-
-        if (columna % 2 == 1)
-        {
-            //desplazamientoZ += medidaHex * 0.5f * Mathf.Sqrt(3.0f);
-
-            desplazamientoZ += medidaHex * 1.5f * Mathf.Sqrt(3.0f);
-        }
-
-        return new Vector3(desplazamientoX, 0f, desplazamientoZ);
+        float x = medidaHex * (3f / 2f * columna);
+        float z = medidaHex * (Mathf.Sqrt(3f) * (fila + 0.5f * (columna % 2)));
+        return new Vector3(x, 0f, z);
 
     }
 
     private static Vector3 CoordTridimensionalPointy(float columna, float fila, float medidaHex)
     {
-        float desplazamientoX = 0;
-        float desplazamientoZ = 0;
-        if(columna > 0)
-        {
-            //desplazamientoX = (columna * medidaHex * (1.0041f / (medidaHex * columna))) * columna;
-            desplazamientoX = (columna * medidaHex * (3.0123f / (medidaHex * columna))) * columna;
-
-        }
-
-        if (fila > 0)
-        {
-            //desplazamientoZ = (fila * medidaHex * (0.87f / (medidaHex * fila))) * fila;
-            desplazamientoZ = (fila * medidaHex * (2.61f / (medidaHex * fila))) * fila;
-        }
-
-        if (fila % 2 == 1)
-        {
-            desplazamientoX += medidaHex * Mathf.Sqrt(3f) / 2.0f;
-        }
-
-        return new Vector3(desplazamientoX, 0f, desplazamientoZ);
+        float x = medidaHex * (Mathf.Sqrt(3f) * (columna + 0.5f * (fila % 2)));
+        float z = medidaHex * (3f / 2f * fila);
+        return new Vector3(x, 0f, z);
     }
 
     public static List<Vector2> ObtenerHexAdyacentes(Vector2 coordenadasAxial)

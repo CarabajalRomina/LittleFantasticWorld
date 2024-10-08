@@ -5,11 +5,7 @@ using UnityEngine;
 public interface IEstadoHexEstrategia 
 {
 
-    void ActivarEstado(Transform terreno);
-    void DesactivarEstado(Transform terreno);
+    void ActivarEstado(Terreno terreno);
+    void DesactivarEstado(Terreno terreno);
 
-    IEstadoHexEstrategia OnMouseEnter();
-    IEstadoHexEstrategia OnMouseExit();
-    IEstadoHexEstrategia Seleccionar();
-    IEstadoHexEstrategia Deseleccionar();
 }

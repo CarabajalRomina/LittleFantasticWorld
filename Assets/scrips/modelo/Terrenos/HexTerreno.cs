@@ -8,9 +8,9 @@ using UnityEngine;
 
 public class HexTerreno : MonoBehaviour
 {
-
     public event Action OnMouseEnterAction;
     public event Action OnMouseExitAction;
+    public event Action OnMouseClickAction;
 
     private Collider ColliderPadre;
 
@@ -34,5 +34,10 @@ public class HexTerreno : MonoBehaviour
     private void OnMouseExit()
     {
         OnMouseExitAction?.Invoke();
+    }
+
+    private void OnMouseDown()
+    {
+        OnMouseClickAction?.Invoke();
     }
 }

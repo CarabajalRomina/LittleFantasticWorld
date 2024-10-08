@@ -5,5 +5,5 @@ using UnityEngine;
 
 public interface IHabitat
 {
-    public bool PuedoMoverme(ITipoTerreno tipoTerreno);
+    public bool PuedoMoverme(MonoBehaviour tipoTerreno);
 }

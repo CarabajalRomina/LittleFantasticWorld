@@ -8,13 +8,15 @@ using UnityEngine.UI;
 using Assets.scrips;
 using System.Linq;
 using System;
+using Assets.scrips.Controllers.reinos;
 
 
 
-public class CrudEntidadUI : MonoBehaviour
+public class CrudPersonajeUI : MonoBehaviour
 {
-    PersonajeController CntPersonaje; 
+    EntidadController CntPersonaje; 
     HabitatController CntHabitat = HabitatController.GetInstancia;
+    ControllerReino CntReino = ControllerReino.GetInstancia;
 
     #region ComponentesForm
     public TMP_InputField txtId;
@@ -42,7 +44,7 @@ public class CrudEntidadUI : MonoBehaviour
 
     void Start()
     {
-        CntPersonaje = PersonajeController.Instancia;
+        CntPersonaje = EntidadController.Instancia;
         CargarDropDowns();
         DeshabilitarOHabilitarElementosPanel(pnlForm);
     }
@@ -55,9 +57,9 @@ public class CrudEntidadUI : MonoBehaviour
             if (!CntPersonaje.NOMBRESSELECCIONADOS.Contains(ValidacionForm.NormalizarCadena(txtNombre.text)))
             {
                 lblAvisoNombre.text = "";
-                if (CntPersonaje.CrearEntidad(
+                if (CntPersonaje.CrearPersonaje(
                     ValidacionForm.NormalizarCadena(txtNombre.text),
-                    CntPersonaje.REINOS[ddReino.value - 1],
+                    CntReino.REINOS[ddReino.value - 1],
                     CntPersonaje.DIETAS[ddDieta.value - 1],
                     CntHabitat.HABITATS[ddHabitats.value - 1],
                     int.Parse(txtEnergiaMax.text),
@@ -68,12 +70,15 @@ public class CrudEntidadUI : MonoBehaviour
                     ))
                 {
                     lblAviso.text = "";
-                    tblEntidad.CargarTabla<Entidad>(CntPersonaje.PERSONAJES);
+                    if(CntPersonaje.GetPersonajes() != null)
+                    {
+                        tblEntidad.CargarTabla<Personaje>(CntPersonaje.GetPersonajes());
+                    }                 
                     BorrarForm();
                     DeshabilitarOHabilitarElementosPanel(pnlForm);
                     DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
                     lblAviso.text = "Se creo el personaje correctamente";
-                    Debug.Log(CntPersonaje.PERSONAJES[0].ToString());
+                    Debug.Log(CntPersonaje.ENTIDADES[0].ToString());
                 }else { lblAviso.text = "No se pudo crear el personaje"; }
 
             }else { lblAvisoNombre.text = "Ya existe ese nombre"; } 
@@ -92,7 +97,7 @@ public class CrudEntidadUI : MonoBehaviour
                 lblAviso.text = "";
                 foreach (var fila in tblEntidad.FilasSeleccionadas)
                 {
-                    if (CntPersonaje.Eliminar((Entidad)fila.OBJETO))
+                    if (CntPersonaje.Eliminar((Personaje)fila.OBJETO))
                     {
                         lblAviso.text = "Se elimino al personaje correctamente";
                         tblEntidad.QuitarFila(fila);
@@ -143,7 +148,7 @@ public class CrudEntidadUI : MonoBehaviour
                 if (CntPersonaje.EditarEntidad(
                     personaje,
                     ValidacionForm.NormalizarCadena(txtNombre.text),
-                    CntPersonaje.REINOS[ddReino.value - 1],
+                    CntReino.REINOS[ddReino.value - 1],
                     CntPersonaje.DIETAS[ddDieta.value - 1],
                     CntHabitat.HABITATS[ddHabitats.value - 1],
                     int.Parse(txtEnergiaMax.text),
@@ -153,7 +158,7 @@ public class CrudEntidadUI : MonoBehaviour
                     int.Parse(txtRangoDeAtaque.text)
                     ))
                 {
-                    tblEntidad.ActualizarFila<Entidad>(tblEntidad.FilasSeleccionadas.First(), personaje);
+                    tblEntidad.ActualizarFila<Assets.scrips.modelo.Entidad.Entidad>(tblEntidad.FilasSeleccionadas.First(), personaje);
                     lblAviso.text = "";
                     BorrarForm();
                     DeshabilitarOHabilitarElementosPanel(pnlForm);
@@ -175,7 +180,7 @@ public class CrudEntidadUI : MonoBehaviour
                     if (CntPersonaje.EditarEntidad(
                         (Personaje)tblEntidad.FilasSeleccionadas.First().OBJETO,
                         ValidacionForm.NormalizarCadena(txtNombre.text),
-                        CntPersonaje.REINOS[ddReino.value - 1],
+                        CntReino.REINOS[ddReino.value - 1],
                         CntPersonaje.DIETAS[ddDieta.value - 1],
                         CntHabitat.HABITATS[ddHabitats.value - 1],
                         int.Parse(txtEnergiaMax.text),
@@ -186,7 +191,7 @@ public class CrudEntidadUI : MonoBehaviour
                         ))
                     {
                         lblAviso.text = "";
-                        tblEntidad.ActualizarFila<Entidad>(tblEntidad.FilasSeleccionadas.First(), personaje);
+                        tblEntidad.ActualizarFila<Assets.scrips.modelo.Entidad.Entidad>(tblEntidad.FilasSeleccionadas.First(), personaje);
                         BorrarForm();
                         DeshabilitarOHabilitarElementosPanel(pnlForm);
                         DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
@@ -206,7 +211,7 @@ public class CrudEntidadUI : MonoBehaviour
     {
         txtId.text = personaje.ID.ToString();
         txtNombre.text = personaje.NOMBRE;
-        ddReino.value = CntPersonaje.REINOS.IndexOf(personaje.REINO) + 1;
+        ddReino.value = CntReino.REINOS.IndexOf(personaje.REINO) + 1;
         ddDieta.value = CntPersonaje.DIETAS.IndexOf(personaje.DIETA) + 1;
         ddHabitats.value = CntHabitat.HABITATS.IndexOf(personaje.HABITATS) + 1;
         txtEnergiaMax.text = personaje.ENERGIAMAX.ToString();
@@ -247,7 +252,7 @@ public class CrudEntidadUI : MonoBehaviour
     {
         CargarOpciones(CntPersonaje.DIETAS, ddDieta);
         CargarOpciones(CntHabitat.HABITATS, ddHabitats);
-        CargarOpciones(CntPersonaje.REINOS, ddReino);
+        CargarOpciones(CntReino.REINOS, ddReino);
     }
     private void CargarOpciones<T>(List<T> opciones, TMP_Dropdown dropdown )
     {

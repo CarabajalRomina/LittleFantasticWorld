@@ -1,10 +1,5 @@
 ﻿using Assets.scrips.interfaces;
 using Assets.scrips.interfaces.Posicionable;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.scrips.modelo.Entidad
@@ -13,10 +8,9 @@ namespace Assets.scrips.modelo.Entidad
     {
         protected string Nombre;
         protected IReino Reino;
-        protected IHabitat Habitats; 
-
-        protected Vector3 CoordenadaAxial = new Vector3(0, 0.5f, 0);
-
+        protected IHabitat Habitats;
+        // protected Vector3 PosicionActual;
+        protected Terreno TerrenoActual;
         protected GameObject PersonajePrefab;
         protected GameObject InstanciaPersonaje;
 
@@ -65,19 +59,18 @@ namespace Assets.scrips.modelo.Entidad
             }
         }
 
-        public Vector3 COORDAXIAL
+        public Terreno TERRENOACTUAL
         {
-            get { return CoordenadaAxial; }
+            get { return TerrenoActual; }
             set
             {
                 if (value != null)
                 {
-                    CoordenadaAxial = value;
+                    TerrenoActual = value;
                 }
                 else
                 {
                     Debug.Log("el valor es null");
-                    CoordenadaAxial = new Vector3(0, 0, 0);
                 }
             }
         }
@@ -125,9 +118,9 @@ namespace Assets.scrips.modelo.Entidad
                 $"Habitats: {HABITATS}";
         }
         public abstract string[] ObtenerValoresInstancias();
-        public void EstablecerPosicion(Vector2 coordenadaInicial)
+        public void EstablecerPosicion(Vector3 posicion)
         {
-            CoordenadaAxial = coordenadaInicial;
+            TERRENOACTUAL.POSICIONTRIDIMENSIONAL = posicion;
         }
     }
 }
