@@ -1,4 +1,4 @@
-﻿using Assets.scrips.modelo.Entidad;
+﻿using Assets.scrips.modelo.entidad;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -2,7 +2,7 @@ using Assets.scrips;
 using Assets.scrips.Controllers.entidad;
 using Assets.scrips.Controllers.habitat;
 using Assets.scrips.Controllers.reinos;
-using Assets.scrips.modelo.Entidad;
+using Assets.scrips.modelo.entidad;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ public class CrudEnemigoUI : MonoBehaviour
 {
     EntidadController CntEntidad;
     HabitatController CntHabitat = HabitatController.GetInstancia;
-    ControllerReino CntReino = ControllerReino.GetInstancia;
+    ReinoController CntReino = ReinoController.GetInstancia;
 
 
     #region ComponentesForm

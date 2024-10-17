@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.scrips.modelo.EstadosDeInteraccion.tiposEstados
+namespace Assets.scrips.modelo.estadosDeInteraccion.tiposEstados
 {
     public class Seleccionado : IEstadoHexEstrategia
     {

@@ -1,19 +1,19 @@
 using Assets.scrips.interfaces;
 using Assets.scrips.interfaces.interactuable;
-using Assets.scrips.modelo.Entidad;
+using Assets.scrips.interfaces.posicionable;
+using Assets.scrips.modelo.entidad;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Comida: IInteractuable, IDescribible
+public class Comida: IInteractuable, IDescribible, IPosicionable
 {
     int Id;
     static int GlobalCount = 0;
     string Nombre;
     int Calorias;
     IDieta TipoDieta;
-    
-
+    Terreno TerrenoActual;
 
     #region PROPIEDADES
     public int ID
@@ -34,6 +34,11 @@ public class Comida: IInteractuable, IDescribible
     {
         get { return TipoDieta;}
         set { TipoDieta = value; }
+    }
+    public Terreno TERRENOACTUAL
+    {
+        get { return TerrenoActual; }
+        set { TerrenoActual = value; }
     }
 
     #endregion
@@ -70,4 +75,12 @@ public class Comida: IInteractuable, IDescribible
             CALORIAS.ToString(),
             };
     }
+
+    public void EstablecerPosicion(Terreno terrenoDestino)
+    {
+        TerrenoActual = terrenoDestino;
+        TerrenoActual.AgregarInteractuable(this);
+    }
+
+   
 }

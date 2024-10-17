@@ -1,12 +1,6 @@
 ﻿using Assets.scrips.fabricas.habitats;
 using Assets.scrips.fabricas.habitats.fabricaHabitat;
-using Assets.scrips.modelo.Entidad;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 
 namespace Assets.scrips.Controllers.habitat
 {

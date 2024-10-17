@@ -6,9 +6,6 @@ using UnityEngine;
 
 public class Visible : IEstadoHexEstrategia
 {
-
-
-
     public void ActivarEstado(Terreno terreno)
     {
         if (terreno.TRANSFTERRENO != null && !terreno.TRANSFTERRENO.gameObject.activeSelf)

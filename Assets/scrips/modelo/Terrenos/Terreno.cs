@@ -1,8 +1,8 @@
 using Assets.scrips.Controllers;
 using Assets.scrips.interfaces.interactuable;
-using Assets.scrips.modelo.Configuraciones;
-using Assets.scrips.modelo.Entidad;
-using Assets.scrips.modelo.EstadosDeInteraccion.tiposEstados;
+using Assets.scrips.modelo.configuraciones;
+using Assets.scrips.modelo.entidad;
+using Assets.scrips.modelo.estadosDeInteraccion.tiposEstados;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,7 +17,7 @@ public class Terreno
     private List<Terreno> TerrenosLimitrofes;
     [SerializeField] private Transform TransfTerreno;
     [SerializeField] private IEstadoHexEstrategia Estado;
-    List<Assets.scrips.modelo.Entidad.Entidad> Entidades;
+    List<Entidad> Entidades;
     List<IInteractuable> Interactuables;
 
     #region PROPIEDADES
@@ -70,7 +70,7 @@ public class Terreno
         set { Estado = value; }
     }
 
-    public List<Assets.scrips.modelo.Entidad.Entidad> ENTIDADES
+    public List<Entidad> ENTIDADES
     {
         get { return Entidades; }
         set { Entidades = value; }
@@ -194,7 +194,7 @@ public class Terreno
 
     #endregion
 
-    public void AgregarEntidad(Assets.scrips.modelo.Entidad.Entidad entidad)
+    public void AgregarEntidad(Entidad entidad)
     {
         if ((entidad is Personaje && CantPersonajes() >= ConfiguracionGeneral.CantMaxPersonajesXTerreno) && Entidades.Contains(entidad))
         {
@@ -206,7 +206,7 @@ public class Terreno
         }
     }
 
-    public void EliminarEntidad(Assets.scrips.modelo.Entidad.Entidad entidad)
+    public void EliminarEntidad(Entidad entidad)
     {
         if (Entidades.Contains(entidad))
         {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.scrips.modelo.Habitats
+namespace Assets.scrips.modelo.habitats
 {
     public class Aereo: IHabitat
     {

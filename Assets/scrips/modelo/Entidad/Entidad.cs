@@ -1,8 +1,8 @@
 ﻿using Assets.scrips.interfaces;
-using Assets.scrips.interfaces.Posicionable;
+using Assets.scrips.interfaces.posicionable;
 using UnityEngine;
 
-namespace Assets.scrips.modelo.Entidad
+namespace Assets.scrips.modelo.entidad
 {
     public abstract class Entidad: IDescribible, IPosicionable
     {
@@ -118,9 +118,10 @@ namespace Assets.scrips.modelo.Entidad
                 $"Habitats: {HABITATS}";
         }
         public abstract string[] ObtenerValoresInstancias();
-        public void EstablecerPosicion(Vector3 posicion)
+        public void EstablecerPosicion(Terreno terrenoDestino)
         {
-            TERRENOACTUAL.POSICIONTRIDIMENSIONAL = posicion;
+            TERRENOACTUAL = terrenoDestino;
+            TERRENOACTUAL.AgregarEntidad(this);
         }
     }
 }

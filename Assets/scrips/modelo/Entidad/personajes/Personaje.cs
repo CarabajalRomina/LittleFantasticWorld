@@ -1,7 +1,8 @@
 using Assets.scrips.interfaces;
 using Assets.scrips.interfaces.movible;
-using Assets.scrips.modelo.Configuraciones;
-using Assets.scrips.modelo.Entidad;
+using Assets.scrips.modelo.configuraciones;
+using Assets.scrips.modelo.entidad;
+using Assets.scrips.modelo.inventario;
 using UnityEngine;
 
 public class Personaje : Entidad, ICombate, IMovible
@@ -17,6 +18,7 @@ public class Personaje : Entidad, ICombate, IMovible
     int PuntosDefensa;
     int RangoAtaque;
     private bool enMovimiento = false; // Estado del movimiento
+    Inventario InventarioActual;
 
 
 
@@ -61,9 +63,16 @@ public class Personaje : Entidad, ICombate, IMovible
         get { return VidaActual; }
         set
         {
-            if (value >= 0 || value <= VidaMax)
+            if (value > 0 || value <= VidaMax)
             {
                 VidaActual = value;
+            }
+            else
+            {
+                if(value > VidaMax)
+                {
+                    VidaActual = VidaMax;
+                }
             }
         }
     }
@@ -144,25 +153,73 @@ public class Personaje : Entidad, ICombate, IMovible
         }
     }
 
-   
-
+    public Inventario INVENTARIOACTUAL
+    {
+        get { return INVENTARIOACTUAL; }
+        set { InventarioActual = value; }
+    }
 
     #endregion
 
     #region METODOS COMBATE
     public int Atacar()
     {
-        var dado = Dado.TirarDado(1, 6);
+        var dado = Dado.TirarDado();
         return PUNTOSATAQUE + dado;
     }
 
     public int Defender()
     {
-        var dado = Dado.TirarDado(1, 6);
+        var dado = Dado.TirarDado();
         return PUNTOSDEFENSA + dado;
     }
 
     #endregion
+
+    #region MOVIMIENTO
+    public void IniciarMovimiento()
+    {
+        if (!enMovimiento) // Solo inicia el movimiento si no está ya moviéndose
+        {
+            enMovimiento = true; // Cambia el estado a moviéndose
+        }
+    }
+    public void MoverHacia(Terreno terrenoDestino)
+    {
+        if (HABITATS.PuedoMoverme(terrenoDestino.TIPOSUBTERRENO.TIPOTERRENO))
+        {
+            if (enMovimiento)
+            {
+                //Mueve el personaje suavemente hacia la posición objetivo
+                TerrenoActual.POSICIONTRIDIMENSIONAL = Vector3.Lerp(
+                    TerrenoActual.POSICIONTRIDIMENSIONAL,
+                    terrenoDestino.POSICIONTRIDIMENSIONAL,
+                    ConfiguracionGeneral.VelocidadMovimientoPersonaje * Time.deltaTime
+                    );
+                // Comprueba si ha llegado a la posición objetivo
+                if (Vector3.Distance(TerrenoActual.POSICIONTRIDIMENSIONAL, terrenoDestino.POSICIONTRIDIMENSIONAL) < 0.1f)
+                {
+                    // Asegura que la posición actual sea exactamente la posición objetivo
+                    TerrenoActual.POSICIONTRIDIMENSIONAL = terrenoDestino.POSICIONTRIDIMENSIONAL;
+                    enMovimiento = false; // Resetea el estado de movimiento
+                }
+                else
+                {
+                    Debug.Log("no se llego a destino");
+                }
+            }
+            else
+            {
+                Debug.Log("no se inicio el movimiento");
+            }
+        }
+        else
+        {
+            Debug.Log("no puede ir a un habitat a la que no esta adaptado...");
+        }
+    }
+    #endregion
+
 
     public void Comer(Comida alimento)
     {
@@ -186,26 +243,6 @@ public class Personaje : Entidad, ICombate, IMovible
         else ENERGIACTUAL = +valor;
     }
 
-    public override string ToString()
-    {
-        return $"" +
-            $" Entidad: " +
-            $" Id: {ID}," +
-            $" Nombre: {NOMBRE}," +
-            $" Reino: {REINO}," +
-            $" Dieta: {DIETA}," +
-            $" Habitats: {HABITATS}," +
-            $" Energia maxima: {ENERGIAMAX}," +
-            $" Energia actual: {ENERGIACTUAL}," +
-            $" Vida maxima: {VIDAMAX}," +
-            $" Vida actual: {VIDAACTUAL}," +
-            $" Puntos de ataque: {PUNTOSATAQUE}," +
-            $" Puntos de defensa: {PUNTOSDEFENSA}," +
-            $" Rango de ataque: {RANGOATAQUE}," +
-            $" prefab: {PERSONAJEPREFAB}";
-
-    }
-
     public void AumentarEnergiaActual(int valor)
     {
         ENERGIACTUAL += valor;
@@ -226,6 +263,27 @@ public class Personaje : Entidad, ICombate, IMovible
         VIDAACTUAL -= valor;
     }
 
+    public void AumentarPuntosAtaque(int valor)
+    {
+        PUNTOSATAQUE += valor;
+    }
+    public void ReducirPuntosAtaque(int valor)
+    {
+        PUNTOSATAQUE -= valor;
+    }
+
+    public void AumentarPuntosDefensa(int valor)
+    {
+        PUNTOSDEFENSA += valor;
+    }
+    public void ReducirPuntosDefensa(int valor)
+    {
+        PUNTOSDEFENSA -= valor;
+    }
+
+   
+
+   
     public void UsarItem(Item item)
     {
         item.Interactuar(this);
@@ -234,6 +292,26 @@ public class Personaje : Entidad, ICombate, IMovible
     public void Dormir()
     {
         ActualizarEnergia(ENERGIAMAX);
+    }
+
+    public override string ToString()
+    {
+        return $"" +
+            $" Entidad: " +
+            $" Id: {ID}," +
+            $" Nombre: {NOMBRE}," +
+            $" Reino: {REINO}," +
+            $" Dieta: {DIETA}," +
+            $" Habitats: {HABITATS}," +
+            $" Energia maxima: {ENERGIAMAX}," +
+            $" Energia actual: {ENERGIACTUAL}," +
+            $" Vida maxima: {VIDAMAX}," +
+            $" Vida actual: {VIDAACTUAL}," +
+            $" Puntos de ataque: {PUNTOSATAQUE}," +
+            $" Puntos de defensa: {PUNTOSDEFENSA}," +
+            $" Rango de ataque: {RANGOATAQUE}," +
+            $" prefab: {PERSONAJEPREFAB}";
+
     }
 
     public override string[] ObtenerValoresInstancias()
@@ -252,46 +330,7 @@ public class Personaje : Entidad, ICombate, IMovible
             };
     }
 
-    public void IniciarMovimiento()
-    {
-        if (!enMovimiento) // Solo inicia el movimiento si no está ya moviéndose
-        {
-            enMovimiento = true; // Cambia el estado a moviéndose
-        }
-    }
-    public void MoverHacia(Terreno terrenoDestino)
-    {
-        if (HABITATS.PuedoMoverme(terrenoDestino.TIPOSUBTERRENO.TIPOTERRENO))
-        {
-            if(enMovimiento)
-            {
-                //Mueve el personaje suavemente hacia la posición objetivo
-                TerrenoActual.POSICIONTRIDIMENSIONAL = Vector3.Lerp(
-                    TerrenoActual.POSICIONTRIDIMENSIONAL,
-                    terrenoDestino.POSICIONTRIDIMENSIONAL,
-                    ConfiguracionGeneral.VelocidadMovimientoPersonaje * Time.deltaTime
-                    );
-                // Comprueba si ha llegado a la posición objetivo
-                if(Vector3.Distance(TerrenoActual.POSICIONTRIDIMENSIONAL, terrenoDestino.POSICIONTRIDIMENSIONAL) < 0.1f)
-                {
-                    // Asegura que la posición actual sea exactamente la posición objetivo
-                    TerrenoActual.POSICIONTRIDIMENSIONAL = terrenoDestino.POSICIONTRIDIMENSIONAL;
-                    enMovimiento = false; // Resetea el estado de movimiento
-                }else
-                {
-                    Debug.Log("no se llego a destino");
-                }
-            }else
-            {
-                Debug.Log("no se inicio el movimiento");
-            }     
-        }
-        else
-        {
-            Debug.Log("no puede ir a un habitat a la que no esta adaptado...");
-        }  
-    }
 }
-  
+
 
 

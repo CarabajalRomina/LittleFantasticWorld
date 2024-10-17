@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Assets.scrips.modelo.Dietas
+namespace Assets.scrips.modelo.dietas
 {
     public class Fotosintetico : IDieta
     {

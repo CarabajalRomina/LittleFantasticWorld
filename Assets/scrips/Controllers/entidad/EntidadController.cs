@@ -1,7 +1,7 @@
 ﻿using Assets.scrips.fabricas.dietas;
 using Assets.scrips.fabricas.entidades.enemigos;
 using Assets.scrips.fabricas.entidades.personajes;
-using Assets.scrips.modelo.Entidad;
+using Assets.scrips.modelo.entidad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +48,7 @@ namespace Assets.scrips.Controllers.entidad
             {
                 if (ENTIDADES.Contains(entidad))
                 {
+                    entidad.TERRENOACTUAL.EliminarEntidad(entidad);
                     ENTIDADES.Remove(entidad);
                     NOMBRESSELECCIONADOS.Remove(entidad.NOMBRE);
                     return true;

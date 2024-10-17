@@ -5,9 +5,11 @@ using UnityEngine;
 
 public static class Dado 
 {
+    static int MinCaras = 1;
+    static int MaxCaras = 6;
 
-    public static int TirarDado(int minCaras, int maxCaras)
+    public static int TirarDado()
     {
-        return Utilidades.GenerarNumeroAleatorio(minCaras, maxCaras + 1);
+        return Utilidades.GenerarNumeroAleatorio(MinCaras, MaxCaras + 1);
     }
 }

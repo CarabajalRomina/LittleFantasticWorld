@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using Assets.scrips;
 using System.Linq;
 using Assets.scrips.Controllers.reinos;
-using Assets.scrips.modelo.Entidad;
+using Assets.scrips.modelo.entidad;
 
 
 
@@ -15,7 +15,7 @@ public class CrudPersonajeUI : MonoBehaviour
 {
     EntidadController CntEntidad; 
     HabitatController CntHabitat = HabitatController.GetInstancia;
-    ControllerReino CntReino = ControllerReino.GetInstancia;
+    ReinoController CntReino = ReinoController.GetInstancia;
 
     #region ComponentesForm
     public TMP_InputField txtId;

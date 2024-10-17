@@ -1,7 +1,6 @@
 using Assets.scrips;
 using Assets.scrips.Controllers.comida;
 using Assets.scrips.Controllers.entidad;
-using Assets.scrips.modelo.Entidad;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -10,7 +9,7 @@ using UnityEngine.UI;
 public class CrudComidaUI : MonoBehaviour
 {
     EntidadController CntEntidad;
-    ControllerComida CntComida = ControllerComida.GetInstancia;
+    ComidaController CntComida = ComidaController.GetInstancia;
 
 
     #region ComponentesForm
@@ -61,7 +60,7 @@ public class CrudComidaUI : MonoBehaviour
                     lblAviso.text = "Se creo la comida correctamente";
                     Debug.Log(CntComida.COMIDAS[0].ToString());
                 }
-                else { lblAviso.text = "No se pudo crear el comida"; }
+                else { lblAviso.text = "No se pudo crear la comida"; }
             }
             else { lblAviso.text = "Ya existe ese nombre de comida"; }
         }
@@ -147,10 +146,10 @@ public class CrudComidaUI : MonoBehaviour
                     Utilidades.ActivarODesactivarUnBtn(btnActualizar);
                     btnActualizar.interactable = true;
                     tblComidas.HabilitarODeshabilitarInteractividadTabla();
-                    lblAviso.text = "Se creo la comida correctamente";
+                    lblAviso.text = "Se actualizo la comida correctamente";
 
                 }
-                else { lblAviso.text = "No se pudo crear la comida"; }
+                else { lblAviso.text = "No se pudo actualizar la comida"; }
 
             }
             else

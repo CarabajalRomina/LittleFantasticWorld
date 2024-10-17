@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Assets.scrips.interfaces.Posicionable
+namespace Assets.scrips.interfaces.posicionable
 {
     public interface IPosicionable
     {
-        void EstablecerPosicion(Vector3 posicion);
+        void EstablecerPosicion(Terreno terrenoDestino);
     }
 }

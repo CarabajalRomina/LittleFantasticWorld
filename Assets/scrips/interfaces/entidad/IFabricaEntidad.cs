@@ -1,4 +1,4 @@
-﻿using Assets.scrips.modelo.Entidad;
+﻿using Assets.scrips.modelo.entidad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +9,6 @@ namespace Assets.scrips.interfaces.fabricas.entidad
 {
     public interface IFabricaEntidad
     {
-        bool CrearEntidad(out modelo.Entidad.Entidad personaje);
+        bool CrearEntidad(out Entidad personaje);
     }
 }

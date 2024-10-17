@@ -1,6 +1,6 @@
 ﻿using Assets.scrips.interfaces;
 
-namespace Assets.scrips.modelo.Entidad
+namespace Assets.scrips.modelo.entidad
 {
     public class Enemigo : Entidad, ICombate
     {
@@ -80,16 +80,15 @@ namespace Assets.scrips.modelo.Entidad
 
         public int Atacar()
         {
-            var dado = Dado.TirarDado(1, 6);
+            var dado = Dado.TirarDado();
             return PUNTOSATAQUE + dado;
         }
 
         public int Defender()
         {
-            var dado = Dado.TirarDado(1, 6);
+            var dado = Dado.TirarDado();
             return PUNTOSDEFENSA + dado;
         }
-
 
         #endregion
 
