@@ -12,7 +12,7 @@ namespace Assets.scrips.Controllers
         private void Start()
         {
             EntidadController CntPersonaje = EntidadController.Instancia;
-            PersonajeSeleccionado = (Personaje)CntPersonaje.ENTIDADES.First();
+            PersonajeSeleccionado = (Personaje)CntPersonaje.GetPersonajes().FirstOrDefault();
         }
 
         private void Update()

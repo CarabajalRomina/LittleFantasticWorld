@@ -46,6 +46,10 @@ public class CrudPersonajeUI : MonoBehaviour
         CntEntidad = EntidadController.Instancia;
         CargarDropDowns();
         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
+        if (CntEntidad.GetPersonajes() != null)
+        {
+            ActualizarTabla();
+        }
     }
    
     public void Crear()
@@ -71,7 +75,7 @@ public class CrudPersonajeUI : MonoBehaviour
                     lblAviso.text = "";
                     if(CntEntidad.GetPersonajes() != null)
                     {
-                        tblEntidad.CargarTabla<Personaje>(CntEntidad.GetPersonajes());
+                        ActualizarTabla();
                     }                 
                     BorrarForm();
                     Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
@@ -85,6 +89,11 @@ public class CrudPersonajeUI : MonoBehaviour
         }else{ lblAviso.text = "Seleccione o complete todos los campos";}
     }
        
+    private void ActualizarTabla()
+    {
+        tblEntidad.ClearTable();
+        tblEntidad.CargarTabla<Personaje>(CntEntidad.GetPersonajes());
+    }
     public void Eliminar() 
     {
         lblAviso.text = "";

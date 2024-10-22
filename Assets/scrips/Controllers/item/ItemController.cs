@@ -1,4 +1,5 @@
 ﻿using Assets.scrips.interfaces.efecto;
+using Assets.scrips.interfaces.interactuable;
 using Assets.scrips.modelo.interactuables.item.estrategias;
 using System;
 using System.Collections.Generic;
@@ -87,6 +88,28 @@ namespace Assets.scrips.Controllers.item
             {
                 Debug.LogError($"Error al eliminar el item: {e.Message}");
                 return false;
+            }
+        }
+
+        public IInteractuable ObtenerItemAleatorio()
+        {
+            if(Items.Count > 0)
+            {
+                var numRandom = Utilidades.GenerarNumeroAleatorio(0, Items.Count);
+                if(numRandom != null)
+                {
+                    return Items[numRandom];
+                }
+                else
+                {
+                    Debug.Log("el numero random es  null");
+                    return null;
+                }
+            }
+            else
+            {
+                Debug.Log("no hay items ");
+                return null;
             }
         }
     }

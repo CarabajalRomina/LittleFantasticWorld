@@ -169,8 +169,21 @@ namespace Assets.scrips.Controllers.entidad
             return Entidades.OfType<Enemigo>().ToList();
         }
 
-
         #endregion
+
+        public Enemigo ObtenerEnemigoAleatorio()
+        {
+            var enemigos = GetEnemigos();
+            if(enemigos.Count != 0)
+            {
+                return enemigos[Utilidades.GenerarNumeroAleatorio(0, enemigos.Count)];
+            }
+            else
+            {
+                return null;
+            }
+            
+        } 
         #endregion
     }
 }

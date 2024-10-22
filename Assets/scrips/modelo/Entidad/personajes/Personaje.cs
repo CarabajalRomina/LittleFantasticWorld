@@ -35,7 +35,6 @@ public class Personaje : Entidad, ICombate, IMovible
         ENERGIACTUAL = energiaMax;
         RANGOATAQUE = rangoAtaque;
         PersonajePrefab = Resources.Load<GameObject>("personajesPref/Golem");
-
     }
 
     #endregion
@@ -155,7 +154,7 @@ public class Personaje : Entidad, ICombate, IMovible
 
     public Inventario INVENTARIOACTUAL
     {
-        get { return INVENTARIOACTUAL; }
+        get { return InventarioActual; }
         set { InventarioActual = value; }
     }
 
@@ -281,9 +280,6 @@ public class Personaje : Entidad, ICombate, IMovible
         PUNTOSDEFENSA -= valor;
     }
 
-   
-
-   
     public void UsarItem(Item item)
     {
         item.Interactuar(this);

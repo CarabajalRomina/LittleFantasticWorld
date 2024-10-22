@@ -94,7 +94,7 @@ namespace Assets.scrips.modelo.entidad
 
         public GameObject INSTANCIAPERSONAJE
         {
-            get { return PersonajePrefab; }
+            get { return InstanciaPersonaje; }
             set
             {
                 if (value != null)

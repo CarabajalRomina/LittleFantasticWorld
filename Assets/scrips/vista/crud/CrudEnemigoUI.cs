@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,6 +45,10 @@ public class CrudEnemigoUI : MonoBehaviour
         CntEntidad = EntidadController.Instancia;
         CargarDropDowns();
         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
+        if (CntEntidad.GetPersonajes() != null)
+        {
+            ActualizarTabla();
+        }
     }
 
     public void Crear()
@@ -66,7 +71,7 @@ public class CrudEnemigoUI : MonoBehaviour
                     lblAviso.text = "";
                     if (CntEntidad.GetPersonajes() != null)
                     {
-                        tblEnemigos.CargarTabla<Enemigo>(CntEntidad.GetEnemigos());
+                        ActualizarTabla();
                     }
                     BorrarForm();
                     Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
@@ -81,6 +86,12 @@ public class CrudEnemigoUI : MonoBehaviour
 
         }
         else { lblAviso.text = "Seleccione o complete todos los campos"; }
+    }
+
+    private void ActualizarTabla()
+    {
+        tblEnemigos.ClearTable();
+        tblEnemigos.CargarTabla<Enemigo>(CntEntidad.GetEnemigos());
     }
 
     public void Eliminar()

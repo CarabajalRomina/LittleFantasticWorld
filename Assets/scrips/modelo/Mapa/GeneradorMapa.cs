@@ -76,8 +76,7 @@ public class GeneradorMapa : MonoBehaviour
     {
         if (GenerarMapaAlIniciar)
         {
-            GenerarMapa();
-           
+            GenerarMapa();      
         }
     }
 
@@ -93,6 +92,7 @@ public class GeneradorMapa : MonoBehaviour
         ValidarConfiguracion();
 
         StartCoroutine(GenerarMapaCorrutina());
+
     }
 
     private IEnumerator GenerarMapaCorrutina()
@@ -129,14 +129,12 @@ public class GeneradorMapa : MonoBehaviour
             ColorMap = GenerarColoresDeTerreno(MapaDelTerreno);
         }
 
-
         AlGenerarseMapaDeRuido?.Invoke(MapaNoise);
         AlGenerarseColorMapa?.Invoke(ColorMap, Ancho, Alto);
         AlGenerarseMapaDeTerreno?.Invoke(MapaDelTerreno);
         
         yield return null;
     }
-
 
     private void ValidarConfiguracion()
     {
@@ -149,7 +147,6 @@ public class GeneradorMapa : MonoBehaviour
         Alto =  Mathf.Max(Alto, 1);
     }
 
-
     private TipoDeSubTerreno[,] AsignarTipoDeTerreno(float[,] mapaNoise)
     {
         TipoDeSubTerreno[,] mapaDeTerreno = new TipoDeSubTerreno[Ancho, Alto];
@@ -159,7 +156,6 @@ public class GeneradorMapa : MonoBehaviour
             for(int x = 0; x < Ancho; x++)
             {
                 float AlturaActual = mapaNoise[x,y];
-
 
                 for (int i = 0; i < Biomas.Count; i++)
                 {
@@ -174,7 +170,6 @@ public class GeneradorMapa : MonoBehaviour
                 {
                     mapaDeTerreno[x, y] = Biomas.Last().tipoDeSubTerreno;                 
                 }
-
             }
         }
 

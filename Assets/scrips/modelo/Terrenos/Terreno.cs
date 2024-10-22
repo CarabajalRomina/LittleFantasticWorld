@@ -3,6 +3,7 @@ using Assets.scrips.interfaces.interactuable;
 using Assets.scrips.modelo.configuraciones;
 using Assets.scrips.modelo.entidad;
 using Assets.scrips.modelo.estadosDeInteraccion.tiposEstados;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,8 +18,8 @@ public class Terreno
     private List<Terreno> TerrenosLimitrofes;
     [SerializeField] private Transform TransfTerreno;
     [SerializeField] private IEstadoHexEstrategia Estado;
-    List<Entidad> Entidades;
-    List<IInteractuable> Interactuables;
+    List<Entidad> Entidades =  new List<Entidad>();
+    List<IInteractuable> Interactuables =  new List<IInteractuable>();
 
     #region PROPIEDADES
 
@@ -84,18 +85,16 @@ public class Terreno
 
     #endregion
 
-    public void SetCoordenadas(Vector2 vector, OrientacionHex orientacion)
+    public void SetCoordenadas(Vector2 vector, OrientacionHex orientacion, float medidaHex)
     {
         COORDENADASOFFSET = vector;
         COORDENADASAXIAL = MetricasHex.CoordOffsetACoordAxial((int)vector.y, (int)vector.x, orientacion);
-        POSICIONTRIDIMENSIONAL = MetricasHex.CoordenadaTridimensional(vector.x, vector.y, GRILLAHEX.MEDIDAHEX, GRILLAHEX.ORIENTACION);
+        POSICIONTRIDIMENSIONAL = MetricasHex.CoordenadaTridimensional(vector.y, vector.x, medidaHex, orientacion) + GRILLAHEX.ORIGENGRID;
     }
-    public void CrearTerreno(Vector2 coordenadas)
+    public void CrearInstanciaTerrenoPrefab(Vector2 coordenadas)
     {
         if (TIPOSUBTERRENO.PREFAB != null)
         {
-            var posicionTerreno = MetricasHex.CoordenadaTridimensional(coordenadas.y, coordenadas.x, GRILLAHEX.MEDIDAHEX, GRILLAHEX.ORIENTACION) + GRILLAHEX.transform.position;
-
             Quaternion rotacionPrefab = Quaternion.identity;
 
             if (GRILLAHEX.ORIENTACION == OrientacionHex.FlatTop)
@@ -103,8 +102,8 @@ public class Terreno
                 rotacionPrefab = Quaternion.Euler(0, 30, 0);
             }
 
-            GameObject nuevoTerreno = GameObject.Instantiate(TIPOSUBTERRENO.PREFAB.gameObject, posicionTerreno, rotacionPrefab);
-            TRANSFTERRENO = nuevoTerreno.transform;
+            GameObject nuevoTerreno = GameObject.Instantiate(TIPOSUBTERRENO.PREFAB.gameObject, PosicionTridimensinal, rotacionPrefab);
+            TRANSFTERRENO = nuevoTerreno.transform;     
             InicializarEstado(new Oculto());
 
 
@@ -158,6 +157,21 @@ public class Terreno
         if(ESTADO is Visible && !(TIPOSUBTERRENO.TIPOTERRENO is Especial) && !(Estado is Ocupado))
         {
             CambiarEstado(new Resaltado());
+            if(ENTIDADES.Count > 0)
+            {
+                foreach (var entidad in this.ENTIDADES)
+                {
+                    Debug.Log(entidad.ToString());
+                }
+            }
+            if(INTERACTUABLES.Count > 0)
+            {
+                foreach (var interactuavle in INTERACTUABLES)
+                {
+                    Debug.Log(interactuavle.ToString());
+                }
+            }
+            
         }
     }
 
@@ -202,7 +216,14 @@ public class Terreno
         }
         else
         {
-            Entidades.Add(entidad);      
+            try
+            {
+                Entidades.Add(entidad);
+
+            }catch(Exception e)
+            {
+                Debug.LogError(e.Message);
+            }
         }
     }
 
@@ -216,7 +237,9 @@ public class Terreno
 
     public void AgregarInteractuable(IInteractuable interactuable)
     {
-        if (Interactuables.Count < ConfiguracionGeneral.CantidadMaxInteractuablesXTerreno && Interactuables.Contains(interactuable))
+        var cantMaxComida = ConfiguracionGeneral.CantidadMaxComidaXTerreno;
+        var cantMaxItems = ConfiguracionGeneral.CantidadMaxItemsXTerreno;
+        if (Interactuables.Count > (cantMaxComida + cantMaxItems)  || Interactuables.Contains(interactuable))
         {
             Debug.Log("Ya existen interactuables en el terreno");
         }

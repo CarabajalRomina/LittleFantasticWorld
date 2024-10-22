@@ -41,6 +41,21 @@ namespace Assets.scrips.fabricas.entidades.enemigos
                 return false;
             }
         }
+
+
+        public Entidad CrearEntidad()
+        {
+            try
+            {
+                return new Enemigo(Nombre, Reino, Habitats, VidaMax, PuntosAtaque, PuntosDefensa);
+               
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Error al crear el personaje: " + ex.Message);
+                return null;
+            }
+        }
     }
 }
 

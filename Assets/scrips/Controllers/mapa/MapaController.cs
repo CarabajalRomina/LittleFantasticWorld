@@ -1,30 +1,50 @@
 ﻿using Assets.scrips.interfaces.interactuable;
 using Assets.scrips.modelo.configuraciones;
+using Assets.scrips.Controllers;
 using Assets.scrips.modelo.entidad;
 using UnityEngine;
+using Assets.scrips.Controllers.entidad;
+using System.Linq;
+using System;
+using System.Collections;
+using Assets.scrips.Controllers.comida;
+using Assets.scrips.Controllers.item;
 
 
 namespace Assets.scrips.Controllers.mapa
 {
-    public class MapaController: Singleton<MapaController>
+    public class MapaController: SingletonMonoBehaviour<MapaController>
     {
+        EntidadController CntEntidad;
+        ComidaController CntComida = ComidaController.GetInstancia;
+        ItemController CntItem = ItemController.GetInstancia;
+        Personaje personajeSeleccionado;
+        public void Start()
+        {
+            CntEntidad = EntidadController.Instancia;
+            personajeSeleccionado = CntEntidad.GetPersonajes().First();
+        }
+
         public void CargarConObjTerrenosLimitrofes(Terreno terrenoActual)
         {
             foreach (Terreno terreno in terrenoActual.TERRENOSLIMITROFES)
             {
-                // Verifica si el terreno no está cargado
-                if (terreno.ENTIDADES == null) 
+                if(terreno.TIPOSUBTERRENO.TIPOTERRENO is not Especial)
                 {
-                    AsignarEnemigosProcedural(terreno); // Cargar enemigos solo si el terreno no está cargado
-
-                    if (terreno.INTERACTUABLES == null)
+                    // Verifica si el terreno no está cargado
+                    if (terreno.ENTIDADES.Count == 0)
                     {
-                        AsignarInteractuablesProcedural(terreno); // Cargar interactuable solo si el terreno no está cargado
-                    
+                        AsignarEnemigosProcedural(terreno); // Cargar enemigos solo si el terreno no está cargado
+
+                        if (terreno.INTERACTUABLES.Count == 0)
+                        {
+                            AsignarComidaProcedural(terreno); // Cargar interactuable solo si el terreno no está cargado
+                            AsignarItemProcedural(terreno);
+                        }
+                        else { Debug.Log("Ya esta cargado con interactuable"); }
                     }
-                    else{Debug.Log("Ya esta cargado con interactuable");}                  
-                }
-                else { Debug.Log("Ya esta cargado con entidades"); }
+                    else { Debug.Log("Ya esta cargado con entidades"); }
+                }       
             }
         }
 
@@ -36,33 +56,76 @@ namespace Assets.scrips.Controllers.mapa
             {
                 for (int i = 0; i < cantidadEnemigos; i++)
                 {
-                    //Enemigo enemigo = ctrlEnemigos.ObtenerEnemigoAleatorio();
-                   // terreno.AgregarEntidad(enemigo);
+                    Enemigo enemigo = CntEntidad.ObtenerEnemigoAleatorio();
+                    if(enemigo != null)
+                    {
+                        terreno.AgregarEntidad(enemigo);
+                    }
+                    else { Debug.Log("no existe un enemigo aleatorio"); }          
                 }
             }  
         }
 
-        private void AsignarInteractuablesProcedural(Terreno terreno)
+        private void AsignarComidaProcedural(Terreno terreno)
         {
-            int cantidadInteractuables = Utilidades.GenerarNumeroAleatorio(0, ConfiguracionGeneral.CantidadMaxInteractuablesXTerreno + 1);
+            int cantidadComida = Utilidades.GenerarNumeroAleatorio(0, ConfiguracionGeneral.CantidadMaxComidaXTerreno + 1);
 
-            if(cantidadInteractuables > 0)
+            if(cantidadComida > 0)
             {
-                for (int i = 0; i < cantidadInteractuables; i++)
+                for (int i = 0; i < cantidadComida; i++)
                 {
-                   // IInteractuable interactuable = ctrlInteractuables.ObtenerInteractuableAleatorio();
-                    //terreno.AñadirInteractuable(interactuable);
+                    IInteractuable interactuable = CntComida.ObtenerComidaAleatoria();
+                    if(interactuable != null)
+                    {
+                        terreno.AgregarInteractuable(interactuable);
+                    }
                 }
             }
            
         }
 
+        private void AsignarItemProcedural(Terreno terreno)
+        {
+            int cantidadItem = Utilidades.GenerarNumeroAleatorio(0, ConfiguracionGeneral.CantidadMaxItemsXTerreno + 1);
+
+            if (cantidadItem > 0)
+            {
+                for (int i = 0; i < cantidadItem; i++)
+                {
+                    IInteractuable interactuable = CntItem.ObtenerItemAleatorio();
+                    if (interactuable != null)
+                    {
+                        terreno.AgregarInteractuable(interactuable);
+                    }
+                }
+            }
+        }
 
 
-
-
-
-
-
+        public void InstanciarObjetos3D(Terreno terreno)
+        {
+            if(personajeSeleccionado != null)
+            {
+                GameObject per = personajeSeleccionado.PERSONAJEPREFAB.gameObject;
+               personajeSeleccionado.TERRENOACTUAL = terreno;
+                GameObject nuevaInstancia;
+                try
+                {
+                    DespachadorHiloPrincipal.Instancia.Enqueue(() => {
+                        nuevaInstancia = Instantiate(per, personajeSeleccionado.TERRENOACTUAL.POSICIONTRIDIMENSIONAL, Quaternion.identity);
+                        Debug.Log("Instancia creada: " + nuevaInstancia.name);
+                        if (nuevaInstancia != null)
+                        {
+                            personajeSeleccionado.INSTANCIAPERSONAJE = nuevaInstancia;
+                            Debug.Log("Se instancio el personaje correctamente");
+                        }
+                    });             
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError(e);
+                }       
+            }
+        }
     }
 }

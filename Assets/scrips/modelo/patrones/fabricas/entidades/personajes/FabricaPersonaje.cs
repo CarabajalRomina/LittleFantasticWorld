@@ -47,6 +47,20 @@ namespace Assets.scrips.fabricas.entidades.personajes
                 return false;
             }
         }
+
+        public Entidad CrearEntidad()
+        {
+            try
+            {
+                return new Personaje(Nombre, Reino, Habitats, VidaMax, Dieta, PuntosAtaque, PuntosDefensa, EnergiaMax, RangoAtaque);
+
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Error al crear el personaje: " + ex.Message);
+                return null;
+            }
+        }
     }
 }
 

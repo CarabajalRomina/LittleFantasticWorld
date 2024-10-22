@@ -36,6 +36,10 @@ public class CrudComidaUI : MonoBehaviour
         CntEntidad = EntidadController.Instancia;
         CargarDropDown();
         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
+        if (CntComida.COMIDAS.Count > 0)
+        {
+            ActualizarTabla();
+        }
     }
 
 
@@ -52,7 +56,7 @@ public class CrudComidaUI : MonoBehaviour
                     lblAviso.text = "";
                     if(CntComida.COMIDAS.Count > 0)
                     {
-                        tblComidas.CargarTabla<Comida>(CntComida.COMIDAS);
+                        ActualizarTabla();
                     }
                     BorrarForm();
                     Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
@@ -195,6 +199,11 @@ public class CrudComidaUI : MonoBehaviour
         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlBtnCrud);
     }
 
+    private void ActualizarTabla()
+    {
+        tblComidas.ClearTable();
+        tblComidas.CargarTabla<Comida>(CntComida.COMIDAS);
+    }
     public void Cancelar()
     {
         BorrarForm();

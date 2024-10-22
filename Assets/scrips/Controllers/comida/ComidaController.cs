@@ -1,9 +1,11 @@
 ﻿using Assets.scrips.fabricas.entidades.enemigos;
+using Assets.scrips.interfaces.interactuable;
 using Assets.scrips.modelo.entidad;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Schema;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;  
 
 namespace Assets.scrips.Controllers.comida
@@ -80,5 +82,27 @@ namespace Assets.scrips.Controllers.comida
             }
         }
 
+        public IInteractuable ObtenerComidaAleatoria()
+        {
+            if(Comidas.Count >= 0)
+            {
+                var numRandom = Utilidades.GenerarNumeroAleatorio(0, Comidas.Count);
+                if (numRandom != null)
+                {
+                    return Comidas[numRandom];
+                }
+                else
+                {
+                    Debug.Log("numero random es null");
+                    return null;
+                }
+            }
+            else
+            {
+                Debug.Log("No hay comidas");
+                return null;
+            }
+            
+        }
     }
 }

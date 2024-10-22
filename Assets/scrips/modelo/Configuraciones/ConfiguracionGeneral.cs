@@ -6,7 +6,8 @@ namespace Assets.scrips.modelo.configuraciones
     {
         #region TERRENOS
         public static readonly int CantMaxEnemigosXTerreno = 3;
-        public static readonly int CantidadMaxInteractuablesXTerreno = 4;
+        public static readonly int CantidadMaxComidaXTerreno = 2;
+        public static readonly int CantidadMaxItemsXTerreno = 2;
         public static readonly int CantMaxPersonajesXTerreno = 1;
         #endregion
 

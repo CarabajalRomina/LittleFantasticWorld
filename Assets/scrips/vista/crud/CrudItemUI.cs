@@ -37,6 +37,10 @@ namespace Assets.scrips.vista.crud
         void Start()
         {
             CargarDropDown();
+            if (CntItem.ITEMS.Count > 0)
+            {
+                ActualizarTabla();
+            }
             Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
         }
 
@@ -53,7 +57,7 @@ namespace Assets.scrips.vista.crud
                         lblAviso.text = "";
                         if (CntItem.ITEMS.Count > 0)
                         {
-                            tblItems.CargarTabla<Item>(CntItem.ITEMS);
+                            ActualizarTabla();
                         }
                         BorrarForm();
                         Utilidades.DeshabilitarOHabilitarElementosPanel(pnlForm);
@@ -69,7 +73,11 @@ namespace Assets.scrips.vista.crud
 
         }
 
-
+        private void ActualizarTabla()
+        {
+            tblItems.ClearTable();
+            tblItems.CargarTabla<Item>(CntItem.ITEMS);
+        }
         public void Eliminar()
         {
             lblAviso.text = "";
