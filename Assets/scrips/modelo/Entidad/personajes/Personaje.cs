@@ -190,16 +190,18 @@ public class Personaje : Entidad, ICombate, IMovible
             if (enMovimiento)
             {
                 //Mueve el personaje suavemente hacia la posición objetivo
-                TerrenoActual.POSICIONTRIDIMENSIONAL = Vector3.Lerp(
+                var llegadaTerrenoDestino = Vector3.Lerp(
                     TerrenoActual.POSICIONTRIDIMENSIONAL,
                     terrenoDestino.POSICIONTRIDIMENSIONAL,
-                    ConfiguracionGeneral.VelocidadMovimientoPersonaje * Time.deltaTime
+                    ConfiguracionGeneral.VelocidadMovimientoPersonaje * Time.deltaTime * 10
                     );
                 // Comprueba si ha llegado a la posición objetivo
-                if (Vector3.Distance(TerrenoActual.POSICIONTRIDIMENSIONAL, terrenoDestino.POSICIONTRIDIMENSIONAL) < 0.1f)
+                if (Vector3.Distance(llegadaTerrenoDestino, terrenoDestino.POSICIONTRIDIMENSIONAL) < 0.1f)
                 {
                     // Asegura que la posición actual sea exactamente la posición objetivo
-                    TerrenoActual.POSICIONTRIDIMENSIONAL = terrenoDestino.POSICIONTRIDIMENSIONAL;
+                    TerrenoActual = terrenoDestino;
+                    InstanciaPersonaje.transform.position = terrenoDestino.POSICIONTRIDIMENSIONAL;
+                    TERRENOACTUAL.AgregarEntidad(this);
                     enMovimiento = false; // Resetea el estado de movimiento
                 }
                 else

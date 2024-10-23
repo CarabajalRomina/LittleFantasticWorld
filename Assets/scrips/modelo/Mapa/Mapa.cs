@@ -160,7 +160,7 @@ public class Mapa : MonoBehaviour
 
     private void ProcesoDeCargaMapa( float progreso)
     {
-        Debug.Log("Progreso de carga: " + progreso * 100 +'%');
+        Debug.Log("Progreso de carga: " + Mathf.Round( progreso * 100) +'%');
     }
   
     private void GenerarTerrenos(TipoDeSubTerreno[,] mapaDeTerrenos)
@@ -239,6 +239,7 @@ public class Mapa : MonoBehaviour
             }
         }
         CeldasInstanciasGeneradas?.Invoke();
+        Debug.Log("--------------------------------TERMINO DE CARGAR EL MAPA----------------------------------------");
         // Llamamos a cargar objetos en los terrenos después de que todos han sido instanciados
         CargarTerrenosConObjetosAlFinalizarInstanciacion();
     }

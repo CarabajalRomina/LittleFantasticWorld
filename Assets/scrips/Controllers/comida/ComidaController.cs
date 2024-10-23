@@ -84,7 +84,7 @@ namespace Assets.scrips.Controllers.comida
 
         public IInteractuable ObtenerComidaAleatoria()
         {
-            if(Comidas.Count >= 0)
+            if(Comidas.Count > 0)
             {
                 var numRandom = Utilidades.GenerarNumeroAleatorio(0, Comidas.Count);
                 if (numRandom != null)

@@ -6,7 +6,7 @@ namespace Assets.scrips.Controllers
 {
     public class ControllerMovimiento : SingletonMonoBehaviour<ControllerMovimiento >
     {
-        Personaje PersonajeSeleccionado;
+        Personaje PersonajeSeleccionado {  get; set; }
         Terreno TerrenoDestino;
 
         private void Start()
@@ -30,7 +30,8 @@ namespace Assets.scrips.Controllers
 
             if (PersonajeSeleccionado != null )
             {
-                PersonajeSeleccionado.IniciarMovimiento();
+                if(PersonajeSeleccionado.TERRENOACTUAL.TERRENOSLIMITROFES.Contains(TerrenoDestino))
+                    PersonajeSeleccionado.IniciarMovimiento();
             }
         }
     }

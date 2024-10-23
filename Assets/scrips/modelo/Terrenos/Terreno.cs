@@ -188,7 +188,7 @@ public class Terreno
        ControllerMovimiento  cntMovimientoController = ControllerMovimiento .Instancia;
        if (!(TIPOSUBTERRENO.TIPOTERRENO is Especial) && !(Estado is Ocupado) && cntMovimientoController != null)
        {
-            this.CambiarEstado(new Seleccionado(cntMovimientoController));
+            CambiarEstado(new Seleccionado(cntMovimientoController));
        }
     }
 
@@ -260,7 +260,7 @@ public class Terreno
 
     public Personaje GetPersonaje()
     {
-        return Entidades.OfType<Personaje>().First();
+        return Entidades.OfType<Personaje>().FirstOrDefault();
     }
 
     int CantPersonajes()

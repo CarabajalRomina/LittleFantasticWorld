@@ -104,6 +104,22 @@ namespace Assets.scrips.modelo.entidad
             PUNTOSDEFENSA.ToString(),
             };
         }
+        public override string ToString()
+        {
+            return $"" +
+                $" ENEMIGO: " +
+                $" Id: {ID}," +
+                $" Nombre: {NOMBRE}," +
+                $" Reino: {REINO}," +
+                $" Habitats: {HABITATS}," +
+                $" Vida maxima: {VIDAMAX}," +
+                $" Vida actual: {VIDAACTUAL}," +
+                $" Puntos de ataque: {PUNTOSATAQUE}," +
+                $" Puntos de defensa: {PUNTOSDEFENSA},";
+
+        }
+
+
 
     }
 }

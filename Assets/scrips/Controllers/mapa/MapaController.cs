@@ -107,16 +107,20 @@ namespace Assets.scrips.Controllers.mapa
             if(personajeSeleccionado != null)
             {
                 GameObject per = personajeSeleccionado.PERSONAJEPREFAB.gameObject;
-               personajeSeleccionado.TERRENOACTUAL = terreno;
                 GameObject nuevaInstancia;
                 try
                 {
                     DespachadorHiloPrincipal.Instancia.Enqueue(() => {
-                        nuevaInstancia = Instantiate(per, personajeSeleccionado.TERRENOACTUAL.POSICIONTRIDIMENSIONAL, Quaternion.identity);
+                        nuevaInstancia = Instantiate(per, terreno.POSICIONTRIDIMENSIONAL, Quaternion.identity);
                         Debug.Log("Instancia creada: " + nuevaInstancia.name);
                         if (nuevaInstancia != null)
                         {
+                            terreno.CambiarEstado(new Ocupado());
+                            personajeSeleccionado.TERRENOACTUAL = terreno;
                             personajeSeleccionado.INSTANCIAPERSONAJE = nuevaInstancia;
+                            terreno.AgregarEntidad(personajeSeleccionado);
+
+
                             Debug.Log("Se instancio el personaje correctamente");
                         }
                     });             

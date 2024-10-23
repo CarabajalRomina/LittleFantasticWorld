@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.scrips.modelo.estadosDeInteraccion.tiposEstados
 {
@@ -23,7 +24,7 @@ namespace Assets.scrips.modelo.estadosDeInteraccion.tiposEstados
 
         public void DesactivarEstado(Terreno terreno)
         {
-            terreno.CambiarEstado(new Visible());
+            terreno.ESTADO = new Visible();
         }
     }
 }
