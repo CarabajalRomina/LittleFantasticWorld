@@ -18,8 +18,10 @@ namespace Assets.scrips.modelo.estadosDeInteraccion.tiposEstados
         }
         public void ActivarEstado(Terreno terreno)
         {
-            CntMovimiento.MoverPersonaje(terreno);
-            terreno.CambiarEstado(new Ocupado());
+            if (!CntMovimiento.MoverPersonaje(terreno))
+            {
+                terreno.ESTADO.DesactivarEstado(terreno);
+            }
         }
 
         public void DesactivarEstado(Terreno terreno)

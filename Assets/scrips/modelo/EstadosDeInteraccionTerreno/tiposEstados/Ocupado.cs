@@ -6,8 +6,11 @@ public class Ocupado: IEstadoHexEstrategia
 {
     public void ActivarEstado(Terreno terreno)
     {
-        terreno.CambiarEstadoTerrenosLimitrofes(new Visible());
-      
+        if(terreno.GetPersonaje() != null)
+        {
+            terreno.CambiarEstadoTerrenosLimitrofes(new Visible());
+
+        }
     }
     public void DesactivarEstado(Terreno terreno)
     {

@@ -68,7 +68,7 @@ public class Personaje : Entidad, ICombate, IMovible
             }
             else
             {
-                if(value > VidaMax)
+                if (value > VidaMax)
                 {
                     VidaActual = VidaMax;
                 }
@@ -185,39 +185,34 @@ public class Personaje : Entidad, ICombate, IMovible
     }
     public void MoverHacia(Terreno terrenoDestino)
     {
-        if (HABITATS.PuedoMoverme(terrenoDestino.TIPOSUBTERRENO.TIPOTERRENO))
+        if (enMovimiento)
         {
-            if (enMovimiento)
+            //Mueve el personaje suavemente hacia la posición objetivo
+            var llegadaTerrenoDestino = Vector3.Lerp(
+                TerrenoActual.POSICIONTRIDIMENSIONAL,
+                terrenoDestino.POSICIONTRIDIMENSIONAL,
+                ConfiguracionGeneral.VelocidadMovimientoPersonaje * Time.deltaTime * 10
+                );
+            // Comprueba si ha llegado a la posición objetivo
+            if (Vector3.Distance(llegadaTerrenoDestino, terrenoDestino.POSICIONTRIDIMENSIONAL) < 0.1f)
             {
-                //Mueve el personaje suavemente hacia la posición objetivo
-                var llegadaTerrenoDestino = Vector3.Lerp(
-                    TerrenoActual.POSICIONTRIDIMENSIONAL,
-                    terrenoDestino.POSICIONTRIDIMENSIONAL,
-                    ConfiguracionGeneral.VelocidadMovimientoPersonaje * Time.deltaTime * 10
-                    );
-                // Comprueba si ha llegado a la posición objetivo
-                if (Vector3.Distance(llegadaTerrenoDestino, terrenoDestino.POSICIONTRIDIMENSIONAL) < 0.1f)
-                {
-                    // Asegura que la posición actual sea exactamente la posición objetivo
-                    TerrenoActual = terrenoDestino;
-                    InstanciaPersonaje.transform.position = terrenoDestino.POSICIONTRIDIMENSIONAL;
-                    TERRENOACTUAL.AgregarEntidad(this);
-                    enMovimiento = false; // Resetea el estado de movimiento
-                }
-                else
-                {
-                    Debug.Log("no se llego a destino");
-                }
+                // Asegura que la posición actual sea exactamente la posición objetivo
+                TerrenoActual = terrenoDestino;
+                InstanciaPersonaje.transform.position = terrenoDestino.POSICIONTRIDIMENSIONAL;
+                TERRENOACTUAL.AgregarEntidad(this);
+                TERRENOACTUAL.CambiarEstado(new Ocupado());
+                enMovimiento = false; // Resetea el estado de movimiento
             }
             else
             {
-                Debug.Log("no se inicio el movimiento");
+                Debug.Log("no se llego a destino");
             }
         }
         else
         {
-            Debug.Log("no puede ir a un habitat a la que no esta adaptado...");
+            Debug.Log("no se inicio el movimiento");
         }
+
     }
     #endregion
 
