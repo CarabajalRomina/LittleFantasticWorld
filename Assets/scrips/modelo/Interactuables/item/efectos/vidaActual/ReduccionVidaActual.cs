@@ -9,7 +9,7 @@ namespace Assets.scrips.modelo.interactuables.item.estrategias
 {
     public class ReduccionVidaActual : IEfectoItem
     {
-        public void AplicarEfecto(Personaje personaje)
+        public bool AplicarEfecto(Personaje personaje)
         {
             throw new NotImplementedException();
         }

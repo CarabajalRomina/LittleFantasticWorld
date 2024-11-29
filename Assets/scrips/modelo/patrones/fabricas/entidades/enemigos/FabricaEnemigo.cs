@@ -27,6 +27,7 @@ namespace Assets.scrips.fabricas.entidades.enemigos
             PuntosAtaque = puntosAtaque;
             PuntosDefensa = puntosDefensa;
         }
+    
 
         public bool CrearEntidad(out Entidad entidad )
         {

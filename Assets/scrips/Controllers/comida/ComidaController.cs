@@ -87,7 +87,7 @@ namespace Assets.scrips.Controllers.comida
             if(Comidas.Count > 0)
             {
                 var numRandom = Utilidades.GenerarNumeroAleatorio(0, Comidas.Count);
-                if (numRandom != null)
+                if (numRandom >= 0)
                 {
                     return Comidas[numRandom];
                 }

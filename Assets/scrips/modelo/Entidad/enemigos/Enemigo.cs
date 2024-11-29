@@ -16,8 +16,8 @@ namespace Assets.scrips.modelo.entidad
         public Enemigo(string nombre, IReino reino, IHabitat habitats, int vidaMax, int puntosAtaque, int puntosDefensa) :base( nombre, reino, habitats) 
         {
             Id = ++GlobalCount;
-            VIDAACTUAL = vidaMax;
             VIDAMAX = vidaMax;
+            VIDAACTUAL = vidaMax;
             PUNTOSATAQUE = puntosAtaque;
             PUNTOSDEFENSA = puntosDefensa;
         }
@@ -32,9 +32,13 @@ namespace Assets.scrips.modelo.entidad
             get { return VidaActual; }
             set
             {
-                if (value >= 0 && value <= VidaMax)
+                if (value > 0 && value < VidaMax)
                 {
                     VidaActual = value;
+                }
+                else
+                {
+                    VidaActual = VidaMax;
                 }
             }
         }

@@ -10,15 +10,18 @@ public class Personaje : Entidad, ICombate, IMovible
     int Id;
     static int GlobalCount = 0;
     IDieta Dieta;
-    int EnergiaActual;
-    int EnergiaMax;
-    int VidaActual;
-    int VidaMax;
-    int PuntosAtaque;
-    int PuntosDefensa;
-    int RangoAtaque;
+    int EnergiaActual { get; set; }
+    int EnergiaMax { get; set; }
+    int VidaActual { get; set; }
+    int VidaMax { get; set; }
+    int PuntosAtaque { get; set; }
+    int PuntosDefensa { get; set; }
+    int RangoAtaque { get; set; }
     private bool enMovimiento = false; // Estado del movimiento
     Inventario InventarioActual;
+
+    // Definir el evento que se disparará cuando el personaje termine de moverse
+    public event System.Action<Terreno> OnMovimientoCompletado;
 
 
 
@@ -26,15 +29,14 @@ public class Personaje : Entidad, ICombate, IMovible
     public Personaje(string nombre, IReino reino, IHabitat habitats, int vidaMax, IDieta dieta, int puntosAtaque, int puntosDefensa, int energiaMax, int rangoAtaque) : base(nombre, reino, habitats)
     {
         Id = ++GlobalCount;
-        VIDAACTUAL = vidaMax;
-        VIDAMAX = vidaMax;
-        PUNTOSATAQUE = puntosAtaque;
-        PUNTOSDEFENSA = puntosDefensa;
+        SetVidaActual(vidaMax);
+        SetVidaMax(vidaMax);
+        SetPuntosAtaque(puntosAtaque);
+        SetPuntosDefensa(puntosDefensa);
         DIETA = dieta;
-        ENERGIAMAX = energiaMax;
-        ENERGIACTUAL = energiaMax;
-        RANGOATAQUE = rangoAtaque;
-        PersonajePrefab = Resources.Load<GameObject>("personajesPref/Golem");
+        SetEnergiaMax(energiaMax);
+        SetEnergiaActual(energiaMax);
+        SetRangoAtaque(rangoAtaque);
     }
 
     #endregion
@@ -48,108 +50,41 @@ public class Personaje : Entidad, ICombate, IMovible
     public IDieta DIETA
     {
         get { return Dieta; }
-        set
-        {
-            if (value != null)
-            {
-                Dieta = value;
-            }
-        }
+        set { Dieta = value; }
     }
-
     public int VIDAACTUAL
     {
         get { return VidaActual; }
-        set
-        {
-            if (value > 0 || value <= VidaMax)
-            {
-                VidaActual = value;
-            }
-            else
-            {
-                if (value > VidaMax)
-                {
-                    VidaActual = VidaMax;
-                }
-            }
-        }
     }
 
     public int VIDAMAX
     {
         get { return VidaMax; }
-        set
-        {
-            if (value > 0)
-            {
-                VidaMax = value;
-            }
-        }
     }
 
+    public int ENERGIAACTUAL
+    {
+        get { return EnergiaActual; }
+    }
+    public int ENERGIAMAX
+    {
+        get { return EnergiaMax; }
+    }
     public int PUNTOSATAQUE
     {
         get { return PuntosAtaque; }
-        set
-        {
-            if (value > 0)
-            {
-                PuntosAtaque = value;
-            }
-        }
+
     }
 
     public int PUNTOSDEFENSA
     {
         get { return PuntosDefensa; }
-        set
-        {
-            if (value > 0)
-            {
-                PuntosDefensa = value;
-            }
-        }
-    }
 
-    public int ENERGIACTUAL
-    {
-        get { return EnergiaActual; }
-        set
-        {
-            if (value >= 0 || value <= EnergiaMax)
-            {
-                EnergiaActual = value;
-            }
-        }
-    }
-
-    public int ENERGIAMAX
-    {
-        get { return EnergiaMax; }
-        set
-        {
-            if (value > 0)
-            {
-                EnergiaMax = value;
-            }
-        }
     }
 
     public int RANGOATAQUE
     {
         get { return RangoAtaque; }
-        set
-        {
-            if (value >= 0 && value <= 1)
-            {
-                RangoAtaque = value;
-            }
-            else
-            {
-                RangoAtaque = 1;
-            }
-        }
     }
 
     public Inventario INVENTARIOACTUAL
@@ -159,18 +94,123 @@ public class Personaje : Entidad, ICombate, IMovible
     }
 
     #endregion
+    #region SETTER
+    public bool SetVidaActual(int value)
+    {
+        if (value > 0 || value <= VidaMax)
+        {
+            VidaActual = value;
+            return true;
+        }
+        else
+        {
+            if (value > VidaMax)
+            {
+                VidaActual = VidaMax;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    public bool SetVidaMax(int value)
+    {
+        if (value > 0)
+        {
+            VidaMax = value;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    public bool SetPuntosAtaque(int value)
+    {
+        if (value > 0)
+        {
+            PuntosAtaque = value;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+
+    public bool SetPuntosDefensa(int value)
+    {
+        if (value > 0)
+        {
+            PuntosDefensa = value;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool SetEnergiaActual(int value)
+    {
+
+        if (value >= 0 || value <= EnergiaMax)
+        {
+            EnergiaActual = value;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool SetEnergiaMax(int value)
+    {
+        if (value > 0)
+        {
+            EnergiaMax = value;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public bool SetRangoAtaque(int value)
+    {
+        if (value >= 0 && value <= 1)
+        {
+            RangoAtaque = value;
+            return true;
+        }
+        else
+        {
+            RangoAtaque = 1;
+            return true;
+        }
+    }
+
+    #endregion
 
     #region METODOS COMBATE
     public int Atacar()
     {
         var dado = Dado.TirarDado();
-        return PUNTOSATAQUE + dado;
+        return PuntosAtaque + dado;
     }
 
     public int Defender()
     {
         var dado = Dado.TirarDado();
-        return PUNTOSDEFENSA + dado;
+        return PuntosDefensa + dado;
     }
 
     #endregion
@@ -196,12 +236,18 @@ public class Personaje : Entidad, ICombate, IMovible
             // Comprueba si ha llegado a la posición objetivo
             if (Vector3.Distance(llegadaTerrenoDestino, terrenoDestino.POSICIONTRIDIMENSIONAL) < 0.1f)
             {
+                ReducirEnergiaActual(ConfiguracionGeneral.PuntosEnergiaBase);
+                TERRENOACTUAL.EliminarEntidad(this);
                 // Asegura que la posición actual sea exactamente la posición objetivo
                 TerrenoActual = terrenoDestino;
-                InstanciaPersonaje.transform.position = terrenoDestino.POSICIONTRIDIMENSIONAL;
+                InstanciaPersonaje.transform.position = terrenoDestino.POSICIONTRIDIMENSIONAL + new Vector3(0, 0.6f, 0);
                 TERRENOACTUAL.AgregarEntidad(this);
                 TERRENOACTUAL.CambiarEstado(new Ocupado());
+                ReducirEnergiaActual(ConfiguracionGeneral.PuntosEnergiaBase);
+                // Disparar el evento indicando que el movimiento ha finalizado
+                OnMovimientoCompletado?.Invoke(TerrenoActual);
                 enMovimiento = false; // Resetea el estado de movimiento
+
             }
             else
             {
@@ -217,74 +263,156 @@ public class Personaje : Entidad, ICombate, IMovible
     #endregion
 
 
-    public void Comer(Comida alimento)
+    public bool Comer(Comida alimento)
     {
         if (!Dieta.PuedoComer(alimento))
         {
-            //  Console.WriteLine("no puedes comer este alimento");
+            Debug.Log("no puedes comer este alimento");
+            return false;
         }
         else
         {
             ActualizarEnergia(alimento.CALORIAS);
-            //Console.WriteLine("puedes comer este alimento");
+            Debug.Log("puedes comer este alimento");
+            return true;
         }
     }
 
     private void ActualizarEnergia(int valor)
     {
-        if (valor > 0 && ENERGIACTUAL + valor >= ENERGIAMAX)
+        if (valor > 0 && EnergiaActual + valor >= EnergiaMax)
         {
-            ENERGIACTUAL = ENERGIAMAX;
+            SetEnergiaActual(EnergiaMax);
         }
-        else ENERGIACTUAL = +valor;
+        else SetEnergiaActual(EnergiaActual = +valor);
     }
 
-    public void AumentarEnergiaActual(int valor)
+    public bool AumentarEnergiaActual(int valor)
     {
-        ENERGIACTUAL += valor;
+        if ((EnergiaActual += valor) < ENERGIAMAX)
+        {
+            if (SetEnergiaActual(EnergiaActual += valor))
+            {
+                return true;
+            }
+            else return false;
+        }
+        else
+        {
+            SetEnergiaActual(ENERGIAMAX);
+            return true;
+        }
+    }
+    public bool ReducirEnergiaActual(int valor)
+    {
+        if((EnergiaActual -= valor) >= 0)
+        {
+            if (SetEnergiaActual(EnergiaActual -= valor))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            SetEnergiaActual(0);
+            return true;
+        }
+       
     }
 
-    public void AumentarVidaActual(int valor)
+
+    public bool AumentarVidaActual(int valor)
     {
-        VIDAACTUAL += valor;
+        if (SetVidaActual(VidaActual += valor))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool ReducirVidaActual(int valor)
+    {
+        if (SetVidaActual(VidaActual -= valor))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    public void ReducirEnergiaActual(int valor)
+
+
+    public bool AumentarPuntosAtaque(int valor)
     {
-        ENERGIACTUAL -= valor;
+        if (SetPuntosAtaque(PuntosAtaque += valor))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool ReducirPuntosAtaque(int valor)
+    {
+        if (SetPuntosAtaque(PuntosAtaque -= valor))
+        {
+            return true;
+        }
+        else return false;
     }
 
-    public void ReducirVidaActual(int valor)
+    public bool AumentarPuntosDefensa(int valor)
     {
-        VIDAACTUAL -= valor;
+        if (SetPuntosDefensa(PuntosAtaque += valor))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+    public bool ReducirPuntosDefensa(int valor)
+    {
+        if (SetPuntosDefensa(PuntosDefensa -= valor))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    public void AumentarPuntosAtaque(int valor)
+    public bool UsarItem(Item item)
     {
-        PUNTOSATAQUE += valor;
-    }
-    public void ReducirPuntosAtaque(int valor)
-    {
-        PUNTOSATAQUE -= valor;
-    }
+        if (item.Interactuar(this))
+        {
+            Debug.Log("SE INTERACTUO CON EL ITEM CORRECTAMENTE");
 
-    public void AumentarPuntosDefensa(int valor)
-    {
-        PUNTOSDEFENSA += valor;
-    }
-    public void ReducirPuntosDefensa(int valor)
-    {
-        PUNTOSDEFENSA -= valor;
-    }
+            return true;
+        }
+        else
+        {
+            Debug.Log("NO SE PUEDE INTERACTUAR CON EL ITEM");
+            return false;
+        }
 
-    public void UsarItem(Item item)
-    {
-        item.Interactuar(this);
     }
 
     public void Dormir()
     {
-        ActualizarEnergia(ENERGIAMAX);
+        ActualizarEnergia(EnergiaMax);
     }
 
     public override string ToString()
@@ -296,13 +424,13 @@ public class Personaje : Entidad, ICombate, IMovible
             $" Reino: {REINO}," +
             $" Dieta: {DIETA}," +
             $" Habitats: {HABITATS}," +
-            $" Energia maxima: {ENERGIAMAX}," +
-            $" Energia actual: {ENERGIACTUAL}," +
-            $" Vida maxima: {VIDAMAX}," +
-            $" Vida actual: {VIDAACTUAL}," +
-            $" Puntos de ataque: {PUNTOSATAQUE}," +
-            $" Puntos de defensa: {PUNTOSDEFENSA}," +
-            $" Rango de ataque: {RANGOATAQUE}," +
+            $" Energia maxima: {EnergiaMax}," +
+            $" Energia actual: {EnergiaActual}," +
+            $" Vida maxima: {VidaMax}," +
+            $" Vida actual: {VidaActual}," +
+            $" Puntos de ataque: {PuntosAtaque}," +
+            $" Puntos de defensa: {PuntosDefensa}," +
+            $" Rango de ataque: {RangoAtaque}," +
             $" prefab: {PERSONAJEPREFAB}";
 
     }
@@ -315,13 +443,14 @@ public class Personaje : Entidad, ICombate, IMovible
             REINO.ToString(),
             HABITATS.ToString(),
             DIETA.ToString(),
-            ENERGIAMAX.ToString(),
-            VIDAMAX.ToString(),
-            PUNTOSATAQUE.ToString(),
-            PUNTOSDEFENSA.ToString(),
+            EnergiaMax.ToString(),
+            VidaMax.ToString(),
+            PuntosAtaque.ToString(),
+            PuntosDefensa.ToString(),
             RangoAtaque.ToString()
             };
     }
+
 
 }
 

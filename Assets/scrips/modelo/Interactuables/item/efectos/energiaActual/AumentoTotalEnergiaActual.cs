@@ -9,9 +9,13 @@ namespace Assets.scrips.modelo.interactuables.item.estrategias.energiaActual
 {
     public class AumentoTotalEnergiaActual : IEfectoItem
     {
-        public void AplicarEfecto(Personaje personaje)
+        public bool AplicarEfecto(Personaje personaje)
         {
-            personaje.AumentarEnergiaActual(personaje.ENERGIAMAX);
+            if (personaje.AumentarEnergiaActual(personaje.ENERGIAACTUAL))
+            {
+                return true;
+            }
+            else return false;
         }
         public override string ToString()
         {

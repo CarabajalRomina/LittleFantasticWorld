@@ -67,9 +67,16 @@ public class Item : IInteractuable, IDescribible, IPosicionable
 
     #endregion
 
-    public void Interactuar(Personaje entidad)
+    public bool Interactuar(Personaje entidad)
     {
-        Efecto.AplicarEfecto(entidad);
+        if (Efecto.AplicarEfecto(entidad))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public string[] ObtenerValoresInstancias()
@@ -98,4 +105,8 @@ public class Item : IInteractuable, IDescribible, IPosicionable
             $" Descripcion: {Descripcion}";
     }
 
+    public string GetNombre()
+    {
+        return NOMBRE;
+    }
 }

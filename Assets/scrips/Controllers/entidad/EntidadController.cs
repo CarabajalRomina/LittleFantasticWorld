@@ -65,6 +65,19 @@ namespace Assets.scrips.Controllers.entidad
             }
         }
 
+        public GameObject BuscarPrefabPersonaje(string ruta)
+        {
+            var prefabPersonaje = Resources.Load<GameObject>(ruta);
+            if (prefabPersonaje != null)
+            {
+                return prefabPersonaje.gameObject;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         #region PERSONAJE
         #region CRUD PERSONAJE
         public bool CrearPersonaje(string nombre, IReino reino, IDieta dieta, IHabitat habitat, int energiaMax, int vidaMax, int puntosAtaque, int puntosDefensa, int rangoAtaque)
@@ -97,11 +110,11 @@ namespace Assets.scrips.Controllers.entidad
                 personaje.REINO = reino;
                 personaje.DIETA = dieta;
                 personaje.HABITATS = habitat;
-                personaje.VIDAMAX = vidaMax;
-                personaje.ENERGIAMAX = energiaMax;
-                personaje.PUNTOSATAQUE = puntosAtaque;
-                personaje.PUNTOSDEFENSA = puntosDefensa;
-                personaje.RANGOATAQUE = rangoAtaque;
+                personaje.SetVidaMax(vidaMax);
+                personaje.SetEnergiaMax(energiaMax);
+                personaje.SetPuntosAtaque(puntosAtaque);
+                personaje.SetPuntosDefensa(puntosDefensa);
+                personaje.SetRangoAtaque(rangoAtaque);
                 return true;
             }catch(Exception e) { return false; }    
         }
@@ -130,6 +143,25 @@ namespace Assets.scrips.Controllers.entidad
 
         #region ENEMIGOS
         #region CRUD ENEMIGOS
+        public bool CrearEnemigo(string nombre, IReino reino, IHabitat habitat, int vidaMax, int puntosAtaque, int puntosDefensa, string ruta)
+        {
+            Entidad personaje;
+
+            if (new FabricaEnemigo(
+                nombre,
+                reino,
+                habitat,
+                vidaMax,
+                puntosAtaque,
+                puntosDefensa).CrearEntidad(out personaje))
+            {
+                Entidades.Add(personaje);
+                NombresSeleccionados.Add(nombre);
+                return true;
+            }
+            return false;
+        }
+
         public bool CrearEnemigo(string nombre, IReino reino, IHabitat habitat, int vidaMax, int puntosAtaque, int puntosDefensa)
         {
             Entidad personaje;
@@ -148,7 +180,7 @@ namespace Assets.scrips.Controllers.entidad
             }
             return false;
         }
-        
+
         public bool EditarEnemigo(Enemigo enemigo, string nombre, IReino reino, IHabitat habitat, int vidaMax, int puntosAtaque, int puntosDefensa)
         {
             try
@@ -185,5 +217,7 @@ namespace Assets.scrips.Controllers.entidad
             
         } 
         #endregion
+
+
     }
 }

@@ -9,9 +9,16 @@ namespace Assets.scrips.modelo.interactuables.item.estrategias
 {
     public class IncrementoDefensaAtaque : IEfectoItem
     {
-        public void AplicarEfecto(Personaje personaje)
+        public bool AplicarEfecto(Personaje personaje)
         {
-            personaje.AumentarPuntosDefensa(20);
+            if (personaje.AumentarPuntosDefensa(20))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public override string ToString()

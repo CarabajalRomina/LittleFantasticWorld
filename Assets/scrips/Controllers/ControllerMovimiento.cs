@@ -1,4 +1,7 @@
 ﻿using Assets.scrips.Controllers.entidad;
+using Assets.scrips.Controllers.juego;
+using Assets.scrips.Controllers.jugador;
+using Assets.scrips.modelo.configuraciones;
 using System.Linq;
 using UnityEngine;
 
@@ -7,18 +10,27 @@ namespace Assets.scrips.Controllers
 {
     public class ControllerMovimiento : SingletonMonoBehaviour<ControllerMovimiento>
     {
-        Personaje PersonajeSeleccionado { get; set; }
+        JugadorController CntJugador;
         Terreno TerrenoDestino;
+        JuegoController CntJuego;
+        Personaje PersonajeSeleccionado;
 
         private void Start()
         {
             EntidadController CntPersonaje = EntidadController.Instancia;
-            PersonajeSeleccionado = (Personaje)CntPersonaje.GetPersonajes().FirstOrDefault();
+            CntJuego = JuegoController.Instancia;
+            CntJugador = JugadorController.GetInstancia;
+            PersonajeSeleccionado = CntJugador.PLAYER.PERSONAJESELECCIONADO;
+        }
+
+        public Personaje PERSONAJESELECCIONADO
+        {
+            get { return PersonajeSeleccionado; }
         }
 
         private void Update()
         {
-            if (PersonajeSeleccionado != null && TerrenoDestino != null && PersonajeSeleccionado.TERRENOACTUAL.POSICIONTRIDIMENSIONAL != TerrenoDestino.POSICIONTRIDIMENSIONAL)
+            if(TerrenoDestino != null && PersonajeSeleccionado.TERRENOACTUAL.POSICIONTRIDIMENSIONAL != TerrenoDestino.POSICIONTRIDIMENSIONAL)
             {
                 // Llama al método Mover del personaje seleccionado
                 PersonajeSeleccionado.MoverHacia(TerrenoDestino);
@@ -28,7 +40,6 @@ namespace Assets.scrips.Controllers
         public bool MoverPersonaje(Terreno terrenoDestino)
         {
             TerrenoDestino = terrenoDestino;
-
             if (PersonajeSeleccionado != null)
             {
                 if (PersonajeSeleccionado.TERRENOACTUAL.TERRENOSLIMITROFES.Contains(TerrenoDestino))
@@ -36,6 +47,11 @@ namespace Assets.scrips.Controllers
                     if (PersonajeSeleccionado.HABITATS.PuedoMoverme(terrenoDestino.TIPOSUBTERRENO.TIPOTERRENO))
                     {
                         PersonajeSeleccionado.IniciarMovimiento();
+                        if (CntJuego != null)
+                        {
+                            CntJuego.CargarConObjTerrenosLimitrofes(TerrenoDestino);
+                        }
+
                         return true;
                     }
                     else
@@ -45,9 +61,9 @@ namespace Assets.scrips.Controllers
                         return false;
                     }
                 }
-                else{ return false;}
+                else { return false; }
             }
-            else{ return false;}
+            else { return false; }
         }
     }
 }

@@ -61,9 +61,13 @@ public class Comida: IInteractuable, IDescribible, IPosicionable
             $" Dieta: {TIPODIETA},";
     }
 
-    public void Interactuar(Personaje personaje)
+    public bool Interactuar(Personaje personaje)
     {
-        personaje.Comer(this);
+        if (personaje.Comer(this))
+        {
+            return true;
+        }
+        else return false;
     }
 
     public string[] ObtenerValoresInstancias()
@@ -82,5 +86,8 @@ public class Comida: IInteractuable, IDescribible, IPosicionable
         TerrenoActual.AgregarInteractuable(this);
     }
 
-   
+    public string GetNombre()
+    {
+        return NOMBRE;
+    }
 }

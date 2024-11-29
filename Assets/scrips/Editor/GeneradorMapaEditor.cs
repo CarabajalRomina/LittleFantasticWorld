@@ -11,7 +11,7 @@ public class GeneradorMapaEditor : Editor
 
         GeneradorMapa generadorMapa = (GeneradorMapa)target;
 
-        if (GUILayout.Button("Generar mapa de ruido"))
+        if (GUILayout.Button("Generar juego de ruido"))
         {
             generadorMapa.GenerarMapa();
         }

@@ -11,11 +11,6 @@ using Assets.scrips.modelo.dietas;
 using Assets.scrips.modelo.interactuables.item.estrategias;
 using Assets.scrips.modelo.interactuables.item.estrategias.energiaActual;
 using Assets.scrips.modelo.interactuables.item.estrategias.puntosAtaque;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.scrips.modelo.preCargaDeObjetos
@@ -36,13 +31,51 @@ namespace Assets.scrips.modelo.preCargaDeObjetos
 
         private void CargarListEntidades()
         {
-            CntEntidad.ENTIDADES.Add(new FabricaPersonaje("Aldor", new FabricaHumano().CrearReino(), new FabricaCarnivoro().CrearDieta(), new FabricaTerrestre().CrearHabitat(),100,100,20,15,1).CrearEntidad());
-            
-            CntEntidad.ENTIDADES.Add(new FabricaEnemigo("Demonio de fuego", new FabricaDemoniaco().CrearReino(), new FabricaTerrestre().CrearHabitat(),60,25,5).CrearEntidad());
-            CntEntidad.ENTIDADES.Add(new FabricaEnemigo("Caballero Humano", new FabricaHumano().CrearReino(), new FabricaTerrestre().CrearHabitat(), 100, 20, 10).CrearEntidad());
-            CntEntidad.ENTIDADES.Add(new FabricaEnemigo("Esfinge", new FabricaMitologico().CrearReino(), new FabricaTerrestre().CrearHabitat(), 70, 10, 12).CrearEntidad());
-            CntEntidad.ENTIDADES.Add(new FabricaEnemigo("Robot Asesino", new FabricaRobotico().CrearReino(), new FabricaTerrestre().CrearHabitat(), 90, 30, 8).CrearEntidad());
-            CntEntidad.ENTIDADES.Add(new FabricaEnemigo("Bestia Vegetal", new FabricaVegetal().CrearReino(), new FabricaTerrestre().CrearHabitat(), 50, 15, 15).CrearEntidad());
+            var elfa = new FabricaPersonaje("Elfina", new FabricaMitologico().CrearReino(), new FabricaOmnivoro().CrearDieta(), new FabricaTerrestre().CrearHabitat(), 100, 100, 20, 15, 1).CrearEntidad();
+            CntEntidad.ENTIDADES.Add((elfa));
+            if (CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/Elfa") !=  null)
+            {
+                elfa.PERSONAJEPREFAB = CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/Elfa");
+
+            }
+
+            var elBoss = new FabricaPersonaje("Aldor", new FabricaHumano().CrearReino(), new FabricaOmnivoro().CrearDieta(), new FabricaTerrestre().CrearHabitat(), 100, 100, 20, 15, 1).CrearEntidad();
+            CntEntidad.ENTIDADES.Add(elBoss);
+            if (CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/The Boss") != null)
+            {
+                elBoss.PERSONAJEPREFAB = CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/The Boss");
+
+            }
+
+            var hugo = new FabricaPersonaje("Hugo el mutante", new FabricaDemoniaco().CrearReino(), new FabricaCarnivoro().CrearDieta(), new FabricaTerrestre().CrearHabitat(), 100, 100, 20, 15, 1).CrearEntidad();
+            CntEntidad.ENTIDADES.Add(hugo);
+            if (CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/Hugo") != null)
+            {
+                hugo.PERSONAJEPREFAB = CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/Hugo");
+
+            }
+
+
+            var demonio = new FabricaEnemigo("Demonio de fuego", new FabricaDemoniaco().CrearReino(), new FabricaTerrestre().CrearHabitat(), 60, 25, 5).CrearEntidad();
+            CntEntidad.ENTIDADES.Add(demonio);
+            if (CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/LoboMutadoRosado"))
+            {
+                demonio.PERSONAJEPREFAB = CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/LoboMutadoRosado");
+            }
+
+            var golemLodo = new FabricaEnemigo("Golem de Lodo", new FabricaMitologico().CrearReino(), new FabricaTerrestre().CrearHabitat(), 100, 20, 10).CrearEntidad();
+            CntEntidad.ENTIDADES.Add(golemLodo);
+            if (CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/GolemLodo"))
+            {
+                golemLodo.PERSONAJEPREFAB = CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/GolemLodo");
+            }
+
+            var zombie = new FabricaEnemigo("Rick el Zombie", new FabricaDemoniaco().CrearReino(), new FabricaTerrestre().CrearHabitat(), 70, 10, 12).CrearEntidad();
+            CntEntidad.ENTIDADES.Add(zombie);
+            if (CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/ZombieCartoonRojo"))
+            {
+                zombie.PERSONAJEPREFAB = CntEntidad.BuscarPrefabPersonaje("Prefabs/PersonajesPref/ZombieCartoonRojo");
+            }
         }
 
         public void CargarListItems()

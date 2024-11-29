@@ -9,6 +9,6 @@ namespace Assets.scrips.interfaces.efecto
 {
     public interface IEfectoItem
     {
-        public void AplicarEfecto(Personaje personaje);
+        public bool AplicarEfecto(Personaje personaje);
     }
 }

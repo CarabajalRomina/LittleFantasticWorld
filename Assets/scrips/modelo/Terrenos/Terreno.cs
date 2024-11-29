@@ -263,6 +263,11 @@ public class Terreno
         return Entidades.OfType<Personaje>().FirstOrDefault();
     }
 
+    public List<Enemigo> GetEnemigos()
+    {
+        return Entidades.OfType<Enemigo>().ToList();
+    }
+
     int CantPersonajes()
     {
         return Entidades.OfType<Personaje>().Count();

@@ -1,5 +1,5 @@
 using Assets.scrips.Controllers.entidad;
-using Assets.scrips.Controllers.mapa;
+using Assets.scrips.Controllers.juego;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,13 +25,12 @@ public class Mapa : MonoBehaviour
     [SerializeField] private List<Vector2> CeldasVisiblesDefault = new List<Vector2>();
     [SerializeField] private int RangoCeldasVisiblesDefault = 1;
 
-    //informacion de carga del mapa- EVENTOS
+    //informacion de carga del juego- EVENTOS
     public event System.Action InfoMapaGenerada;
     public event System.Action<float> CeldaLoteGenerado;
     public event System.Action CeldasInstanciasGeneradas;
 
-    MapaController CntMapa;
-    public delegate void CallbackDelegate(string mensaje);
+    JuegoController CntJuego;
     #region PROPIEDADES
 
     public OrientacionHex ORIENTACION
@@ -130,7 +129,7 @@ public class Mapa : MonoBehaviour
     private void Awake()
     {
         OrigenGrid = transform.position;
-        CntMapa = MapaController.Instancia;
+        CntJuego = JuegoController.Instancia;
         GeneradorMapas = FindObjectOfType<GeneradorMapa>();
     }
 
@@ -175,17 +174,17 @@ public class Mapa : MonoBehaviour
         });
     }
 
-    // En el método donde instancias los terrenos
-    private void CargarTerrenosConObjetosAlFinalizarInstanciacion()
+   private void CargarTerrenosDefaultConObjetos()
     {
         foreach (var coordenada in CeldasVisiblesDefault)
         {
             var terreno = BuscarTerrenoPorCoordenadasOffset(coordenada);
-            // Aquí podrías llamarlo después de la instanciación, posiblemente en el mismo Enqueue
             if(terreno != null)
             {
                 DespachadorHiloPrincipal.Instancia.Enqueue(() => CargarTerrenosLimitrofesConObjetos(terreno));
                 DespachadorHiloPrincipal.Instancia.Enqueue(() => InstanciarPersonajeEnMapa(terreno));
+                
+
             }
         }
     }
@@ -240,8 +239,7 @@ public class Mapa : MonoBehaviour
         }
         CeldasInstanciasGeneradas?.Invoke();
         Debug.Log("--------------------------------TERMINO DE CARGAR EL MAPA----------------------------------------");
-        // Llamamos a cargar objetos en los terrenos después de que todos han sido instanciados
-        CargarTerrenosConObjetosAlFinalizarInstanciacion();
+        CargarTerrenosDefaultConObjetos();
     }
 
     private void PonerCeldasDefaultYLimitrofesVisibles()
@@ -337,12 +335,12 @@ public class Mapa : MonoBehaviour
 
     private void CargarTerrenosLimitrofesConObjetos(Terreno terreno)
     {
-        CntMapa.CargarConObjTerrenosLimitrofes(terreno);
+        CntJuego.CargarConObjTerrenosLimitrofes(terreno);
     }
 
     private void InstanciarPersonajeEnMapa(Terreno terreno)
     {
-        CntMapa.InstanciarObjetos3D(terreno);
+        CntJuego.InstanciarObjetos3D(terreno);
     }
 
 }

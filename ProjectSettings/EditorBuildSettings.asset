@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/ui/CRUD/crudPrincipal.unity
     guid: af7e4f71ed218234fb393a7e4d8988ae
   - enabled: 1
+    path: Assets/Scenes/SeleccionPersonaje.unity
+    guid: 48435021f44f57b4fba5fac1381068b0
+  - enabled: 1
     path: Assets/Scenes/Mapa.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}

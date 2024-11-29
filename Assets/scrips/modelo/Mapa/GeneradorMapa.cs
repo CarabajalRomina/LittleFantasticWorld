@@ -13,14 +13,14 @@ public class GeneradorMapa : MonoBehaviour
     [SerializeField] private int Alto = 256;
 
     [Tooltip(
-        "La escala del mapa de ruido. Cuanto mayor sea la escala, más ampliado estará el mapa de ruido." +
-        "Cuanto más baja sea la escala, más se alejará el mapa de ruido" +
+        "La escala del juego de ruido. Cuanto mayor sea la escala, más ampliado estará el juego de ruido." +
+        "Cuanto más baja sea la escala, más se alejará el juego de ruido" +
         "La escala debe ser mayor que 0."
         )]
     [SerializeField]  private float EscalaNoise = 0.5f;
 
     [Tooltip(
-      "El número de capas de ruido a generar. Más capas significan más detalles en el mapa de ruido."
+      "El número de capas de ruido a generar. Más capas significan más detalles en el juego de ruido."
         )]
     [SerializeField] private int Octavas = 6;
     [Range(0, 1)]
@@ -35,19 +35,19 @@ public class GeneradorMapa : MonoBehaviour
         )]
     [SerializeField] private float Lacunaridad = 2f;
 
-    [Tooltip("La semilla utilizada para generar el mapa de ruido")]
+    [Tooltip("La semilla utilizada para generar el juego de ruido")]
     [SerializeField] private int Seed = 0;
 
-    [Tooltip("El desplazamiento del mapa de ruido")]
+    [Tooltip("El desplazamiento del juego de ruido")]
     [SerializeField] private Vector2 Offset = Vector2.zero; 
 
-    [Tooltip("Si se actualiza o no automáticamente el mapa de ruido cuando se cambia un valor.")]
+    [Tooltip("Si se actualiza o no automáticamente el juego de ruido cuando se cambia un valor.")]
     [SerializeField] private bool AutoUpdate = true;
 
-    [Tooltip("Si se debe utilizar o no la información de ancho y alto de la cuadrícula hexagonal para generar el mapa de ruido.")]
+    [Tooltip("Si se debe utilizar o no la información de ancho y alto de la cuadrícula hexagonal para generar el juego de ruido.")]
     [SerializeField] private bool UsarHexGrid = true;
 
-    [Tooltip("Si se genera o no el mapa de ruido al inicio.")]
+    [Tooltip("Si se genera o no el juego de ruido al inicio.")]
     [SerializeField] private bool GenerarMapaAlIniciar = true;
     [SerializeField] private bool GeneracionEnHilos = true; 
 

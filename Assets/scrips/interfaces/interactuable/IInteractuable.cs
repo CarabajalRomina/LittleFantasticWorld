@@ -9,7 +9,8 @@ namespace Assets.scrips.interfaces.interactuable
 {
     public interface IInteractuable
     {
-        public void Interactuar(Personaje entidad);
+        public bool Interactuar(Personaje entidad);
+        public string GetNombre();
 
     }
 }

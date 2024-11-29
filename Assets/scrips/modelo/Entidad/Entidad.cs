@@ -14,7 +14,6 @@ namespace Assets.scrips.modelo.entidad
         protected GameObject PersonajePrefab;
         protected GameObject InstanciaPersonaje;
 
-
         protected Entidad(string nombre, IReino reino, IHabitat habitats)
         {
             NOMBRE = nombre;
@@ -123,5 +122,7 @@ namespace Assets.scrips.modelo.entidad
             TERRENOACTUAL = terrenoDestino;
             TERRENOACTUAL.AgregarEntidad(this);
         }
+   
+
     }
 }

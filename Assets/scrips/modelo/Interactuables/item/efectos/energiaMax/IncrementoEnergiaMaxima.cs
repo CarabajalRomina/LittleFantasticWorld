@@ -9,9 +9,9 @@ namespace Assets.scrips.modelo.interactuables.item.estrategias
 {
     public class IncrementoEnergiaMaxima : IEfectoItem
     {
-        public void AplicarEfecto(Personaje personaje)
+        public bool AplicarEfecto(Personaje personaje)
         {
-            
+            return true;
         }
         public override string ToString()
         {

@@ -67,7 +67,7 @@ public class GestorDeVisualizacion : MonoBehaviour
             generadorMapa = FindObjectOfType<GeneradorMapa>();
             if (generadorMapa == null)
             {
-                throw new System.Exception("no se encontro generador de mapa");
+                throw new System.Exception("no se encontro generador de juego");
             }
         }
         generadorMapa.AlGenerarseColorMapa += GenerarTexturaYDibujar;
