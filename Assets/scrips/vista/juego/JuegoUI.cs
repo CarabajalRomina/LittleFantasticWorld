@@ -1,11 +1,12 @@
 using Assets.scrips.Controllers;
 using Assets.scrips.Controllers.juego;
 using Assets.scrips.Controllers.jugador;
+using Assets.scrips.Controllers.pelea;
+using Assets.scrips.interfaces;
 using Assets.scrips.interfaces.interactuable;
 using Assets.scrips.modelo.entidad;
 using Assets.scrips.vista.DatosPersonajeUi;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,11 +31,13 @@ public class JuegoUI : SingletonMonoBehaviour<JuegoUI>
     public TextMeshProUGUI txtPuntosAtaquePersonaje;
     public TextMeshProUGUI txtPuntosDefensa;
     public TextMeshProUGUI txtNombrePersonaje;
+    public Button BtnDormir;
 
     #endregion
 
     JuegoController CntJuego;
     JugadorController CntJugador;
+    PeleaController CntPelea;
     ControllerMovimiento CntMovimiento;
     public DatosPersonajeUI DatosPersonaje;
 
@@ -48,6 +51,7 @@ public class JuegoUI : SingletonMonoBehaviour<JuegoUI>
         CntMovimiento = ControllerMovimiento.Instancia;
         CntJuego = JuegoController.Instancia;
         CntJugador = JugadorController.GetInstancia;
+        BtnDormir?.onClick.AddListener(Dormir);
     }
 
     private void OnEnable()
@@ -159,8 +163,13 @@ public class JuegoUI : SingletonMonoBehaviour<JuegoUI>
                     }
                     datosText[1].text = $"{enemigo.VIDAACTUAL}/{enemigo.VIDAMAX}";
 
-                }
+                    Button[] btnAtacar = nuevaTarjeta.GetComponentsInChildren<Button>();
+                    if (btnAtacar != null)
+                    {
+                        btnAtacar[1].onClick.AddListener(() => IniciarPelea(enemigo, nuevaTarjeta));
+                    }
 
+                }
             }
         }
     }
@@ -186,6 +195,7 @@ public class JuegoUI : SingletonMonoBehaviour<JuegoUI>
         if (CntJuego.InteractuarConObjeto(interactuable))
         {
             Debug.Log($"puede interactuar con el {interactuable.GetNombre()}");
+            MostrarDatosPersonajeSeleccionado();
             Destroy(tarjetaPrefab);
         }
         else
@@ -195,5 +205,23 @@ public class JuegoUI : SingletonMonoBehaviour<JuegoUI>
         }
     }
 
+    public void Dormir()
+    {
+        CntJugador.Dormir();
+        MostrarDatosPersonajeSeleccionado();
+    }
 
+    public void IniciarPelea(Enemigo enemigo, GameObject tarjeta)
+    {
+        CntJuego.IniciarPelea((ICombate)enemigo);
+        ControllerEscenas.Instancia.CambiarEscena(4);
+
+    }
+
+    public void PeleaFinalizada(GameObject tarjetaEnemigo)
+    {
+        Debug.Log($"El ganador es {CntPelea.DeterminarGanador().ObtenerNombre()}");
+    }
+
+ 
 }

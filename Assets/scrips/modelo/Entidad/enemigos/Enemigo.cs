@@ -1,4 +1,8 @@
 ﻿using Assets.scrips.interfaces;
+using Assets.scrips.interfaces.pelea;
+using Assets.scrips.modelo.interactuables.item.estrategias;
+using System;
+using UnityEngine;
 
 namespace Assets.scrips.modelo.entidad
 {
@@ -17,7 +21,7 @@ namespace Assets.scrips.modelo.entidad
         {
             Id = ++GlobalCount;
             VIDAMAX = vidaMax;
-            VIDAACTUAL = vidaMax;
+            SetVidaActual(vidaMax);
             PUNTOSATAQUE = puntosAtaque;
             PUNTOSDEFENSA = puntosDefensa;
         }
@@ -30,17 +34,6 @@ namespace Assets.scrips.modelo.entidad
         public int VIDAACTUAL
         {
             get { return VidaActual; }
-            set
-            {
-                if (value > 0 && value < VidaMax)
-                {
-                    VidaActual = value;
-                }
-                else
-                {
-                    VidaActual = VidaMax;
-                }
-            }
         }
 
         public int VIDAMAX
@@ -80,8 +73,29 @@ namespace Assets.scrips.modelo.entidad
         }
         #endregion
 
-        #region METODOS COMBATE
+        public bool SetVidaActual(int value)
+        {
+            if (value > 0 || value <= VidaMax)
+            {
+                VidaActual = value;
+                return true;
+            }
+            else
+            {
+                if (value > VidaMax)
+                {
+                    VidaActual = VidaMax;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
 
+        #region METODOS COMBATE
+       
         public int Atacar()
         {
             var dado = Dado.TirarDado();
@@ -94,7 +108,65 @@ namespace Assets.scrips.modelo.entidad
             return PUNTOSDEFENSA + dado;
         }
 
+        public string ObtenerNombre()
+        {
+            return NOMBRE;
+        }
+
+        public int ObtenerVidaActual()
+        {
+            return VIDAACTUAL;
+        }
+
+        public int ObtenerVidaMaxima()
+        {
+            return VIDAMAX;
+        }
+
+        public bool ActualizarVidaActual(int value)
+        {
+            return SetVidaActual(value);
+        }
+
+        public bool EstaVivo()
+        {
+            if (VidaActual > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void RecibirDanio(int danio)
+        {
+            ReducirVidaActual(danio);
+        }
+
+        public int Defender(int danio)
+        {
+            throw new NotImplementedException();
+        }
+        public GameObject ObtenerPrefab()
+        {
+            return PERSONAJEPREFAB;
+        }
+
         #endregion
+
+        public bool ReducirVidaActual(int valor)
+        {
+            if (SetVidaActual(VidaActual -= valor))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public override string[] ObtenerValoresInstancias()
         {
@@ -123,7 +195,11 @@ namespace Assets.scrips.modelo.entidad
 
         }
 
+        public void EjecutarAccion(IAccionCombate accion, ICombate objetivo)
+        {
+            accion.EjecutarAccion(this, objetivo);
+        }
 
-
+    
     }
 }

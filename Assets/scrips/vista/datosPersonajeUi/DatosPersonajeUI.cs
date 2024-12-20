@@ -29,10 +29,10 @@ namespace Assets.scrips.vista.DatosPersonajeUi
             txtNombrePersonaje.text = personaje.NOMBRE;
             if (BarraVidaPersonaje != null)
             {
-                BarraVidaPersonaje.maxValue = personaje.VIDAMAX;
-                BarraVidaPersonaje.value = personaje.VIDAACTUAL;
+                BarraVidaPersonaje.maxValue = personaje.VidaMax;
+                BarraVidaPersonaje.value = personaje.VidaActual;
             }
-            txtVidaPersonaje.text = $"{personaje.VIDAACTUAL} / {personaje.VIDAMAX}";
+            txtVidaPersonaje.text = $"{personaje.VidaActual} / {personaje.VidaMax}";
 
             if (BarraEnergiaPersonaje != null)
             {

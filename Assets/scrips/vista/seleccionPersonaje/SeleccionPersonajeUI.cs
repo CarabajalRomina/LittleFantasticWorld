@@ -96,8 +96,7 @@ public class SeleccionPersonajeUI : MonoBehaviour
         var personajePrefab = personaje.PERSONAJEPREFAB.gameObject;
         if (personajePrefab != null)
         {
-            var InstanciaPersonaje = Instantiate(personajePrefab, puntoAparicion, Quaternion.Euler(0, 180, 0));
-            InstanciaPersonaje.transform.localScale = new Vector3(20f, 20f, 20f);
+            var InstanciaPersonaje = ControllerEscenas.Instancia.InstanciarModelo(personajePrefab, puntoAparicion, new Vector3(20f, 20f, 20f), Quaternion.Euler(0, 180, 0));   
             if (InstanciaPersonaje != null)
             {
                 PersonajesInstanciados[personaje.ID] = InstanciaPersonaje;

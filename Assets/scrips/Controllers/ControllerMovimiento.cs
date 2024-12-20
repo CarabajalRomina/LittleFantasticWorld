@@ -42,26 +42,35 @@ namespace Assets.scrips.Controllers
             TerrenoDestino = terrenoDestino;
             if (PersonajeSeleccionado != null)
             {
-                if (PersonajeSeleccionado.TERRENOACTUAL.TERRENOSLIMITROFES.Contains(TerrenoDestino))
+                if(PERSONAJESELECCIONADO.ENERGIAACTUAL > 0)
                 {
-                    if (PersonajeSeleccionado.HABITATS.PuedoMoverme(terrenoDestino.TIPOSUBTERRENO.TIPOTERRENO))
+                    if (PersonajeSeleccionado.TERRENOACTUAL.TERRENOSLIMITROFES.Contains(TerrenoDestino))
                     {
-                        PersonajeSeleccionado.IniciarMovimiento();
-                        if (CntJuego != null)
+                        if (PersonajeSeleccionado.HABITATS.PuedoMoverme(terrenoDestino.TIPOSUBTERRENO.TIPOTERRENO))
                         {
-                            CntJuego.CargarConObjTerrenosLimitrofes(TerrenoDestino);
-                        }
+                            PersonajeSeleccionado.IniciarMovimiento();
+                            if (CntJuego != null)
+                            {
+                                CntJuego.CargarConObjTerrenosLimitrofes(TerrenoDestino);
+                            }
 
-                        return true;
+                            return true;
+                        }
+                        else
+                        {
+                            terrenoDestino.ESTADO.DesactivarEstado(TerrenoDestino);
+                            Debug.Log("no puede ir a un habitat a la que no esta adaptado...");
+                            return false;
+                        }
                     }
-                    else
-                    {
-                        terrenoDestino.ESTADO.DesactivarEstado(TerrenoDestino);
-                        Debug.Log("no puede ir a un habitat a la que no esta adaptado...");
-                        return false;
-                    }
+                    else { return false; }
+
                 }
-                else { return false; }
+                else
+                {
+                    return false;
+                }
+               
             }
             else { return false; }
         }

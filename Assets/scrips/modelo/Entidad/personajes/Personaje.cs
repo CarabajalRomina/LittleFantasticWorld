@@ -1,5 +1,6 @@
 using Assets.scrips.interfaces;
 using Assets.scrips.interfaces.movible;
+using Assets.scrips.interfaces.pelea;
 using Assets.scrips.modelo.configuraciones;
 using Assets.scrips.modelo.entidad;
 using Assets.scrips.modelo.inventario;
@@ -12,8 +13,9 @@ public class Personaje : Entidad, ICombate, IMovible
     IDieta Dieta;
     int EnergiaActual { get; set; }
     int EnergiaMax { get; set; }
-    int VidaActual { get; set; }
-    int VidaMax { get; set; }
+    public int VidaActual { get; set; }
+    public int VidaMax { get; set; }
+
     int PuntosAtaque { get; set; }
     int PuntosDefensa { get; set; }
     int RangoAtaque { get; set; }
@@ -52,15 +54,6 @@ public class Personaje : Entidad, ICombate, IMovible
         get { return Dieta; }
         set { Dieta = value; }
     }
-    public int VIDAACTUAL
-    {
-        get { return VidaActual; }
-    }
-
-    public int VIDAMAX
-    {
-        get { return VidaMax; }
-    }
 
     public int ENERGIAACTUAL
     {
@@ -93,7 +86,19 @@ public class Personaje : Entidad, ICombate, IMovible
         set { InventarioActual = value; }
     }
 
+    public int VIDAACTUAL
+    {
+        get { return VidaActual; }
+    }
+    
+    public int VIDAMAX
+    {
+        get { return VidaMax;}
+        set { VidaMax = value; }
+    }
+
     #endregion
+
     #region SETTER
     public bool SetVidaActual(int value)
     {
@@ -201,16 +206,58 @@ public class Personaje : Entidad, ICombate, IMovible
     #endregion
 
     #region METODOS COMBATE
+    public int ObtenerVidaActual()
+    {
+        return VIDAACTUAL;
+    }
+
+    public int ObtenerVidaMaxima()
+    {
+        return VIDAMAX;
+    }
+
+    public bool ActualizarVidaActual(int value)
+    {
+        return SetVidaActual(value);
+    }
+
     public int Atacar()
     {
         var dado = Dado.TirarDado();
         return PuntosAtaque + dado;
     }
 
-    public int Defender()
+    public int Defender(int danio)
     {
         var dado = Dado.TirarDado();
         return PuntosDefensa + dado;
+    }
+
+    public string ObtenerNombre()
+    {
+        return NOMBRE;
+    }
+
+    public bool EstaVivo()
+    {
+        if (VidaActual > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void RecibirDanio(int danio)
+    {
+        ReducirVidaActual(danio);
+    }
+
+    public GameObject ObtenerPrefab()
+    {
+        return PERSONAJEPREFAB;
     }
 
     #endregion
@@ -236,14 +283,13 @@ public class Personaje : Entidad, ICombate, IMovible
             // Comprueba si ha llegado a la posición objetivo
             if (Vector3.Distance(llegadaTerrenoDestino, terrenoDestino.POSICIONTRIDIMENSIONAL) < 0.1f)
             {
-                ReducirEnergiaActual(ConfiguracionGeneral.PuntosEnergiaBase);
                 TERRENOACTUAL.EliminarEntidad(this);
                 // Asegura que la posición actual sea exactamente la posición objetivo
                 TerrenoActual = terrenoDestino;
                 InstanciaPersonaje.transform.position = terrenoDestino.POSICIONTRIDIMENSIONAL + new Vector3(0, 0.6f, 0);
                 TERRENOACTUAL.AgregarEntidad(this);
                 TERRENOACTUAL.CambiarEstado(new Ocupado());
-                ReducirEnergiaActual(ConfiguracionGeneral.PuntosEnergiaBase);
+                ReducirEnergiaActual(ConfiguracionGeneral.CostoMinimoDeAccion);
                 // Disparar el evento indicando que el movimiento ha finalizado
                 OnMovimientoCompletado?.Invoke(TerrenoActual);
                 enMovimiento = false; // Resetea el estado de movimiento
@@ -284,7 +330,7 @@ public class Personaje : Entidad, ICombate, IMovible
         {
             SetEnergiaActual(EnergiaMax);
         }
-        else SetEnergiaActual(EnergiaActual = +valor);
+        else SetEnergiaActual(EnergiaActual += valor);
     }
 
     public bool AumentarEnergiaActual(int valor)
@@ -299,13 +345,13 @@ public class Personaje : Entidad, ICombate, IMovible
         }
         else
         {
-            SetEnergiaActual(ENERGIAMAX);
-            return true;
+            
+            return SetEnergiaActual(ENERGIAMAX);
         }
     }
     public bool ReducirEnergiaActual(int valor)
     {
-        if((EnergiaActual -= valor) >= 0)
+        if((EnergiaActual - valor) >= 0)
         {
             if (SetEnergiaActual(EnergiaActual -= valor))
             {
@@ -451,6 +497,10 @@ public class Personaje : Entidad, ICombate, IMovible
             };
     }
 
+    public void EjecutarAccion(IAccionCombate accion, ICombate objetivo)
+    {
+        accion.EjecutarAccion(this, objetivo);
+    }
 
 }
 

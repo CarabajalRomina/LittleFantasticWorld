@@ -96,7 +96,7 @@ namespace Assets.scrips.Controllers.item
             if(Items.Count > 0)
             {
                 var numRandom = Utilidades.GenerarNumeroAleatorio(0, Items.Count);
-                if(numRandom != null)
+                if(numRandom >= 0)
                 {
                     return Items[numRandom];
                 }

@@ -20,13 +20,13 @@ namespace Assets.scrips.Controllers.jugador
         }
         #endregion
 
-        public bool CrearUsuario(string nombreUsurio)
+        public bool CrearJugador(string nombreJugador)
         {
-            if (!NombresSeleccionados.Contains(nombreUsurio))
+            if (!NombresSeleccionados.Contains(nombreJugador))
             {
                 try
                 {
-                    Player = new Jugador(nombreUsurio);
+                    Player = new Jugador(nombreJugador);
                     return true;
                 }
                 catch (Exception ex)
@@ -42,5 +42,17 @@ namespace Assets.scrips.Controllers.jugador
                 return false;
             }
         }
+
+
+        public void Dormir()
+        {
+            if(PLAYER != null && PLAYER.PERSONAJESELECCIONADO != null)
+            {
+                PLAYER.PERSONAJESELECCIONADO.Dormir();
+            }
+           
+        }
+
+
     }
 }

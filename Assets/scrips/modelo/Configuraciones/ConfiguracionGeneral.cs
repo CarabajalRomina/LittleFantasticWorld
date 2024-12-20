@@ -29,7 +29,7 @@ namespace Assets.scrips.modelo.configuraciones
         public static readonly int AtaqueBasePersonaje = 15;//puntos de vida
         public static readonly int AtaqueBaseEnemigo = 12;//puntos de vida
         public static readonly int PuntosDeVida = 10; //tanto para aumentar o descontar 
-        public static readonly int PuntosEnergiaBase = 10; // tanto para descontar como para aumentar
+        public static readonly int CostoMinimoDeAccion = 10; // tanto para descontar como para aumentar
         #endregion
 
        

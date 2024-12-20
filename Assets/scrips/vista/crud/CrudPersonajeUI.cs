@@ -223,7 +223,7 @@ public class CrudPersonajeUI : MonoBehaviour
         ddDieta.value = CntEntidad.DIETAS.IndexOf(personaje.DIETA) + 1;
         ddHabitats.value = CntHabitat.HABITATS.IndexOf(personaje.HABITATS) + 1;
         txtEnergiaMax.text = personaje.ENERGIAMAX.ToString();
-        txtVidaMax.text = personaje.VIDAMAX.ToString();
+        txtVidaMax.text = personaje.VidaMax.ToString();
         txtPuntosAtaque.text = personaje.PUNTOSATAQUE.ToString();
         txtPuntosDefensa.text = personaje.PUNTOSDEFENSA.ToString();
         txtRangoDeAtaque.text = personaje.RANGOATAQUE.ToString();

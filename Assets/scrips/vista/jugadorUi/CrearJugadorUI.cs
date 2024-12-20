@@ -23,7 +23,7 @@ namespace Assets.scrips.vista
         {
             if (!ValidacionForm.EstaVacioElInput(txtNombreJugador.text) && ValidacionForm.EsUnNombreValido(txtNombreJugador.text))
             {
-                if (!CntJugador.CrearUsuario(ValidacionForm.NormalizarCadena(txtNombreJugador.text)))
+                if (!CntJugador.CrearJugador(ValidacionForm.NormalizarCadena(txtNombreJugador.text)))
                 {
                     lblAviso.text = "Ese nombre ya existe";
                 }

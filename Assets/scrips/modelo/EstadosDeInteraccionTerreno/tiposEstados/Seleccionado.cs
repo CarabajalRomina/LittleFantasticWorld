@@ -21,6 +21,7 @@ namespace Assets.scrips.modelo.estadosDeInteraccion.tiposEstados
             if (!CntMovimiento.MoverPersonaje(terreno))
             {
                 terreno.ESTADO.DesactivarEstado(terreno);
+                Debug.Log("UPPS, no tiene energia para moverte a este terreno");
             }
         }
 

@@ -1,25 +1,27 @@
 ﻿using Assets.scrips.interfaces.interactuable;
 using Assets.scrips.modelo.configuraciones;
-using Assets.scrips.Controllers;
 using Assets.scrips.modelo.entidad;
 using UnityEngine;
 using Assets.scrips.Controllers.entidad;
-using System.Linq;
 using System;
 using Assets.scrips.Controllers.comida;
 using Assets.scrips.Controllers.item;
-using Assets.scrips.modelo.jugador;
 using Assets.scrips.Controllers.jugador;
+using Assets.scrips.Controllers.pelea;
+using Assets.scrips.interfaces;
+using Assets.scrips.modelo.pelea;
 
 
 namespace Assets.scrips.Controllers.juego
 {
     public class JuegoController : SingletonMonoBehaviour<JuegoController>
     {
+        public static event Action<GameObject> PeleaFinalizada;
         EntidadController CntEntidad;
         ComidaController CntComida = ComidaController.GetInstancia;
         ItemController CntItem = ItemController.GetInstancia;
         JugadorController CntJugador = JugadorController.GetInstancia;
+        PeleaController CntPelea;
 
 
         public void Start()
@@ -103,7 +105,7 @@ namespace Assets.scrips.Controllers.juego
             }
         }
 
-        public void InstanciarObjetos3D(Terreno terreno)
+        public void InstanciarPersonajeSeleccionadoEnTerreno(Terreno terreno)
         {
             if (CntJugador.PLAYER.PERSONAJESELECCIONADO != null)
             {
@@ -112,7 +114,7 @@ namespace Assets.scrips.Controllers.juego
                 {
                     DespachadorHiloPrincipal.Instancia.Enqueue(() =>
                     {
-                        nuevaInstancia = Instantiate(CntJugador.PLAYER.PERSONAJESELECCIONADO.PERSONAJEPREFAB.gameObject, terreno.POSICIONTRIDIMENSIONAL + new Vector3(0,0.6f,0), Quaternion.identity);
+                        nuevaInstancia = ControllerEscenas.Instancia.InstanciarModelo(CntJugador.PLAYER.PERSONAJESELECCIONADO.PERSONAJEPREFAB.gameObject, terreno.POSICIONTRIDIMENSIONAL + new Vector3(0, 0.6f, 0));
                         Debug.Log("Instancia creada: " + nuevaInstancia.name);
                         if (nuevaInstancia != null)
                         {
@@ -145,6 +147,41 @@ namespace Assets.scrips.Controllers.juego
             }
         }
 
+        public void IniciarPelea(ICombate enemigo)
+        {
+            CntPelea = new PeleaController(new Pelea((ICombate)CntJugador.PLAYER.PERSONAJESELECCIONADO, enemigo));
+            CntPelea.OnPeleaFinalizada += ManejarPeleaFinalizada;
+        }
 
+        private void ManejarPeleaFinalizada()
+        {
+            Debug.Log("Pelea Finalizada");
+            ControllerEscenas.Instancia.EliminarEscena(4);
+            var ganador = CntPelea.PELEAACTUAL.ObtenerGanador();
+            Debug.Log($"El ganador es: {ganador.ObtenerNombre()}");
+            if(ganador is Personaje)
+            {
+                // logica si el personaje osea jugador gana
+                EliminarPerdedorDelTerreno();
+
+            }
+            else
+            {
+
+            }
+            CntPelea.PELEAACTUAL.ObtenerGanador();
+            // Actualizar UI, reiniciar escena, etc.
+        }
+
+        public void EliminarPerdedorDelTerreno()
+        {
+          var perdedorDePelea = (Entidad)CntPelea.PELEAACTUAL.ObtenerNoGanador(CntPelea.PELEAACTUAL.PERSONAJE, CntPelea.PELEAACTUAL.ENEMIGO);
+          CntEntidad.EliminarEntidad(perdedorDePelea);
+
+        }
+        public PeleaController ObtenerPeleaController()
+        {
+            return CntPelea;
+        }
     }
 }

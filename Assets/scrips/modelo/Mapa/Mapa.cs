@@ -1,10 +1,8 @@
 using Assets.scrips.Controllers.entidad;
 using Assets.scrips.Controllers.juego;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -340,7 +338,7 @@ public class Mapa : MonoBehaviour
 
     private void InstanciarPersonajeEnMapa(Terreno terreno)
     {
-        CntJuego.InstanciarObjetos3D(terreno);
+        CntJuego.InstanciarPersonajeSeleccionadoEnTerreno(terreno);
     }
 
 }
