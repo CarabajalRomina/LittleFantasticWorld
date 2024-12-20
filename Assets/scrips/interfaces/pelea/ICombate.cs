@@ -12,7 +12,8 @@ namespace Assets.scrips.interfaces
     public interface ICombate
     {
         int Atacar();
-        int Defender(int danio);
+        int Defender();
+        void ActivarDefensa();
         string ObtenerNombre();
         int ObtenerVidaActual();
         int ObtenerVidaMaxima();
@@ -20,6 +21,7 @@ namespace Assets.scrips.interfaces
         bool EstaVivo();
         void RecibirDanio(int danio);
         void EjecutarAccion(IAccionCombate accion, ICombate objetivo);
+        bool SeEstaDefendiendo();
         GameObject ObtenerPrefab();
 
     }

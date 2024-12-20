@@ -35,32 +35,11 @@ namespace Assets.scrips.Controllers.turno
             if(AccionRealizada)
             {
                 IndiceTurnoActual = (IndiceTurnoActual + 1) % Participantes.Count;
+                AccionRealizada = false;
                 OnTurnoCambiado?.Invoke(Participantes[IndiceTurnoActual]);
-                AccionRealizada = false;
             }
         }
-        /*
-        public void IniciarTurnos()
-        {
-            StartCoroutine(FlujoTurnos());
-        }
-
-        private IEnumerator FlujoTurnos()
-        {
-            while (true)
-            {
-                // Notificar el cambio de turno
-                OnTurnoCambiado?.Invoke(ObtenerTurnoActual());
-
-                // Esperar a que se realice una acción
-                yield return new WaitUntil(() => AccionRealizada);
-
-                // Resetear el estado y avanzar al siguiente turno
-                AccionRealizada = false;
-                IndiceTurnoActual = (IndiceTurnoActual + 1) % Participantes.Count;
-            }
-        }
-        */
+       
         public ICombate ObtenerTurnoActual()
         {
             return Participantes[IndiceTurnoActual];

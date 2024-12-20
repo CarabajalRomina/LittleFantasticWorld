@@ -51,6 +51,7 @@ public class JuegoUI : SingletonMonoBehaviour<JuegoUI>
         CntMovimiento = ControllerMovimiento.Instancia;
         CntJuego = JuegoController.Instancia;
         CntJugador = JugadorController.GetInstancia;
+        //CntPelea = CntJuego.ObtenerPeleaController();
         BtnDormir?.onClick.AddListener(Dormir);
     }
 
@@ -218,10 +219,11 @@ public class JuegoUI : SingletonMonoBehaviour<JuegoUI>
 
     }
 
+    /*
     public void PeleaFinalizada(GameObject tarjetaEnemigo)
     {
         Debug.Log($"El ganador es {CntPelea.DeterminarGanador().ObtenerNombre()}");
-    }
+    }*/
 
  
 }

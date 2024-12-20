@@ -5,6 +5,7 @@ using Assets.scrips.interfaces;
 using Assets.scrips.interfaces.observadorTurno;
 using Assets.scrips.interfaces.pelea;
 using Assets.scrips.modelo.entidad;
+using Assets.scrips.modelo.pelea;
 using Assets.scrips.modelo.pelea.acciones;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,9 @@ public class PeleaUI : MonoBehaviour
     public Button btnAtacar;
     public Button btnDefender;
     public Button btnHuir;
+
+    public GameObject CartelPeleaFinalizada;
+
     #endregion
 
     Vector3 PuntoAparicionPersonaje = new Vector3(850, 412, -584);
@@ -34,7 +38,6 @@ public class PeleaUI : MonoBehaviour
     Vector3 EscalaPersonaje = new Vector3(200, 200, 200);
     GameObject InstanciaEnemigo;
     GameObject InstanciaPersonaje;
-
     JuegoController CntJuego;
     PeleaController CntPelea;
 
@@ -46,14 +49,17 @@ public class PeleaUI : MonoBehaviour
         CntPelea = CntJuego.ObtenerPeleaController();
 
         btnAtacar.onClick.AddListener(() => EjecutarAccionJugador(new Atacar(), CntPelea.PELEAACTUAL.ENEMIGO));
-        btnDefender.onClick.AddListener(() => EjecutarAccionJugador(new Defender(), null));
+        btnDefender.onClick.AddListener(() => EjecutarAccionJugador(new Defender(), CntPelea.PELEAACTUAL.ENEMIGO));
 
         CntPelea.OnTurnoJugador += ActualizarUIParaTurno;
+        CntPelea.OnPeleaFinalizada += MostrarDatosPeleaFinalizada;
 
         InstanciarPersonajesEnEscena();
         CargarDatosUI();
         //btnHuir.onClick.AddListener(AccionHuir);
     }
+
+    
 
     private void ActualizarUIParaTurno(bool esTurnoJugador)
     {
@@ -63,13 +69,14 @@ public class PeleaUI : MonoBehaviour
 
         if (esTurnoJugador)
         {
-            ActualizarUi(CntPelea.PELEAACTUAL.PERSONAJE, CntPelea.PELEAACTUAL.ENEMIGO);
             Debug.Log("Es tu turno. ¡Elige una acción!");
         }
         else
         {
             Debug.Log("Esperando al enemigo...");
         }
+        ActualizarUi(CntPelea.PELEAACTUAL.PERSONAJE, CntPelea.PELEAACTUAL.ENEMIGO);
+
     }
 
     private void InstanciarPersonajesEnEscena()
@@ -83,8 +90,7 @@ public class PeleaUI : MonoBehaviour
         var enemigo = CntPelea.PELEAACTUAL.ENEMIGO;
         txtNombrePersonaje.text = personaje.ObtenerNombre();
         txtNombreEnemigo.text = enemigo.ObtenerNombre();
-        ActualizarDatosUIPersonaje(personaje);
-        ActualizarDatosUiEnemigo(enemigo);
+
     }
 
     private void ActualizarUi(ICombate personaje, ICombate enemigo)
@@ -94,14 +100,22 @@ public class PeleaUI : MonoBehaviour
     }
     private void ActualizarDatosUIPersonaje(ICombate personaje)
     {
-        BarraVidaPersonaje.value = personaje.ObtenerVidaActual();
+        if (BarraVidaPersonaje != null)
+        {
+            BarraVidaPersonaje.maxValue = personaje.ObtenerVidaMaxima();
+            BarraVidaPersonaje.value = personaje.ObtenerVidaActual();
+        }
         txtVidaPersonaje.text = $"{personaje.ObtenerVidaActual()}/{personaje.ObtenerVidaMaxima()}";
         
     }
 
     private void ActualizarDatosUiEnemigo(ICombate enemigo)
     {
-        BarraVidaEnemigo.value = enemigo.ObtenerVidaActual();
+        if (BarraVidaEnemigo != null)
+        {
+            BarraVidaEnemigo.maxValue = enemigo.ObtenerVidaMaxima();
+            BarraVidaEnemigo.value = enemigo.ObtenerVidaActual();
+        }
         txtVidaEnemigo.text = $"{enemigo.ObtenerVidaActual()}/{enemigo.ObtenerVidaMaxima()}";
     }
 
@@ -110,7 +124,12 @@ public class PeleaUI : MonoBehaviour
         CntPelea.EjecutarAccionJugador(accion, objetivo);
     }
 
+    private void MostrarDatosPeleaFinalizada()
+    {
+        ActualizarUi(CntPelea.PELEAACTUAL.PERSONAJE, CntPelea.PELEAACTUAL.ENEMIGO);
+        CartelPeleaFinalizada.SetActive(true);
+        var textoCartel = CartelPeleaFinalizada.GetComponentInChildren<TextMeshProUGUI>();
+        textoCartel.text = $"El ganador es {CntPelea.DeterminarGanador().ObtenerNombre()}";
 
-
-
+    }
 }

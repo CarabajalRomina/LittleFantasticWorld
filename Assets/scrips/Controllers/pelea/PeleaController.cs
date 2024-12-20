@@ -1,13 +1,10 @@
 ﻿using Assets.scrips.Controllers.turno;
 using Assets.scrips.interfaces;
 using Assets.scrips.interfaces.pelea;
-using Assets.scrips.modelo.configuraciones;
-using Assets.scrips.modelo.entidad;
 using Assets.scrips.modelo.pelea;
 using Assets.scrips.modelo.pelea.acciones;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.scrips.Controllers.pelea
@@ -71,19 +68,21 @@ namespace Assets.scrips.Controllers.pelea
 
         private void EjecutarTurnoEnemigo(ICombate enemigo)
         {
+
             IAccionCombate accion = new Atacar();
             enemigo.EjecutarAccion(accion, PeleaActual.PERSONAJE);
+            CntTurno.ACCIONREALIZADA = true;
             CntTurno.SiguienteTurno();
 
         }
 
         public void EjecutarAccionJugador(IAccionCombate accion, ICombate objetivo)
         {
-            CntTurno.ACCIONREALIZADA = true;
             var jugador = CntTurno.ObtenerTurnoActual();
             if (jugador is Personaje)
             {
                 jugador.EjecutarAccion(accion, objetivo);
+                CntTurno.ACCIONREALIZADA = true;
                 CntTurno.SiguienteTurno();
             }
         }

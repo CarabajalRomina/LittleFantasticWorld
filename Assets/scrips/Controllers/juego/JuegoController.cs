@@ -156,14 +156,13 @@ namespace Assets.scrips.Controllers.juego
         private void ManejarPeleaFinalizada()
         {
             Debug.Log("Pelea Finalizada");
-            ControllerEscenas.Instancia.EliminarEscena(4);
+            //ControllerEscenas.Instancia.EliminarEscena(4);
             var ganador = CntPelea.PELEAACTUAL.ObtenerGanador();
             Debug.Log($"El ganador es: {ganador.ObtenerNombre()}");
             if(ganador is Personaje)
             {
                 // logica si el personaje osea jugador gana
                 EliminarPerdedorDelTerreno();
-
             }
             else
             {

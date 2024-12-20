@@ -41,8 +41,8 @@ public class GeneradorMapa : MonoBehaviour
     [Tooltip("El desplazamiento del juego de ruido")]
     [SerializeField] private Vector2 Offset = Vector2.zero; 
 
-    [Tooltip("Si se actualiza o no automáticamente el juego de ruido cuando se cambia un valor.")]
-    [SerializeField] private bool AutoUpdate = true;
+    //[Tooltip("Si se actualiza o no automáticamente el juego de ruido cuando se cambia un valor.")]
+    //[SerializeField] private bool AutoUpdate = true;
 
     [Tooltip("Si se debe utilizar o no la información de ancho y alto de la cuadrícula hexagonal para generar el juego de ruido.")]
     [SerializeField] private bool UsarHexGrid = true;

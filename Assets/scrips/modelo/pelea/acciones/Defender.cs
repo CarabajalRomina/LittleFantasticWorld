@@ -13,7 +13,8 @@ namespace Assets.scrips.modelo.pelea.acciones
     {
         public void EjecutarAccion(ICombate atacante, ICombate objetivo)
         {
-            Debug.Log($"{atacante.ObtenerNombre()} se defendió, reduciendo el daño recibido.");
+            atacante.ActivarDefensa();
+            Debug.Log($"{atacante.ObtenerNombre()} se defendió, reduciendo el daño recibido de {objetivo.ObtenerNombre()}.");
         }
     }
 }

@@ -22,6 +22,8 @@ public class Personaje : Entidad, ICombate, IMovible
     private bool enMovimiento = false; // Estado del movimiento
     Inventario InventarioActual;
 
+    private bool EstaDefendiendo; // Indica si el personaje está en modo defensa
+
     // Definir el evento que se disparará cuando el personaje termine de moverse
     public event System.Action<Terreno> OnMovimientoCompletado;
 
@@ -90,11 +92,18 @@ public class Personaje : Entidad, ICombate, IMovible
     {
         get { return VidaActual; }
     }
-    
+
     public int VIDAMAX
     {
-        get { return VidaMax;}
+        get { return VidaMax; }
         set { VidaMax = value; }
+    }
+
+    public bool ESTADEFENDIENDO
+    {
+        get { return EstaDefendiendo; }
+        set { EstaDefendiendo = value; }
+
     }
 
     #endregion
@@ -116,6 +125,7 @@ public class Personaje : Entidad, ICombate, IMovible
             }
             else
             {
+                VidaActual = 0;
                 return false;
             }
         }
@@ -227,12 +237,20 @@ public class Personaje : Entidad, ICombate, IMovible
         return PuntosAtaque + dado;
     }
 
-    public int Defender(int danio)
+    public int Defender()
     {
         var dado = Dado.TirarDado();
         return PuntosDefensa + dado;
     }
+    public void ActivarDefensa()
+    {
+        EstaDefendiendo = true;
+    }
 
+    public bool SeEstaDefendiendo()
+    {
+        return EstaDefendiendo;
+    }
     public string ObtenerNombre()
     {
         return NOMBRE;
@@ -345,13 +363,13 @@ public class Personaje : Entidad, ICombate, IMovible
         }
         else
         {
-            
+
             return SetEnergiaActual(ENERGIAMAX);
         }
     }
     public bool ReducirEnergiaActual(int valor)
     {
-        if((EnergiaActual - valor) >= 0)
+        if ((EnergiaActual - valor) >= 0)
         {
             if (SetEnergiaActual(EnergiaActual -= valor))
             {
@@ -367,7 +385,7 @@ public class Personaje : Entidad, ICombate, IMovible
             SetEnergiaActual(0);
             return true;
         }
-       
+
     }
 
 
@@ -384,7 +402,8 @@ public class Personaje : Entidad, ICombate, IMovible
     }
     public bool ReducirVidaActual(int valor)
     {
-        if (SetVidaActual(VidaActual -= valor))
+        var vidaActual = VidaActual -= valor;
+        if (SetVidaActual(vidaActual))
         {
             return true;
         }
@@ -502,6 +521,7 @@ public class Personaje : Entidad, ICombate, IMovible
         accion.EjecutarAccion(this, objetivo);
     }
 
+  
 }
 
 

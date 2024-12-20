@@ -906,6 +906,7 @@ MonoBehaviour:
   btnAtacar: {fileID: 86781954}
   btnDefender: {fileID: 1016669903}
   btnHuir: {fileID: 1339748505}
+  CartelPeleaFinalizada: {fileID: 1309476730}
 --- !u!4 &414567643
 Transform:
   m_ObjectHideFlags: 0
@@ -2500,8 +2501,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 40.3372, y: 4.8332}
-  m_SizeDelta: {x: 795.92, y: 226.3428}
+  m_AnchoredPosition: {x: -0.000015258789, y: 0.0000038146973}
+  m_SizeDelta: {x: 1183.435, y: 264.1145}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1239992322
 MonoBehaviour:
@@ -2692,7 +2693,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1309476731
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3531,7 +3532,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -4.8407, y: 3.2108}
+  m_AnchoredPosition: {x: -4.8406982, y: 3.2108002}
   m_SizeDelta: {x: -132.3091, y: -77.4252}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1875587970
@@ -3581,8 +3582,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90
-  m_fontSizeBase: 90
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

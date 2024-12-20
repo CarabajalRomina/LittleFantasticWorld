@@ -236,6 +236,7 @@ public class Mapa : MonoBehaviour
             }
         }
         CeldasInstanciasGeneradas?.Invoke();
+        InfoMapaGenerada?.Invoke(); 
         Debug.Log("--------------------------------TERMINO DE CARGAR EL MAPA----------------------------------------");
         CargarTerrenosDefaultConObjetos();
     }

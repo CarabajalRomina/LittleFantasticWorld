@@ -16,6 +16,8 @@ namespace Assets.scrips.modelo.entidad
         private int PuntosAtaque { get; set; }
         private int PuntosDefensa { get; set; }
 
+        private bool EstaDefendiendo; // Indica si el enemigo está en modo defensa
+
 
         public Enemigo(string nombre, IReino reino, IHabitat habitats, int vidaMax, int puntosAtaque, int puntosDefensa) :base( nombre, reino, habitats) 
         {
@@ -71,6 +73,13 @@ namespace Assets.scrips.modelo.entidad
                 }
             }
         }
+
+        public bool ESTADEFENDIENDO
+        {
+            get { return EstaDefendiendo; }
+            set { EstaDefendiendo = value; }
+
+        }
         #endregion
 
         public bool SetVidaActual(int value)
@@ -89,6 +98,7 @@ namespace Assets.scrips.modelo.entidad
                 }
                 else
                 {
+                    VidaActual = 0;
                     return false;
                 }
             }
@@ -107,6 +117,15 @@ namespace Assets.scrips.modelo.entidad
             var dado = Dado.TirarDado();
             return PUNTOSDEFENSA + dado;
         }
+        public void ActivarDefensa()
+        {
+            EstaDefendiendo = true;
+        }
+        public bool SeEstaDefendiendo()
+        {
+            return EstaDefendiendo;
+        }
+
 
         public string ObtenerNombre()
         {
@@ -158,7 +177,8 @@ namespace Assets.scrips.modelo.entidad
 
         public bool ReducirVidaActual(int valor)
         {
-            if (SetVidaActual(VidaActual -= valor))
+            var vidaActual = VidaActual -= valor;
+            if (SetVidaActual(vidaActual))
             {
                 return true;
             }
@@ -200,6 +220,6 @@ namespace Assets.scrips.modelo.entidad
             accion.EjecutarAccion(this, objetivo);
         }
 
-    
+      
     }
 }
